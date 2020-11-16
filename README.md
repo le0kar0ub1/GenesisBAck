@@ -17,6 +17,8 @@ The dependencies are also checked-up.
 
 ## Build
 
+`make [tgt={debug|release}]`
+
 ## Run
 
 ## ROADMAP

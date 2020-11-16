@@ -28,8 +28,6 @@ clean:
 .PHONY: re
 re: clean all
 
-# ifeq ($(debug),soft)
-# endif
-
 .PHONY: run
 run: all
+	@$(TARGET_BASE_PATH)/debug/$(TARGET)

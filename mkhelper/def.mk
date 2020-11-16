@@ -11,7 +11,11 @@ export PROJECT		:= GenesisBack
 export PROJECT_PATH	:= $(realpath .)
 
 # Target architecture
-export ARCH ?= $(CC) -dumpmachine
+export ARCH ?= $(shell $(CC) -dumpmachine)
+
+# Build mode
+tgt ?= debug
+BUILD_MODE = $(tgt)
 
 # Make verbosity
 MAKEFLAGS += --no-print-directory --silent
@@ -27,13 +31,13 @@ export EXTENSION_LIB	:=	.a
 export VERSION			:=	0.1.0
 
 # Target
-export BUILD_PATH	:=	$(PROJECT_PATH)/target
+export TARGET_BASE_PATH	:=	$(PROJECT_PATH)/target
 
 # Build target
 export TARGET	:=	$(PROJECT)-$(VERSION).$(EXTENSION_BIN)
 
 # Cleaner as possible
-export CCFLAGS	=	-isystem $(PROJECT_PATH)/inc		\
+export CCFLAGS	=	-I $(PROJECT_PATH)/inc				\
 					-Wall								\
 					-MD									\
 					-Wcast-align					    \
@@ -71,9 +75,7 @@ CCFLAGS			+=	-D PROJECT=$(PROJECT)							\
 					-D PROJECT_VERSION=$(VERSION)					\
 					-D ARCH=$(ARCH)									\
 
-export LDFLAGS	=   -nostdlib							\
-					-z max-page-size=0x1000				\
-					-lgcc								\
+export LDFLAGS	:=
 
 # Output color
 export Red			:= \e[0;31m

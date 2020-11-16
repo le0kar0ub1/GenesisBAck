@@ -39,5 +39,5 @@ endef
 
 # Builder log action
 define BUILD_LOG
-	@echo "    $(1)target/$(shell basename $(BUILD_PATH))/$(subst $(BUILD_PATH)/,,$@)"
+	@echo "    $(1)target/$(shell basename $(TARGET_PATH))/$(subst $(TARGET_PATH)/,,$@)"
 endef
