@@ -2,8 +2,9 @@
 
 ### Environment ################################################################
 GNU_MIRROR="https://ftp.gnu.org/gnu"
-GCC_VERSION="9.2.0"
-BIN_VERSION="2.32"
+GCC_VERSION="10.2.0"
+BIN_VERSION="2.35"
+LIB_VERSION="2.32"
 
 SOURCE=$(dirname $(dirname $(realpath $0)))
 printf "[\e[36;1mTOOL\e[0m] Toolchain Builder\n"
@@ -26,7 +27,6 @@ export PATH="$PREFIX/bin:$PATH"
 ### Dependencies ###############################################################
 source $SCRIPT/build-helpers
 
-require gcc
 require make
 require curl
 require tar
@@ -38,6 +38,8 @@ cleanup() {
 	fi
 	rm -rf $WORKSPACE
 }
+
+set -e
 
 trap cleanup EXIT
 
@@ -52,15 +54,14 @@ fi
 
 mkdir -p $PREFIX || exit 1
 
-
 ### Source Downloads ###########################################################
 download "$GNU_MIRROR/binutils/binutils-$BIN_VERSION.tar.xz"
 download "$GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.xz"
-
-# TODO: Checksums
+download "$GNU_MIRROR/libc/glibc-$LIB_VERSION.tar.gz"
 
 run "Extract binutils-$BIN_VERSION.tar.xz" tar xf binutils-$BIN_VERSION.tar.xz
 run "Extract gcc-$GCC_VERSION.tar.xz" tar xf gcc-$GCC_VERSION.tar.xz
+run "Extract libc-$LIB_VERSION.tar.gz" tar xf libc-$LIB_VERSION.tar.gz
 
 ### Build Binutils #############################################################
 mkdir binutils-build || exit 1
@@ -71,11 +72,21 @@ cd binutils-build
 make && make install || exit 1
 cd ..
 
-### Build GCC and libgcc #######################################################
+### Build libc #################################################################
+mkdir libc-build || exit 1
+cd libc-build
+
+../libc-$LIB_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX"
+
+make && make install || exit 1
+
+cd..
+
+### Build GCC ##################################################################
 mkdir gcc-build || exit 1
 cd gcc-build
 
-../gcc-$GCC_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --disable-nls --enable-languages=c || cleanup 1
+../gcc-$GCC_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --disable-nls --enable-languages=c || exit 1
 
 make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc || exit 1
 cd ..

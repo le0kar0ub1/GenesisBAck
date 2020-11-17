@@ -13,7 +13,9 @@ A cross-plateform GBA emulator.
 GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line.
 The dependencies are also checked-up.
 
-`./mktoolchain/mktoolchain`
+`./mktoolchain/mktoolchain [TARGET=$architecture]`
+
+Defaulting to the host architecture if TARGET unset.
 
 ## Build
 
