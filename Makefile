@@ -31,3 +31,6 @@ re: clean all
 .PHONY: run
 run: all
 	@$(TARGET_BASE_PATH)/debug/$(TARGET)
+
+disassemble:
+	@blabla-objdump --target=binary --architecture=armv7 -D myfile.gba

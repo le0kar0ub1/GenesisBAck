@@ -6,6 +6,8 @@ GCC_VERSION="10.2.0"
 BIN_VERSION="2.35"
 LIB_VERSION="2.32"
 
+TARGET=$1
+
 SOURCE=$(dirname $(dirname $(realpath $0)))
 printf "[\e[36;1mTOOL\e[0m] Toolchain Builder\n"
 printf "[\e[34;1mINFO\e[0m] Building from $SOURCE...\n"
@@ -30,6 +32,7 @@ source $SCRIPT/build-helpers
 require make
 require curl
 require tar
+require flex
 
 ### Exit Handler ###############################################################
 cleanup() {
@@ -44,7 +47,7 @@ set -e
 trap cleanup EXIT
 
 ### Directories ################################################################
-WORKSPACE=$(mktemp -td build-toolchain.XXXXXXXXXX || exit 1)
+WORKSPACE=$(mktemp -td build-toolchain.XXXXXXXXX || exit 1)
 cd $WORKSPACE
 
 if [ -e "$PREFIX" ] && [ -v CLEAN_TOOLCHAIN ]; then
@@ -54,42 +57,56 @@ fi
 
 mkdir -p $PREFIX || exit 1
 
-### Source Downloads ###########################################################
+# ### Build Binutils #############################################################
 download "$GNU_MIRROR/binutils/binutils-$BIN_VERSION.tar.xz"
-download "$GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.xz"
-download "$GNU_MIRROR/libc/glibc-$LIB_VERSION.tar.gz"
 
 run "Extract binutils-$BIN_VERSION.tar.xz" tar xf binutils-$BIN_VERSION.tar.xz
-run "Extract gcc-$GCC_VERSION.tar.xz" tar xf gcc-$GCC_VERSION.tar.xz
-run "Extract libc-$LIB_VERSION.tar.gz" tar xf libc-$LIB_VERSION.tar.gz
 
-### Build Binutils #############################################################
 mkdir binutils-build || exit 1
+# cd binutils-build
+
+# run "Configure binutils-$BIN_VERSION-$TARGET"  ../binutils-$BIN_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+
+# run "Build binutils-$BIN_VERSION-$TARGET" "make && make install || exit 1"
+
+# cd ..
+
+### Build libc ###################################################################
+# download "$GNU_MIRROR/libc/glibc-$LIB_VERSION.tar.xz"
+
+# run "Extract glibc-$LIB_VERSION.tar.xz" tar xf glibc-$LIB_VERSION.tar.xz
+
+# mkdir glibc-build || exit 1
+# cd glibc-build
+
+# run "Configure glibc-$LIB_VERSION-$TARGET" ../glibc-$LIB_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX"
+
+# run "Build glibc-$LIB_VERSION-$TARGET" "make && make install || exit 1"
+
+# cd ..
+
+### Build GCC ####################################################################
+# download "$GNU_MIRROR/gcc/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.xz"
+
+# run "Extract gcc-$GCC_VERSION.tar.xz" tar xf gcc-$GCC_VERSION.tar.xz
+
+# mkdir gcc-build || exit 1
+# cd gcc-build
+
+# run "Configure gcc-$GCC_VERSION-$TARGET" ../gcc-$GCC_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --disable-nls --enable-languages=c || exit 1
+
+# run "Build gcc-$GCC_VERSION-$TARGET" "make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc || exit 1"
+
+# cd ..
+
+### Build ARM utils ###############################################################
 cd binutils-build
 
-../binutils-$BIN_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+run "Configure binutils-$BIN_VERSION-armv7"  ../binutils-$BIN_VERSION/configure --target=arm-tdmi-eabi --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
 
-make && make install || exit 1
+run "Build binutils-$BIN_VERSION-armv7" "make && make install || exit 1"
+
 cd ..
 
-### Build libc #################################################################
-mkdir libc-build || exit 1
-cd libc-build
-
-../libc-$LIB_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX"
-
-make && make install || exit 1
-
-cd..
-
-### Build GCC ##################################################################
-mkdir gcc-build || exit 1
-cd gcc-build
-
-../gcc-$GCC_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --disable-nls --enable-languages=c || exit 1
-
-make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc || exit 1
-cd ..
-
-### We're done! ################################################################
+### We're done! ###################################################################
 printf "[\e[91;1mN\e[93mI\e[92mC\e[94mE\e[0m] Toolchain built!\n"

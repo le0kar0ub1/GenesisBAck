@@ -1,5 +1,8 @@
 # Prerequisites
 *.d
+res
+target
+mktoolchain/toolchain
 
 # Object files
 *.o
