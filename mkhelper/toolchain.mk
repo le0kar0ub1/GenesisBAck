@@ -7,7 +7,8 @@
 ##
 ###############################################################################
 
-export TOOLCHAIN_GNUBASE := #$(PROJECT_PATH)/mktoolchain/toolchain/bin/anyhow
+export TOOLCHAIN_PATH	 :=	$(PROJECT_PATH)/mktoolchain/toolchain
+export TOOLCHAIN_GNUBASE := #$(TOOLCHAIN_PATH)/bin/$(ARCH)-elf-
 
 export CC		:=	$(TOOLCHAIN_GNUBASE)gcc
 export AS		:=	$(TOOLCHAIN_GNUBASE)as

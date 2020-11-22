@@ -32,7 +32,7 @@ run() {
 
 	printf "[\e[33;1mWAIT\e[0m] %s\n" "$text"
 
-	(eval -- $@) &> /dev/null
+	(eval -- $@) #&> /dev/null
 	if [ $? = 0 ]; then
 		printf "\e[A\e[G\e[2K[\e[92;1mDONE\e[0m] %s\n" "$text"
 	else

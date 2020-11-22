@@ -11,7 +11,7 @@ export PROJECT		:= GenesisBack
 export PROJECT_PATH	:= $(realpath .)
 
 # Target architecture
-export ARCH ?= $(shell $(CC) -dumpmachine)
+export ARCH ?= $(shell $(CC) -dumpmachine | cut -d '-' -f 1)
 
 # Build mode
 tgt ?= debug
@@ -56,15 +56,12 @@ export CCFLAGS	=	-I $(PROJECT_PATH)/inc				\
 					-Wmissing-field-initializers		\
 					-Wswitch-enum						\
 					-Wshadow				 			\
-					-fno-stack-protector				\
 					-Wuninitialized				 		\
 					-Wmissing-declarations				\
 					-Wmissing-prototypes				\
 					-Wstrict-prototypes					\
 					-Wpointer-arith						\
 					-fms-extensions 					\
-					-fno-builtin						\
-					-static 							\
 					-fno-tree-loop-vectorize 			\
 					-fno-tree-slp-vectorize				\
 					-Wno-override-init					\

@@ -8,6 +8,7 @@
 ###############################################################################
 
 sinclude $(PROJECT_PATH)/mkhelper/macro.mk
+sinclude $(PROJECT_PATH)/mkhelper/toolchain.mk
 
 # Build directory, defaulting to debug
 ifeq ($(BUILD_MODE),release)
@@ -28,7 +29,8 @@ TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)
 all: $(TARGET_OBJECTS) $(TARGET)
 
 $(TARGET):	$(TARGET_OBJECTS)
-	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET)
+	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET) 
+	#-L $(TOOLCHAIN_PATH)/lib -v -P -L $(TOOLCHAIN_PATH)/lib/gcc/x86_64-elf/10.2.0  #-nodefaultlibs 
 	$(call BUILD_LOG,[LD]     )
 
 -include $(TARGET_DEPS)
