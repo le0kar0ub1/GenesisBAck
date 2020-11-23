@@ -15,12 +15,13 @@ ifeq ($(BUILD_MODE),release)
     TARGET_PATH		:= $(TARGET_BASE_PATH)/release
 else
     TARGET_PATH		:= $(TARGET_BASE_PATH)/debug
-    CCFLAGS			+= -g3
+    CCFLAGS			+= #-g3
 endif
 
 TARGET_OBJECTS :=
 
-sinclude $(PROJECT_PATH)/src/core/Makefile
+sinclude $(PROJECT_PATH)/src/machine/Makefile
+sinclude $(PROJECT_PATH)/src/emulator/Makefile
 
 TARGET_OBJECTS	:=	$(patsubst $(PROJECT_PATH)%, $(TARGET_PATH)%, $(TARGET_OBJECTS))
 TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)
@@ -30,7 +31,7 @@ all: $(TARGET_OBJECTS) $(TARGET)
 
 $(TARGET):	$(TARGET_OBJECTS)
 	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET) 
-	#-L $(TOOLCHAIN_PATH)/lib -v -P -L $(TOOLCHAIN_PATH)/lib/gcc/x86_64-elf/10.2.0  #-nodefaultlibs 
+	#-Wl,--verbose
 	$(call BUILD_LOG,[LD]     )
 
 -include $(TARGET_DEPS)
