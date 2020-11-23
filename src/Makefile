@@ -22,6 +22,7 @@ TARGET_OBJECTS :=
 
 sinclude $(PROJECT_PATH)/src/machine/Makefile
 sinclude $(PROJECT_PATH)/src/emulator/Makefile
+sinclude $(PROJECT_PATH)/src/isa/Makefile
 
 TARGET_OBJECTS	:=	$(patsubst $(PROJECT_PATH)%, $(TARGET_PATH)%, $(TARGET_OBJECTS))
 TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)

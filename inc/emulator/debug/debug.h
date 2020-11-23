@@ -7,11 +7,7 @@
 **
 \******************************************************************************/
 
-#ifndef _CONFIG_H_
-# define _CONFIG_H_
+#ifndef _EMULATOR_DEBUG_H_
+# define _EMULATOR_DEBUG_H_
 
-# define CONFIG_INITLEVEL 0x4
-
-# define DEBUG_STATE_MASTER false
-
-#endif /* !_CONFIG_H_ */
+#endif /* !_EMULATOR_DEBUG_H_ */

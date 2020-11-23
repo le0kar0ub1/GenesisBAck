@@ -9,4 +9,6 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-sinclude $(local)/gba/Makefile
+sinclude $(local)/exec/Makefile		\
+		 $(local)/fetch/Makefile	\
+		 $(local)/route/Makefile	\

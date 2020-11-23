@@ -7,8 +7,6 @@
 \*****************************************************************************/
 
 # include "genesisback.h"
-# include "init/initcalls.h"
-# include "init/inithooks.h"
 
 int main(void)
 {

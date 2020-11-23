@@ -9,4 +9,4 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-sinclude $(local)/gba/Makefile
+sinclude $(local)/arvm7/Makefile

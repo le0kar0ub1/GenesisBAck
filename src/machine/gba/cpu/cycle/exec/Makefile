@@ -9,4 +9,5 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-sinclude $(local)/gba/Makefile
+TARGET_OBJECTS	+= $(addprefix $(local),		\
+					)

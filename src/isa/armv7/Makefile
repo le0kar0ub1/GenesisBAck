@@ -8,5 +8,3 @@
 ###############################################################################
 
 local = $(CALLED_LOCAL_DIRECTORY)
-
-sinclude $(local)/gba/Makefile
