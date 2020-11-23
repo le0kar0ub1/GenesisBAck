@@ -1,4 +1,4 @@
-/******************************************************************************\
+/********************************************************************************
 **
 **  This file is part of the GenesisBack project, and is made available under
 **  the terms of the GNU General Public License version 3.
@@ -7,11 +7,13 @@
 **
 \******************************************************************************/
 
-#ifndef _CONFIG_H_
-# define _CONFIG_H_
+# include "init/inithooks.h"
+# include "init/initcalls.h"
 
-# define CONFIG_INITLEVEL 0x4
+static void inithook_last(void)
+{
 
-# define DEBUG_MASTER false
+}
 
-#endif /* !_CONFIG_H_ */
+REGISTER_LAST_INITHOOK(inithook_last);
+REGISTER_LAST_INITCALL(inithook_last);

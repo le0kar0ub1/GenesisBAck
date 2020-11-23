@@ -30,8 +30,7 @@ TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)
 all: $(TARGET_OBJECTS) $(TARGET)
 
 $(TARGET):	$(TARGET_OBJECTS)
-	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET) 
-	#-Wl,--verbose
+	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET)
 	$(call BUILD_LOG,[LD]     )
 
 -include $(TARGET_DEPS)

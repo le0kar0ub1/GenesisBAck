@@ -41,7 +41,4 @@ void run_inithooks_bylevel(void)
 #if CONFIG_INITLEVEL > 3
     INITHOOK_LEVEL(4)
 #endif
-#if CONFIG_INITLEVEL > 4
-    INITHOOK_LEVEL(5)
-#endif
 }

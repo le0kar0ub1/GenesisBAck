@@ -9,8 +9,10 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-TARGET_OBJECTS	+= $(addprefix $(local),	\
-						main.o				\
+TARGET_OBJECTS	+= $(addprefix $(local),		\
+						bootstrap.o				\
+						core.o					\
+						postcore.o				\
+						soc.o					\
+						last.o					\
 					)
-
-sinclude $(local)/hooks/Makefile

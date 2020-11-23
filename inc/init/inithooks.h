@@ -12,6 +12,15 @@
 
 typedef void (*inithook_t)(void);
 
+enum inithooks {
+    INITHOOK_BOOTSTRAP = 0,
+    INITHOOK_CORE = 1,
+    INITHOOK_POSTCORE = 2,
+    INITHOOK_SOC = 3,
+    INITHOOK_LAST = 4,
+    INITHOOK_MAX = 4
+};
+
 # define __define_inithook(level, fn, id) \
     static const inithook_t __inithook_##fn##id \
     __attribute__((__used__, __section__("inithook" level))) = fn

@@ -37,34 +37,35 @@ export TARGET_BASE_PATH	:=	$(PROJECT_PATH)/target
 export TARGET	:=	$(PROJECT)-$(VERSION).$(EXTENSION_BIN)
 
 # Cleaner as possible
-export CCFLAGS	=	-I $(PROJECT_PATH)/inc				\
-					-Wall								\
-					-MD									\
-					-Wcast-align					    \
-					-Wextra				 				\
-					-Wnested-externs					\
-					-Winline							\
-					-Wpragmas							\
-					-std=gnu11							\
-					-Wuninitialized						\
-					-Wno-missing-braces					\
-					-Wcast-align						\
-					-Wwrite-strings						\
-					-Wparentheses						\
-					-Wunreachable-code					\
-					-Wno-unused							\
-					-Wmissing-field-initializers		\
-					-Wswitch-enum						\
-					-Wshadow				 			\
-					-Wuninitialized				 		\
-					-Wmissing-declarations				\
-					-Wmissing-prototypes				\
-					-Wstrict-prototypes					\
-					-Wpointer-arith						\
-					-fms-extensions 					\
-					-fno-tree-loop-vectorize 			\
-					-fno-tree-slp-vectorize				\
-					-Wno-override-init					\
+export CCFLAGS	=	-I $(PROJECT_PATH)/inc						\
+					-Wall										\
+					-MD											\
+					-Wcast-align					    		\
+					-Wextra				 						\
+					-Wnested-externs							\
+					-Winline									\
+					-Wpragmas									\
+					-std=gnu11									\
+					-Wuninitialized								\
+					-Wno-missing-braces							\
+					-Wcast-align								\
+					-Wwrite-strings								\
+					-Wparentheses								\
+					-Wunreachable-code							\
+					-Wno-unused									\
+					-Wmissing-field-initializers				\
+					-Wswitch-enum								\
+					-Wshadow				 					\
+					-Wuninitialized				 				\
+					-Wmissing-declarations						\
+					-Wmissing-prototypes						\
+					-Wstrict-prototypes							\
+					-Wpointer-arith								\
+					-fms-extensions 							\
+					-fno-tree-loop-vectorize 					\
+					-fno-tree-slp-vectorize						\
+					-Wno-override-init							\
+					-imacros $(PROJECT_PATH)/inc/config.h		\
 
 # Some macros
 CCFLAGS			+=	-D PROJECT=$(PROJECT)							\
@@ -72,7 +73,7 @@ CCFLAGS			+=	-D PROJECT=$(PROJECT)							\
 					-D PROJECT_VERSION=$(VERSION)					\
 					-D ARCH=$(ARCH)									\
 
-export LDFLAGS	:=
+export LDFLAGS	:=	
 
 # Output color
 export Red			:= \e[0;31m
