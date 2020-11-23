@@ -25,7 +25,7 @@ struct memory_area
 };
 
 # define REGISTER_IO_MEM(mname, mstart, mend, mflag)                     \
-    __aligned(sizeof(void *)) __used __section(".genesisback_io_mem")    \
+    __aligned(sizeof(void *)) __used __section("genesisback_io_mem")     \
     static const struct memory_area mname = {                            \
         .name  = #mname,                                                 \
         .start = mstart,                                                 \

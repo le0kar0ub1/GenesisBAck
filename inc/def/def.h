@@ -90,7 +90,7 @@ struct genesisback_data {
 } __packed;
 
 # define REGISTER_GENESISBACK_DATA(xname, xdata, xdatasize)         \
-    __section(".genesisback") __used                                \
+    __section("genesisback_dat") __used                             \
     static const struct genesisback_data const xname = {            \
         .blksize = sizeof(#xname) + sizeof(void *) + xdatasize,     \
         .datasize = xdatasize,                                      \
@@ -101,6 +101,7 @@ struct genesisback_data {
 # define ADD_PTR(x, y) ((typeof(x))((uintptr_t)x + (uintptr_t)y))
 # define SUB_PTR(x, y) ((typeof(x))((uintptr_t)x - (uintptr_t)y))
 
-# define ABS(x) (x < 0 ? x * -1 : x)
+# define CLEAR_BIT(val, bit) (val & ~(1 << bit))
+# define SET_BIT(val, bit)   (val | (1 << bit))
 
 #endif /* !_GENESISBACK_DEF_H_ */

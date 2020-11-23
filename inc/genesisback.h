@@ -11,10 +11,11 @@
 # define _GENESISBACK_H_
 
 # include "def/def.h"
-# include "def/bitfield.h"
 # include "def/access.h"
 # include "def/status.h"
 # include "def/generator.h"
 # include "def/assert.h"
+
+void __noreturn panic(char const *fmt, ...);
 
 #endif /* !_GENESISBACK_H_ */

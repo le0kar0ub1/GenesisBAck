@@ -11,6 +11,7 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),	\
 						main.o				\
+						panic.o				\
 					)
 
 sinclude $(local)/hooks/Makefile

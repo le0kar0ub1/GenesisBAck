@@ -21,7 +21,7 @@ struct io_port {
 };
 
 # define REGISTER_IO_PORT(pname, vport)                                 \
-    __aligned(sizeof(void *)) __used __section(".genesisback_io_port")  \
+    __aligned(sizeof(void *)) __used __section("genesisback_io_port")   \
     static struct io_port pname = {                   	  		        \
         .name = #pname,                                                 \
         .port = vport                                                   \
