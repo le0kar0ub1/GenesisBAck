@@ -10,4 +10,16 @@
 #ifndef _EMULATOR_DEBUG_H_
 # define _EMULATOR_DEBUG_H_
 
+/* Define a new HERITED debug state
+
+#ifndef DEBUG_STATE_SLAVE
+    # define DEBUG_STATE_SLAVE DEBUG_STATE_MASTER
+#endif 
+
+# define assert_debug_slave(expr)
+    #if DEBUG_STATE_SLAVE == true
+        assert(expr)
+    #endif
+*/
+
 #endif /* !_EMULATOR_DEBUG_H_ */

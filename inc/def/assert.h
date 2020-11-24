@@ -30,7 +30,7 @@
 
 # define assert_isok(expr) assert((status_t)expr == OK)
 
-# define assert_debug(expr)
+# define assert_debug_master(expr)
     #if DEBUG_MASTER == true
         assert(expr)
     #endif
