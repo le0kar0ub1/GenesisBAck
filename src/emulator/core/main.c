@@ -8,6 +8,10 @@
 
 # include "genesisback.h"
 
+/**
+ * Program entry point
+ * Obviously the emulator take the flow firstly for initializing the targeted machine
+ */
 int main(void)
 {
 	return (0);

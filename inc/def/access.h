@@ -10,10 +10,9 @@
 #ifndef _DEF_ACCESS_H_
 # define _DEF_ACCESS_H_
 
-/*
-** Access privilege flags, usable everywhere
+/**
+ * Access privilege flags, usable everywhere
 */
-
 enum access_flag
 {
     Nop = 0b0000,

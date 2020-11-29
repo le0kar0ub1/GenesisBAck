@@ -34,3 +34,6 @@ run: all
 
 disassemble:
 	@blabla-objdump --target=binary --architecture=armv7 -D myfile.gba
+
+doc:
+	doxygen doc/doxygen.cfg

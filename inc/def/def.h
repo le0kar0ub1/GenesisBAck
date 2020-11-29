@@ -14,8 +14,8 @@
 # include <stddef.h>
 # include <stdbool.h>
 
-/*
-** types shortcuts
+/**
+ * Types shortcuts
 */
 typedef unsigned char       uchar;
 typedef unsigned short      ushort;
@@ -53,8 +53,8 @@ typedef uintptr_t       physaddr_t;
 typedef uintptr         archv_t;
 typedef uintptr *       archp_t;
 
-/*
-** c11 keyword shortcuts
+/**
+ * Keyword shortcuts
 */
 # define restrict        __restrict
 # define __pure          __attribute__((pure))
@@ -74,13 +74,13 @@ typedef uintptr *       archp_t;
 # define likely(x)       __builtin_expect((x), 1)
 # define unlikely(x)     __builtin_expect((x), 0)
 
-/*
-** align and keep given type 
+/**
+ * align and keep given type 
 */
 # define ALIGN(x, y)     ((typeof(x))(((uintptr)(x) + ((y) - 1)) & ~((y) - 1)))
 
-/*
-** Generate the following data in genesisback section 
+/**
+ * Generate the following data in genesisback section 
 */
 struct genesisback_data {
     u32_t blksize;

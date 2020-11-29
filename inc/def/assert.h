@@ -12,12 +12,18 @@
 
 # include "genesisback.h"
 
+/**
+ * Builtin Static assert, preprocessor check
+ */
 # define static_assert(expr)                             \
     _Static_assert(                                      \
         expr,                                            \
         "assert(" #expr ") failed (file: " __FILE__ ")"  \
     )
 
+/**
+ * Builtin Dynamic assert, panic if failed
+ */
 # define assert(expr)                                           \
     if (unlikely(!(expr))) {                                    \
             panic(                                              \
@@ -30,6 +36,9 @@
 
 # define assert_isok(expr) assert((status_t)expr == OK)
 
+/**
+ * Dynamic debug assert, panic if failed AND in debug mode
+ */
 # define assert_debug_master(expr)
     #if DEBUG_MASTER == true
         assert(expr)

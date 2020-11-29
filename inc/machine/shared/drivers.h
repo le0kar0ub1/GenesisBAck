@@ -10,6 +10,9 @@
 #ifndef _GENESISBACK_DRIVERS_H_
 # define _GENESISBACK_DRIVERS_H_
 
+/**
+ * A driver staticaly registered with basics handlers
+ */
 struct driver
 {
     char const *name;

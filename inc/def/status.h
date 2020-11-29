@@ -12,8 +12,8 @@
 
 # include "def/assert.h"
 
-/*
-** GenesisBack status
+/**
+ * GenesisBack status
 */
 typedef enum status {
     OK = 0,
@@ -21,59 +21,58 @@ typedef enum status {
     ERR_FATAL,
 } status_t;
 
-/*
-** A bad result implementation.
+/**
+ * A bad result implementation.
 */
 typedef uint64_t any64_t;
-
 typedef struct result
 {
     status_t status;
     any64_t  result;
 } __packed result_t;
 
-/*
-** Is the result an ERR
+/**
+* Is the result an ERR
 */
 # define RESULT_IS_ERR(x)       \
             (x.status != OK)
 
-/*
-** Is the result an OK
+/**
+* Is the result an OK
 */
 # define RESULT_IS_OK(x)        \
             !(STATUS_IS_ERR(x))
 
-/*
-** Get the result
+/**
+* Get the result
 */
 
 # define RESULT_ERR(x)  \
             (x.status)
 
-/*
-** Unwrap the result
+/**
+* Unwrap the result
 */
 # define RESULT_OK(res, type)   \
             (type)(res.result)
 
-/*
-** Propagate if ERR
+/**
+* Propagate if ERR
 */
 # define RAISE_IF(tgt, res)          \
             if (RESULT_IS_ERR(res))  \
                 return (res)
 
-/*
-** Unwrap if OK or propagate if ERR
+/**
+* Unwrap if OK or propagate if ERR
 */
 # define UNWRAP_OR_RAISE(tgt, res)              \
             if (RESULT_IS_ERR(res))             \
                 return (res);                   \
             tgt = RESULT_OK(res, typeof(tgt));
 
-/*
-** Return OK as a result
+/**
+* Return OK as a result
 */
 # define OK_PROPAGATION(res)            \
             return (                    \
@@ -83,8 +82,8 @@ typedef struct result
                 }                       \
             )
 
-/*
-** Return the given ERR as a result 
+/**
+* Return the given ERR as a result 
 */
 # define ERR_PROPAGATION(err)           \
             return (                    \

@@ -14,7 +14,7 @@
 # include "def/access.h"
 
 /*
-** A memory area
+ * A registered memory area
 */
 struct memory_area
 {

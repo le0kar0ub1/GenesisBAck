@@ -3,6 +3,7 @@
 res
 target
 mktoolchain/toolchain
+doc/doxygen
 
 # Object files
 *.o
