@@ -11,6 +11,13 @@
 # include <stdarg.h>
 # include <stdlib.h>
 
+/**
+ * \brief Back to basic, panic function
+ *
+ * Inspired by kernel development, no return from here
+ *
+ * TODO: A reset for the machine and/or a dump debug
+ */
 void __noreturn panic(char const *fmt, ...)
 {
     va_list ap;

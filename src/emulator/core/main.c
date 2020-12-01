@@ -10,7 +10,7 @@
 
 /**
  * Program entry point
- * Obviously the emulator take the flow firstly for initializing the targeted machine
+ * Obviously the emulator take the flow firstly to initialize the targeted machine
  */
 int main(void)
 {

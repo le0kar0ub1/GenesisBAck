@@ -10,4 +10,4 @@
 #ifndef _MACHINE_GBA_H_
 # define _MACHINE_GBA_H_
 
-#endif _MACHINE_GBA_H_
+#endif /* _MACHINE_GBA_H_ */
