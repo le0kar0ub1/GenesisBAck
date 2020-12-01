@@ -20,9 +20,16 @@ endif
 
 TARGET_OBJECTS :=
 
+ifeq ($(tgt),all)
 sinclude $(PROJECT_PATH)/src/machine/Makefile
 sinclude $(PROJECT_PATH)/src/emulator/Makefile
 sinclude $(PROJECT_PATH)/src/isa/Makefile
+else
+ifeq ($(shell test -e $(PROJECT_PATH)/src/$(tgt)/main.c && echo -n found),found)
+sinclude $(PROJECT_PATH)/src/$(tgt)/Makefile
+TARGET_OBJECTS += $(PROJECT_PATH)/src/$(tgt)/main.o
+endif
+endif
 
 TARGET_OBJECTS	:=	$(patsubst $(PROJECT_PATH)%, $(TARGET_PATH)%, $(TARGET_OBJECTS))
 TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)

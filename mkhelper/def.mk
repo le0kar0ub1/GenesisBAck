@@ -14,8 +14,8 @@ export PROJECT_PATH	:= $(realpath .)
 export ARCH ?= $(shell $(CC) -dumpmachine | cut -d '-' -f 1)
 
 # Build mode
-tgt ?= debug
-BUILD_MODE = $(tgt)
+mode ?= debug
+BUILD_MODE = $(mode)
 
 # Make verbosity
 MAKEFLAGS += --no-print-directory --silent

@@ -13,7 +13,7 @@ sinclude mkhelper/toolchain.mk
 
 .PHONY: all
 all: toolchain
-	$(MAKE) -C src
+	$(MAKE) -C src tgt=all
 
 .PHONY: toolchain
 toolchain:
@@ -33,7 +33,11 @@ run: all
 	@$(TARGET_BASE_PATH)/debug/$(TARGET)
 
 disassemble:
-	@blabla-objdump --target=binary --architecture=armv7 -D myfile.gba
+	@$(TOOLCHAIN_PATH)/bin/arm-tdmi-eabi-objdump --target=binary --architecture=armv7 -D myfile.gba
+
+# Allow subdir targeted build - dev only
+build:
+	$(MAKE) -C src tgt=$(tgt)
 
 doc:
 	doxygen doc/doxygen.cfg
