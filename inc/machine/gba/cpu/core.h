@@ -11,6 +11,7 @@
 # define _MACHINE_GBA_ARM7TDMI_CORE_H_
 
 # include "genesisback.h"
+#include <bits/stdint-uintn.h>
 # include <stdint.h>
 # include "machine/gba/gba.h"
 # include "machine/shared/cpu.h"
@@ -41,6 +42,30 @@ enum {
     PROCESSOR_OPERATION_MODE_ABORT = 4, 
     PROCESSOR_OPERATION_MODE_SYSTEM = 5,
     PROCESSOR_OPERATION_MODE_UNDEFINED = 6
+};
+
+/**
+ * CPSR register articulation
+ */
+struct arm7tdmi_psr
+{
+    union
+    {
+        struct
+        {
+            uint32_t opmode          : 5;
+            uint32_t state           : 1;
+            uint32_t fiq_disable     : 1;
+            uint32_t irq_disable     : 1;
+            uint32_t _reserved       : 19;
+            uint32_t sticky_overflow : 1;
+            uint32_t overflow_flg    : 1;
+            uint32_t carry_flg       : 1;
+            uint32_t zero_flg        : 1;
+            uint32_t sign_flg        : 1;
+        };
+        uint32_t val;
+    };
 };
 
 /**
@@ -97,19 +122,19 @@ struct arm7tdmi
     struct register32 r15;
 
     /* Controls registers */
-    struct register32 cpsr;
+    struct arm7tdmi_psr cpsr;
 
-    struct register32 spsr_fiq;
-    struct register32 spsr_svc;
-    struct register32 spsr_abt;
-    struct register32 spsr_irq;
-    struct register32 spsr_und;
+    struct arm7tdmi_psr spsr_fiq;
+    struct arm7tdmi_psr spsr_svc;
+    struct arm7tdmi_psr spsr_abt;
+    struct arm7tdmi_psr spsr_irq;
+    struct arm7tdmi_psr spsr_und;
 };
 
 /**
  * Will be staticaly declared for each mode and will refered to the godd register in the arm7dmi global
  */
-struct arm7tdmi_tgtmode
+struct arm7tdmi_opmode
 {
     struct register32 *r0;
     struct register32 *r1;
@@ -128,8 +153,8 @@ struct arm7tdmi_tgtmode
     struct register32 *r14;
     struct register32 *r15;
 
-    struct register32 *cpsr;
-    struct register32 *spsr;
+    struct arm7tdmi_psr *cpsr;
+    struct arm7tdmi_psr *spsr;
 };
 
 #endif /* _MACHINE_GBA_ARM7TDMI_CORE_H_ */

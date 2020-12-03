@@ -14,4 +14,6 @@
 
 # define DEBUG_STATE_MASTER false
 
+# define VERBOSE_RUN
+
 #endif /* !_CONFIG_H_ */
