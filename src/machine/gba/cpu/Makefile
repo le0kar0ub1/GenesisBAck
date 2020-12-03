@@ -9,5 +9,8 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
+# sinclude $(local)/cycle/Makefile
+
 TARGET_OBJECTS	+= $(addprefix $(local),		\
+						core.o					\
 					)
