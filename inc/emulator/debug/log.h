@@ -20,9 +20,15 @@
 # define LOG_ERR(component, ...) LOG(component, "\x1B[31m", __VA_ARGS__)
 
 #ifdef VERBOSE_RUN
-    # define VERBOSE_LOG(component, ...)  LOG_INF(component, __VA_ARGS__)
+    # define LOG_VERBOSE(component, ...) LOG_INF(component, __VA_ARGS__)
 #else
-    # define VERBOSE_LOG(component, ...)
+    # define LOG_VERBOSE(component, ...)
+#endif
+
+#ifdef DEBUG_STATE_MASTER
+    # define LOG_DEBUG(component, ...) LOG_INF(component, __VA_ARGS__)
+#else
+    # define LOG_DEBUG(component, ...)
 #endif
 
 #endif /* _EMULATOR_DEBUG_LOG_H_ */

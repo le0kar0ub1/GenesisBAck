@@ -11,7 +11,6 @@
 # define _MACHINE_SHARED_CPU_H_
 
 # include "genesisback.h"
-# include <stdint.h>
 
 /**
  * A basic wide 32 bits register
@@ -36,6 +35,8 @@ struct register32
         uint32_t r32;
     };
 };
+
+static_assert(sizeof(struct register32) == 4);
 
 /**
  * A basic wide 64 bits register
@@ -68,5 +69,7 @@ struct register64
         uint64_t r64;
     };
 };
+
+static_assert(sizeof(struct register64) == 8);
 
 #endif /* _MACHINE_SHARED_CPU_H_ */

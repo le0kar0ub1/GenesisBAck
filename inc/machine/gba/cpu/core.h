@@ -11,7 +11,6 @@
 # define _MACHINE_GBA_ARM7TDMI_CORE_H_
 
 # include "genesisback.h"
-#include <bits/stdint-uintn.h>
 # include <stdint.h>
 # include "machine/gba/gba.h"
 # include "machine/shared/cpu.h"
@@ -27,21 +26,21 @@ typedef uint32_t  word_t;
  * Define the 2 processor states
  */
 enum {
-    PROCESSOR_STATE_ARM,
-    PROCESSOR_STATE_THUMB
+    PROCESSOR_STATE_ARM   = 0b0,
+    PROCESSOR_STATE_THUMB = 0b1
 };
 
 /**
  * Define the 7 operations modes of the processor
  */
 enum {
-    PROCESSOR_OPERATION_MODE_USER = 0,
-    PROCESSOR_OPERATION_MODE_FIQ = 1,
-    PROCESSOR_OPERATION_MODE_IRQ = 2, 
-    PROCESSOR_OPERATION_MODE_SUPERVISOR = 3,
-    PROCESSOR_OPERATION_MODE_ABORT = 4, 
-    PROCESSOR_OPERATION_MODE_SYSTEM = 5,
-    PROCESSOR_OPERATION_MODE_UNDEFINED = 6
+    PROCESSOR_OPERATION_MODE_USER       = 0b10000,
+    PROCESSOR_OPERATION_MODE_FIQ        = 0b10001,
+    PROCESSOR_OPERATION_MODE_IRQ        = 0b10010, 
+    PROCESSOR_OPERATION_MODE_SUPERVISOR = 0b10011,
+    PROCESSOR_OPERATION_MODE_ABORT      = 0b10111, 
+    PROCESSOR_OPERATION_MODE_UNDEFINED  = 0b11011,
+    PROCESSOR_OPERATION_MODE_SYSTEM     = 0b11111
 };
 
 /**
@@ -57,8 +56,8 @@ struct arm7tdmi_psr
             uint32_t state           : 1;
             uint32_t fiq_disable     : 1;
             uint32_t irq_disable     : 1;
-            uint32_t _reserved       : 19;
-            uint32_t sticky_overflow : 1;
+            uint32_t _reserved       : 20;
+            // uint32_t sticky_overflow : 1;
             uint32_t overflow_flg    : 1;
             uint32_t carry_flg       : 1;
             uint32_t zero_flg        : 1;
@@ -67,6 +66,25 @@ struct arm7tdmi_psr
         uint32_t val;
     };
 };
+
+static_assert(sizeof(struct arm7tdmi_psr) == 4);
+
+/**
+ * Program counter AKA r15
+ */
+struct arm7tdmi_r15
+{
+    union
+    {
+        struct
+        {
+            uint32_t e;
+        };
+        uint32_t val;
+    };
+};
+
+static_assert(sizeof(struct arm7tdmi_r15) == 4);
 
 /**
  * All processor registers over operation modes
@@ -134,7 +152,7 @@ struct arm7tdmi
 /**
  * Will be staticaly declared for each mode and will refered to the godd register in the arm7dmi global
  */
-struct arm7tdmi_opmode
+struct arm7tdmi_arm_opmode
 {
     struct register32 *r0;
     struct register32 *r1;
@@ -149,8 +167,35 @@ struct arm7tdmi_opmode
     struct register32 *r10;
     struct register32 *r11;
     struct register32 *r12;
+    /* stack pointer */
     struct register32 *r13;
+    /* link register */
     struct register32 *r14;
+    /* program counter */
+    struct register32 *r15;
+
+    struct arm7tdmi_psr *cpsr;
+    struct arm7tdmi_psr *spsr;
+};
+
+/**
+ * Will be staticaly declared for each mode and will refered to the godd register in the arm7dmi global
+ */
+struct arm7tdmi_thumb_opmode
+{
+    struct register32 *r0;
+    struct register32 *r1;
+    struct register32 *r2;
+    struct register32 *r3;
+    struct register32 *r4;
+    struct register32 *r5;
+    struct register32 *r6;
+    struct register32 *r7;
+    /* stack pointer */
+    struct register32 *r13;
+    /* link register */
+    struct register32 *r14;
+    /* program counter */
     struct register32 *r15;
 
     struct arm7tdmi_psr *cpsr;

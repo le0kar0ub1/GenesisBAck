@@ -19,10 +19,15 @@ struct arm7tdmi arm7tdmi;
 uint32_t operation_mode = (uint32_t)PROCESSOR_OPERATION_MODE_UNDEFINED;
 
 /**
- * AR7TDMI user operation mode
+ * Current state
+ */
+uint32_t state = (uint32_t)PROCESSOR_STATE_ARM;
+
+/**
+ * AR7TDMI user operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode usr = {
+static struct arm7tdmi_arm_opmode arm_usr = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -44,10 +49,10 @@ static struct arm7tdmi_opmode usr = {
 };
 
 /**
- * AR7TDMI fiq operation mode
+ * AR7TDMI fiq operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode fiq = {
+static struct arm7tdmi_arm_opmode arm_fiq = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -69,10 +74,10 @@ static struct arm7tdmi_opmode fiq = {
 };
 
 /**
- * AR7TDMI irq operation mode
+ * AR7TDMI irq operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode irq = {
+static struct arm7tdmi_arm_opmode arm_irq = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -94,10 +99,10 @@ static struct arm7tdmi_opmode irq = {
 };
 
 /**
- * AR7TDMI supervisor operation mode
+ * AR7TDMI supervisor operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode svc = {
+static struct arm7tdmi_arm_opmode arm_svc = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -119,10 +124,10 @@ static struct arm7tdmi_opmode svc = {
 };
 
 /**
- * AR7TDMI abort operation mode
+ * AR7TDMI abort operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode abt = {
+static struct arm7tdmi_arm_opmode arm_abt = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -144,10 +149,10 @@ static struct arm7tdmi_opmode abt = {
 };
 
 /**
- * AR7TDMI system operation mode
+ * AR7TDMI system operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode sys = {
+static struct arm7tdmi_arm_opmode arm_sys = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -169,10 +174,10 @@ static struct arm7tdmi_opmode sys = {
 };
 
 /**
- * AR7TDMI undefined operation mode
+ * AR7TDMI undefined operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm7tdmi_opmode und = {
+static struct arm7tdmi_arm_opmode arm_und = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -193,25 +198,168 @@ static struct arm7tdmi_opmode und = {
     .spsr = &arm7tdmi.spsr_und
 };
 
-static struct arm7tdmi_opmode *get_operation_mode_handler(void)
+/**
+ * AR7TDMI user operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_usr = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13,
+    .r14  = &arm7tdmi.r14,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = NULL
+};
+
+/**
+ * AR7TDMI fiq operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_fiq = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13_fiq,
+    .r14  = &arm7tdmi.r14_fiq,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = &arm7tdmi.spsr_fiq
+};
+
+/**
+ * AR7TDMI irq operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_irq = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13_irq,
+    .r14  = &arm7tdmi.r14_irq,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = &arm7tdmi.spsr_irq
+};
+
+/**
+ * AR7TDMI supervisor operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_svc = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13_svc,
+    .r14  = &arm7tdmi.r14_svc,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = &arm7tdmi.spsr_svc
+};
+
+/**
+ * AR7TDMI abort operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_abt = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13_abt,
+    .r14  = &arm7tdmi.r14_abt,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = &arm7tdmi.spsr_abt
+};
+
+/**
+ * AR7TDMI system operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_sys = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13,
+    .r14  = &arm7tdmi.r14,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = NULL
+};
+
+/**
+ * AR7TDMI undefined operation mode and Thumb state
+ * The registers below target the good one in the arm7tdmi mass
+ */
+static struct arm7tdmi_thumb_opmode thumb_und = {
+    .r0   = &arm7tdmi.r0,
+    .r1   = &arm7tdmi.r1,
+    .r2   = &arm7tdmi.r2,
+    .r3   = &arm7tdmi.r3,
+    .r4   = &arm7tdmi.r4,
+    .r5   = &arm7tdmi.r5,
+    .r6   = &arm7tdmi.r6,
+    .r7   = &arm7tdmi.r7,
+    .r13  = &arm7tdmi.r13_und,
+    .r14  = &arm7tdmi.r14_und,
+    .r15  = &arm7tdmi.r15,
+    .cpsr = &arm7tdmi.cpsr,
+    .spsr = &arm7tdmi.spsr_und
+};
+
+
+/*
+static void *get_operation_mode_handler(void)
 {
     switch (operation_mode)
     {
         case PROCESSOR_OPERATION_MODE_USER:
-            return (&usr);
+            return (state == PROCESSOR_STATE_ARM ? &arm_usr : &thumb_usr);
         case PROCESSOR_OPERATION_MODE_FIQ:
-            return (&fiq);
+            return (state == PROCESSOR_STATE_ARM ? &arm_fiq : &thumb_fiq);
         case PROCESSOR_OPERATION_MODE_IRQ:
-            return (&irq);
+            return (state == PROCESSOR_STATE_ARM ? &arm_irq : &thumb_irq);
         case PROCESSOR_OPERATION_MODE_SUPERVISOR:
-            return (&svc);
+            return (state == PROCESSOR_STATE_ARM ? &arm_svc : &thumb_svc);
         case PROCESSOR_OPERATION_MODE_ABORT:
-            return (&abt);
+            return (state == PROCESSOR_STATE_ARM ? &arm_abt : &thumb_abt);
         case PROCESSOR_OPERATION_MODE_SYSTEM:
-            return (&sys);
+            return (state == PROCESSOR_STATE_ARM ? &arm_sys : &thumb_sys);
         case PROCESSOR_OPERATION_MODE_UNDEFINED:
-            return (&und);
+            return (state == PROCESSOR_STATE_ARM ? &arm_und : &thumb_und);
         default:
             panic("[ARM7TDMI]: invalid operation mode");
     }
 }
+*/
