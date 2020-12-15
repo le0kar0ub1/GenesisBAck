@@ -8,7 +8,7 @@ A cross-plateform GBA emulator.
   * `curl`
   * `tar`
 
-## Install
+## Install (Unusable at time)
 
 GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line.
 The dependencies are also checked-up.
@@ -38,18 +38,6 @@ Example:
 ## Run
 
 >   make run
-
-## ROADMAP
-
-- [ ] Cross-compilation
-- [ ] Project Architecture
-- [ ] GBA emulation
-  - [ ] Processor emulation
-    - [ ] ...
-  - [ ] ARMV7 ISA
-    - [ ] Thumb IS
-    - [ ] ARMV7 IS
-- [ ] GBA BIOS
 
 ## Epilogue
 

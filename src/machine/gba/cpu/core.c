@@ -328,24 +328,33 @@ static struct arm7tdmi_thumb_opmode thumb_und = {
     .spsr = &arm7tdmi.spsr_und
 };
 
-
-static uint32_t fetch_processor_state(void)
+uint32_t fetch_processor_state(void)
 {
     return (arm7tdmi.cpsr.state);
 }
 
-static uint32_t fetch_processor_opmode(void)
+uint32_t fetch_processor_opmode(void)
 {
     return (arm7tdmi.cpsr.opmode);
 }
+
+void assign_processor_opmode(uint32_t opmode)
+{
+    arm7tdmi.cpsr.opmode = opmode;
+}
+
+void assign_processor_state(uint32_t state)
+{
+    arm7tdmi.cpsr.state = state;
+}
+
 /**
- * There is no rights consideration, the capcity to R/W must be decided before callign this function.
+ * There is no rights consideration, the capcity to R/W must be decided before this function call.
  */
-static struct register32 *fetch_register_base_ptr(uint32_t id)
+static struct register32 *fetch_register_base_ptr(enum ARM7TDMI_REGISTER id)
 {
     if (id < 8)
         return (((struct register32 **)&arm7tdmi)[id]);
-        
     if (fetch_processor_state() == PROCESSOR_STATE_ARM && id < 16)
     {
         switch (fetch_processor_opmode())
@@ -376,35 +385,36 @@ static struct register32 *fetch_register_base_ptr(uint32_t id)
                 panic("Invalid operation mode");
         }
     }
-    panic("%s: Invalid operation mode", __func__);
+    LOG_DEBUG(__func__, "Register id: %d, state: %d, opmode: %d", id, fetch_processor_state(), fetch_processor_opmode());
+    panic(__func__);
 }
 
-uint8_t fetch_register_base8(uint32_t id)
+uint8_t fetch_register_base8(enum ARM7TDMI_REGISTER id)
 {
     return ((*fetch_register_base_ptr(id)).r8);
 }
 
-uint16_t fetch_register_base16(uint32_t id)
+uint16_t fetch_register_base16(enum ARM7TDMI_REGISTER id)
 {
     return ((*fetch_register_base_ptr(id)).r16);
 }
 
-uint32_t fetch_register_base32(uint32_t id)
+uint32_t fetch_register_base32(enum ARM7TDMI_REGISTER id)
 {
     return ((*fetch_register_base_ptr(id)).r32);
 }
 
-void assign_register_base8(uint32_t id, uint8_t val)
+void assign_register_base8(enum ARM7TDMI_REGISTER id, uint8_t val)
 {
     (*fetch_register_base_ptr(id)).r8 = val;
 }
 
-void assign_register_base16(uint32_t id, uint16_t val)
+void assign_register_base16(enum ARM7TDMI_REGISTER id, uint16_t val)
 {
     (*fetch_register_base_ptr(id)).r16 = val;
 }
 
-void assign_register_base32(uint32_t id, uint32_t val)
+void assign_register_base32(enum ARM7TDMI_REGISTER id, uint32_t val)
 {
     (*fetch_register_base_ptr(id)).r32 = val;
 }

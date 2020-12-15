@@ -42,6 +42,28 @@ enum {
     PROCESSOR_OPERATION_MODE_SYSTEM     = 0b11111
 };
 
+enum ARM7TDMI_REGISTER {
+    R0  = 0,
+    R1  = 1,
+    R2  = 2,
+    R3  = 3,
+    R4  = 4,
+    R5  = 5,
+    R6  = 6,
+    R7  = 7,
+    R8  = 8,
+    R9  = 9,
+    R10 = 10,
+    R11 = 11,
+    R12 = 12,
+    R13 = 13,
+    SP  = 13,
+    R14 = 14,
+    LR  = 14,
+    R15 = 15,
+    PC  = 15
+};
+
 /**
  * CPSR register articulation
  */
@@ -66,7 +88,7 @@ struct arm7tdmi_psr
     };
 };
 
-static_assert(sizeof(struct arm7tdmi_psr) == 4);
+static_assert(sizeof(struct arm7tdmi_psr) == sizeof(uint32_t));
 
 /**
  * Program counter AKA r15
@@ -83,7 +105,7 @@ struct arm7tdmi_r15
     };
 };
 
-static_assert(sizeof(struct arm7tdmi_r15) == 4);
+static_assert(sizeof(struct arm7tdmi_r15) == sizeof(uint32_t));
 
 /**
  * All processor registers over operation modes
@@ -200,6 +222,11 @@ struct arm7tdmi_thumb_opmode
     struct arm7tdmi_psr *cpsr;
     struct arm7tdmi_psr *spsr;
 };
+
+uint32_t fetch_processor_state(void);
+uint32_t fetch_processor_opmode(void);
+void assign_processor_opmode(uint32_t opmode);
+void assign_processor_state(uint32_t state);
 
 uint8_t fetch_register_base8(uint32_t id);
 uint16_t fetch_register_base16(uint32_t id);
