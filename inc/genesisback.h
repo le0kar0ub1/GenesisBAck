@@ -15,6 +15,8 @@
 # include "def/status.h"
 # include "def/generator.h"
 # include "def/assert.h"
+# include "def/debug.h"
+# include "io/log.h"
 
 void __noreturn panic(char const *fmt, ...);
 

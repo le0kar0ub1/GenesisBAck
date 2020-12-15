@@ -14,16 +14,6 @@
 struct arm7tdmi arm7tdmi;
 
 /**
- * Current operation mode
- */
-uint32_t operation_mode = (uint32_t)PROCESSOR_OPERATION_MODE_UNDEFINED;
-
-/**
- * Current state
- */
-uint32_t state = (uint32_t)PROCESSOR_STATE_ARM;
-
-/**
  * AR7TDMI user operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
@@ -339,27 +329,51 @@ static struct arm7tdmi_thumb_opmode thumb_und = {
 };
 
 
-/*
-static void *get_operation_mode_handler(void)
+static uint32_t fetch_processor_state(void)
 {
-    switch (operation_mode)
-    {
-        case PROCESSOR_OPERATION_MODE_USER:
-            return (state == PROCESSOR_STATE_ARM ? &arm_usr : &thumb_usr);
-        case PROCESSOR_OPERATION_MODE_FIQ:
-            return (state == PROCESSOR_STATE_ARM ? &arm_fiq : &thumb_fiq);
-        case PROCESSOR_OPERATION_MODE_IRQ:
-            return (state == PROCESSOR_STATE_ARM ? &arm_irq : &thumb_irq);
-        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
-            return (state == PROCESSOR_STATE_ARM ? &arm_svc : &thumb_svc);
-        case PROCESSOR_OPERATION_MODE_ABORT:
-            return (state == PROCESSOR_STATE_ARM ? &arm_abt : &thumb_abt);
-        case PROCESSOR_OPERATION_MODE_SYSTEM:
-            return (state == PROCESSOR_STATE_ARM ? &arm_sys : &thumb_sys);
-        case PROCESSOR_OPERATION_MODE_UNDEFINED:
-            return (state == PROCESSOR_STATE_ARM ? &arm_und : &thumb_und);
-        default:
-            panic("[ARM7TDMI]: invalid operation mode");
-    }
+    return (arm7tdmi.cpsr.state);
 }
-*/
+
+static uint32_t fetch_processor_opmode(void)
+{
+    return (arm7tdmi.cpsr.opmode);
+}
+/**
+ * There is no rights consideration, the capcity to R/W must be decided before callign this function.
+ */
+static struct register32 *fetch_register_base_ptr(uint32_t id)
+{
+    if (id < 8)
+        return (((struct register32 **)&arm7tdmi)[id]);
+        
+    if (fetch_processor_state() == PROCESSOR_STATE_ARM && id < 16)
+    {
+        switch (fetch_processor_opmode())
+        {
+            case PROCESSOR_OPERATION_MODE_USER:
+                return (((struct register32 **)&arm_usr)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_FIQ:
+                return (((struct register32 **)&arm_fiq)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_IRQ:
+                return (((struct register32 **)&arm_irq)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+                return (((struct register32 **)&arm_svc)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_ABORT:
+                return (((struct register32 **)&arm_abt)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_SYSTEM:
+                return (((struct register32 **)&arm_sys)[id]);
+                break;
+            case PROCESSOR_OPERATION_MODE_UNDEFINED:
+                return (((struct register32 **)&arm_und)[id]);
+                break;
+            default:
+                LOG_ERR(register_fetch, "Invalid operation mode");
+        }
+    }
+    return (NULL);
+}

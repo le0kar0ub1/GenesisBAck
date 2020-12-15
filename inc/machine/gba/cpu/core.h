@@ -11,7 +11,6 @@
 # define _MACHINE_GBA_ARM7TDMI_CORE_H_
 
 # include "genesisback.h"
-# include <stdint.h>
 # include "machine/gba/gba.h"
 # include "machine/shared/cpu.h"
 
