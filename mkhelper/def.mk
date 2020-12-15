@@ -13,12 +13,12 @@ export PROJECT_PATH	:= $(realpath .)
 # Target architecture
 export ARCH ?= $(shell $(CC) -dumpmachine | cut -d '-' -f 1)
 
-# Build mode
-mode ?= debug
-BUILD_MODE = $(mode)
+# Build config
+cfg ?= debug
+export BUILD_MODE = $(cfg)
 
 # Make verbosity
-MAKEFLAGS += --no-print-directory --silent
+export MAKEFLAGS += --no-print-directory --silent
 
 # File extension norm
 export EXTENSION_BIN	:=	bin
@@ -68,7 +68,7 @@ export CCFLAGS	=	-I $(PROJECT_PATH)/inc						\
 					-imacros $(PROJECT_PATH)/inc/config.h		\
 
 # Some macros
-CCFLAGS			+=	-D PROJECT=$(PROJECT)							\
+export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D COMPILER_VERSION=$(shell $(CC) -dumpversion)	\
 					-D PROJECT_VERSION=$(VERSION)					\
 					-D ARCH=$(ARCH)									\

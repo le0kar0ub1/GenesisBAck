@@ -12,7 +12,7 @@
 
 static void inithook_soc(void)
 {
-
+    run_initcall_level(3);
 }
 
 REGISTER_SOC_INITHOOK(inithook_soc);

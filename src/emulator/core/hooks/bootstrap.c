@@ -12,7 +12,7 @@
 
 static void inithook_bootstrap(void)
 {
-
+    run_initcall_level(0);
 }
 
 REGISTER_BOOTSTRAP_INITHOOK(inithook_bootstrap);

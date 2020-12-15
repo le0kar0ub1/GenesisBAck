@@ -150,7 +150,7 @@ struct arm7tdmi
 };
 
 /**
- * Will be staticaly declared for each mode and will refered to the godd register in the arm7dmi global
+ * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
  */
 struct arm7tdmi_arm_opmode
 {
@@ -179,7 +179,7 @@ struct arm7tdmi_arm_opmode
 };
 
 /**
- * Will be staticaly declared for each mode and will refered to the godd register in the arm7dmi global
+ * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
  */
 struct arm7tdmi_thumb_opmode
 {

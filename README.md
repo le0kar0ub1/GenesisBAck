@@ -21,17 +21,19 @@ Defaulting to the host architecture if unset.
 
 Build all
 
->   make [mode={debug|release}]
+>   make [cfg={debug|release}]
 
 Build a part of the project, the main must be contained in the given driectory.
 
->   make tgt=directory [mode={debug|release}]
+>   make build tgt=directory [cfg={debug|release}]
 
 directory is given without `src` prefix. 
 
+defaulting to `debug` if unset.
+
 Example:
 
->   make tgt=emulator/core
+>   make build tgt=emulator/core
 
 ## Run
 

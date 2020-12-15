@@ -8,7 +8,6 @@
 
 # include "genesisback.h"
 # include "machine/gba/cpu/core.h"
-# include "emulator/debug/log.h"
 
 /**
  * Program entry point

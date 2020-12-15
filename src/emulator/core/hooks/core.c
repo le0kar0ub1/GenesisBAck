@@ -12,7 +12,7 @@
 
 static void inithook_core(void)
 {
-
+    run_initcall_level(1);
 }
 
 REGISTER_CORE_INITHOOK(inithook_core);
