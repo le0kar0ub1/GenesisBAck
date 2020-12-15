@@ -33,7 +33,7 @@ enum EXCEPTION_VECTOR
 
 struct cpu_exception_vector_trait
 {
-    uint32_t address;    // vectoro address
+    uint32_t address;    // vector address
     uint32_t priority;   // priority compared to others ones
     uint32_t opmode;     // operation mode while taking the given exception
     bool is_irq_disable; // 1 if the flag irq_disable must be set to 1, no action else 

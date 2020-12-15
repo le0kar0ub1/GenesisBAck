@@ -9,7 +9,7 @@
 # include  "machine/gba/cpu/core.h"
 
 /**
- * The totality of the ar7dmi registers
+ * The totality of the ar7tdmi registers
  */
 struct arm7tdmi arm7tdmi;
 
@@ -372,8 +372,99 @@ static struct register32 *fetch_register_base_ptr(uint32_t id)
                 return (((struct register32 **)&arm_und)[id]);
                 break;
             default:
-                LOG_ERR(register_fetch, "Invalid operation mode");
+                LOG_ERR(__func__, "Invalid operation mode");
+                panic("Invalid operation mode");
         }
     }
-    return (NULL);
+    panic("%s: Invalid operation mode", __func__);
+}
+
+uint8_t fetch_register_base8(uint32_t id)
+{
+    return ((*fetch_register_base_ptr(id)).r8);
+}
+
+uint16_t fetch_register_base16(uint32_t id)
+{
+    return ((*fetch_register_base_ptr(id)).r16);
+}
+
+uint32_t fetch_register_base32(uint32_t id)
+{
+    return ((*fetch_register_base_ptr(id)).r32);
+}
+
+void assign_register_base8(uint32_t id, uint8_t val)
+{
+    (*fetch_register_base_ptr(id)).r8 = val;
+}
+
+void assign_register_base16(uint32_t id, uint16_t val)
+{
+    (*fetch_register_base_ptr(id)).r16 = val;
+}
+
+void assign_register_base32(uint32_t id, uint32_t val)
+{
+    (*fetch_register_base_ptr(id)).r32 = val;
+}
+
+struct arm7tdmi_psr fetch_register_cpsr(void)
+{
+    return (arm7tdmi.cpsr);
+}
+
+struct arm7tdmi_psr fetch_register_spsr(void)
+{
+    switch (fetch_processor_opmode())
+    {
+        case PROCESSOR_OPERATION_MODE_FIQ:
+            return (*arm_usr.spsr);
+            break;
+        case PROCESSOR_OPERATION_MODE_IRQ:
+            return (*arm_irq.spsr);
+            break;
+        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+            return (*arm_svc.spsr);
+            break;
+        case PROCESSOR_OPERATION_MODE_ABORT:
+            return (*arm_abt.spsr);
+            break;
+        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+            return (*arm_und.spsr);
+            break;
+        default:
+            LOG_ERR(__func__, "Invalid operation mode");
+            panic("Invalid operation mode");
+    }
+}
+
+void assign_register_cpsr(struct arm7tdmi_psr cpsr)
+{
+    arm7tdmi.cpsr = cpsr;
+}
+
+void assign_register_spsr(struct arm7tdmi_psr spsr)
+{
+    switch (fetch_processor_opmode())
+    {
+        case PROCESSOR_OPERATION_MODE_FIQ:
+            *arm_usr.spsr = spsr;
+            break;
+        case PROCESSOR_OPERATION_MODE_IRQ:
+            *arm_irq.spsr = spsr;
+            break;
+        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+            *arm_svc.spsr = spsr;
+            break;
+        case PROCESSOR_OPERATION_MODE_ABORT:
+            *arm_abt.spsr = spsr;
+            break;
+        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+            *arm_und.spsr = spsr;
+            break;
+        default:
+            LOG_ERR(__func__, "Invalid operation mode");
+            panic("Invalid operation mode");
+    }
 }

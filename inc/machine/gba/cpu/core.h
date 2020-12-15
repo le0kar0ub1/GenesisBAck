@@ -201,4 +201,15 @@ struct arm7tdmi_thumb_opmode
     struct arm7tdmi_psr *spsr;
 };
 
+uint8_t fetch_register_base8(uint32_t id);
+uint16_t fetch_register_base16(uint32_t id);
+uint32_t fetch_register_base32(uint32_t id);
+void assign_register_base8(uint32_t id, uint8_t val);
+void assign_register_base16(uint32_t id, uint16_t val);
+void assign_register_base32(uint32_t id, uint32_t val);
+struct arm7tdmi_psr fetch_register_cpsr(void);
+struct arm7tdmi_psr fetch_register_spsr(void);
+void assign_register_cpsr(struct arm7tdmi_psr cpsr);
+void assign_register_spsr(struct arm7tdmi_psr spsr);
+
 #endif /* _MACHINE_GBA_ARM7TDMI_CORE_H_ */
