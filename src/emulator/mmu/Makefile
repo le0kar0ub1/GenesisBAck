@@ -10,8 +10,5 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						core.o					\
-						exceptions.o			\
+						mmu.o					\
 					)
-
-sinclude $(local)/cycle/Makefile

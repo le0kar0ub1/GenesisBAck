@@ -108,6 +108,7 @@ static inline struct cpu_exception_vector_trait cpu_fetch_exception_vector_trait
 
 /**
  * Perform an exception entry: sequence of save
+ * No priority handling,
  */
 static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
 {
@@ -126,6 +127,7 @@ static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
     assign_register_spsr(cpsr);
     assign_register_base32(LR, pc + (fetch_processor_state() == PROCESSOR_STATE_ARM ? 4 : 2));
     cpsr.opmode = vec.opmode;
+    cpsr.state = PROCESSOR_STATE_ARM;
     cpsr.irq_disable = true;
     if (vec.is_fiq_disable == true)
         cpsr.fiq_disable = true;
@@ -139,4 +141,5 @@ static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
 void cpu_exception_raise(enum EXCEPTION_VECTOR vector)
 {
     LOG_INF(exception, "raising exception %d", vector);
+    cpu_exception_perform_entry(vector);
 }

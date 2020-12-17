@@ -10,7 +10,7 @@
 #ifndef _MACHINE_GBA_CPU_CYCLE_FECTH_H_
 # define _MACHINE_GBA_CPU_CYCLE_FECTH_H_
 
-# include "machine/gba/gba/cpu.h"
+# include "machine/gba/cpu/core.h"
 
 /**
  * The public set of function, used to fetch an instruction
@@ -18,7 +18,7 @@
  */
 uint32_t cpu_fetch_instr32(void);
 uint32_t cpu_fetch_arm_state(void) __attribute__((alias("cpu_fetch_instr32")));
-uint16_t cpu_fecth_instr16(void);
-uint32_t cpu_fetch_thumb_state(void) __attribute__((alias("cpu_fetch_instr16")));
+uint16_t cpu_fetch_instr16(void);
+uint16_t cpu_fetch_thumb_state(void) __attribute__((alias("cpu_fetch_instr16")));
 
 #endif /* _MACHINE_GBA_CPU_CYCLE_FECTH_H_ */

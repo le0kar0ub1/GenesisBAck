@@ -46,8 +46,8 @@ typedef uint16_t        u16_t;
 typedef uint32_t        u32_t;
 typedef uint64_t        u64_t;
 
-typedef void *          virtaddr_t;
-typedef uintptr_t       physaddr_t;
+typedef void *          hostaddr_t;
+typedef uintptr_t       virtaddr_t;
 # define PHYSNULL ((physaddr_t)0x0)
 
 typedef uintptr         archv_t;

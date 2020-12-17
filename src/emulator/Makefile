@@ -12,3 +12,4 @@ local = $(CALLED_LOCAL_DIRECTORY)
 sinclude $(local)/core/Makefile		\
 		 $(local)/init/Makefile		\
 		 $(local)/debug/Makefile	\
+		 $(local)/mmu/Makefile		\
