@@ -9,7 +9,16 @@
 
 # include "core/exceptions.h"
 
-static struct cpu_exception_vector_trait reset_vector = {
+struct exception_vector_trait
+{
+    uint32_t address;    // vector address
+    uint32_t priority;   // priority compared to others ones
+    uint32_t opmode;     // operation mode while taking the given exception
+    bool is_irq_disable; // 1 if the flag irq_disable must be set to 1, no action else 
+    bool is_fiq_disable; // 1 if the flag fiq_disable must be set to 1, no action else 
+};
+
+static struct exception_vector_trait reset_vector = {
     .address  = EXCEPTION_RESET,
     .priority = 1,
     .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
@@ -17,7 +26,7 @@ static struct cpu_exception_vector_trait reset_vector = {
     .is_fiq_disable = true
 };
 
-static struct cpu_exception_vector_trait und_instr_vector = {
+static struct exception_vector_trait und_instr_vector = {
     .address  = EXCEPTION_UND_INSTR,
     .priority = 7,
     .opmode = PROCESSOR_OPERATION_MODE_UNDEFINED,
@@ -25,7 +34,7 @@ static struct cpu_exception_vector_trait und_instr_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait swi_vector = {
+static struct exception_vector_trait swi_vector = {
     .address  = EXCEPTION_SWI,
     .priority = 6,
     .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
@@ -33,7 +42,7 @@ static struct cpu_exception_vector_trait swi_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait prefetch_abt_vector = {
+static struct exception_vector_trait prefetch_abt_vector = {
     .address  = EXCEPTION_PREFETCH_ABT,
     .priority = 5,
     .opmode = PROCESSOR_OPERATION_MODE_ABORT,
@@ -41,7 +50,7 @@ static struct cpu_exception_vector_trait prefetch_abt_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait data_abt_vector = {
+static struct exception_vector_trait data_abt_vector = {
     .address  = EXCEPTION_DATA_ABT,
     .priority = 2,
     .opmode = PROCESSOR_OPERATION_MODE_ABORT,
@@ -49,7 +58,7 @@ static struct cpu_exception_vector_trait data_abt_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait addr_exceed_vector = {
+static struct exception_vector_trait addr_exceed_vector = {
     .address  = EXCEPTION_ADDR_EXCEED,
     .priority = -1,
     .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
@@ -57,7 +66,7 @@ static struct cpu_exception_vector_trait addr_exceed_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait irq_vector = {
+static struct exception_vector_trait irq_vector = {
     .address  = EXCEPTION_IRQ,
     .priority = 4,
     .opmode = PROCESSOR_OPERATION_MODE_IRQ,
@@ -65,7 +74,7 @@ static struct cpu_exception_vector_trait irq_vector = {
     .is_fiq_disable = false
 };
 
-static struct cpu_exception_vector_trait fiq_vector = {
+static struct exception_vector_trait fiq_vector = {
     .address  = EXCEPTION_FIQ,
     .priority = 3,
     .opmode = PROCESSOR_OPERATION_MODE_FIQ,
@@ -73,7 +82,7 @@ static struct cpu_exception_vector_trait fiq_vector = {
     .is_fiq_disable = true
 };
 
-static inline struct cpu_exception_vector_trait cpu_fetch_exception_vector_trait(enum EXCEPTION_VECTOR vector)
+static inline struct exception_vector_trait cpu_fetch_exception_vector_trait(enum EXCEPTION_VECTOR vector)
 {
     switch (vector)
     {
@@ -110,7 +119,7 @@ static inline struct cpu_exception_vector_trait cpu_fetch_exception_vector_trait
  * Perform an exception entry: sequence of save
  * No priority handling,
  */
-static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
+static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
 {
     /*
     - R14_<new mode>=PC+nn   ;save old PC, ie. return address
@@ -120,26 +129,33 @@ static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
     - CPSR new F bit         ;FIQs disabled (F=1), done by Reset and FIQ only
     - PC=exception_vector    ;see table above
     */
-    // uint32_t pc = (uint32_t)fetch_register_base32(PC);
-    // struct arm7tdmi_psr cpsr = fetch_register_cpsr();
-    // struct cpu_exception_vector_trait vec = cpu_fetch_exception_vector_trait(vector);
-    // assign_processor_opmode(vec.opmode);
-    // assign_register_spsr(cpsr);
-    // assign_register_base32(LR, pc + (fetch_processor_state() == PROCESSOR_STATE_ARM ? 4 : 2));
-    // cpsr.opmode = vec.opmode;
-    // cpsr.state = PROCESSOR_STATE_ARM;
-    // cpsr.irq_disable = true;
-    // if (vec.is_fiq_disable == true)
-    //     cpsr.fiq_disable = true;
-    // assign_register_cpsr(cpsr);
-    // assign_register_base32(PC, vec.address);
+    uint32_t pc = (uint32_t)register_read32(PC);
+    struct register_psr old_cpsr = register_read_cpsr();
+    struct register_psr new_cpsr = old_cpsr;
+    struct exception_vector_trait vec = cpu_fetch_exception_vector_trait(vector);
+
+    /* New opmode  */
+    new_cpsr.opmode = vec.opmode;
+    register_write_cpsr(new_cpsr.raw);
+    /* Save old cpsr */
+    register_write_spsr(old_cpsr.raw);
+    /* Link register to current address */
+    register_write32(LR, pc);
+    /* update CPSR */
+    new_cpsr.state = PROCESSOR_STATE_ARM;
+    new_cpsr.irq_disable = true;
+    if (vec.is_fiq_disable == true)
+        new_cpsr.fiq_disable = true;
+    register_write_cpsr(new_cpsr.raw);
+    /* Set PC to vector address */
+    register_write32(PC, vec.address);
 }
 
 /**
  * Used by the cpu to raise an exception, all the need (for the switch) is handled here
  */
-void cpu_exception_raise(enum EXCEPTION_VECTOR vector)
+void exception_raise(enum EXCEPTION_VECTOR vector)
 {
     LOG_INF(exception, "raising exception %d", vector);
-    cpu_exception_perform_entry(vector);
+    exception_perform_entry(vector);
 }

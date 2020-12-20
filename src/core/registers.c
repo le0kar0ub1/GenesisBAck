@@ -9,6 +9,122 @@
 # include  "core/core.h"
 
 /**
+ * All processor registers over operation modes
+ */
+struct arm7tdmi
+{
+    /* Basics registers */
+    struct register32 r0;
+
+    struct register32 r1;
+
+    struct register32 r2;
+
+    struct register32 r3;
+
+    struct register32 r4;
+
+    struct register32 r5;
+
+    struct register32 r6;
+
+    struct register32 r7;
+
+    struct register32 r8;
+    struct register32 r8_fiq;
+
+    struct register32 r9;
+    struct register32 r9_fiq;
+
+    struct register32 r10;
+    struct register32 r10_fiq;
+
+    struct register32 r11;
+    struct register32 r11_fiq;
+
+    struct register32 r12;
+    struct register32 r12_fiq;
+
+    struct register32 r13;
+    struct register32 r13_fiq;
+    struct register32 r13_svc;
+    struct register32 r13_abt;
+    struct register32 r13_irq;
+    struct register32 r13_und;
+
+    struct register32 r14;
+    struct register32 r14_fiq;
+    struct register32 r14_svc;
+    struct register32 r14_abt;
+    struct register32 r14_irq;
+    struct register32 r14_und;
+
+    struct register32 r15;
+
+    /* Controls registers */
+    struct register_psr cpsr;
+
+    struct register_psr spsr_fiq;
+    struct register_psr spsr_svc;
+    struct register_psr spsr_abt;
+    struct register_psr spsr_irq;
+    struct register_psr spsr_und;
+};
+
+/**
+ * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
+ */
+struct arm7tdmi_arm_opmode
+{
+    struct register32 *r0;
+    struct register32 *r1;
+    struct register32 *r2;
+    struct register32 *r3;
+    struct register32 *r4;
+    struct register32 *r5;
+    struct register32 *r6;
+    struct register32 *r7;
+    struct register32 *r8;
+    struct register32 *r9;
+    struct register32 *r10;
+    struct register32 *r11;
+    struct register32 *r12;
+    /* stack pointer */
+    struct register32 *r13;
+    /* link register */
+    struct register32 *r14;
+    /* program counter */
+    struct register32 *r15;
+
+    struct register_psr *cpsr;
+    struct register_psr *spsr;
+};
+
+/**
+ * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
+ */
+struct arm7tdmi_thumb_opmode
+{
+    struct register32 *r0;
+    struct register32 *r1;
+    struct register32 *r2;
+    struct register32 *r3;
+    struct register32 *r4;
+    struct register32 *r5;
+    struct register32 *r6;
+    struct register32 *r7;
+    /* stack pointer */
+    struct register32 *r13;
+    /* link register */
+    struct register32 *r14;
+    /* program counter */
+    struct register32 *r15;
+
+    struct register_psr *cpsr;
+    struct register_psr *spsr;
+};
+
+/**
  * The totality of the ar7tdmi registers
  */
 struct arm7tdmi arm7tdmi;

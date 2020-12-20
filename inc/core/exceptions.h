@@ -30,15 +30,6 @@ enum EXCEPTION_VECTOR
 
 #undef EXCEPTION_VECTOR_BASE
 
-struct cpu_exception_vector_trait
-{
-    uint32_t address;    // vector address
-    uint32_t priority;   // priority compared to others ones
-    uint32_t opmode;     // operation mode while taking the given exception
-    bool is_irq_disable; // 1 if the flag irq_disable must be set to 1, no action else 
-    bool is_fiq_disable; // 1 if the flag fiq_disable must be set to 1, no action else 
-};
-
-void cpu_exception_raise(enum EXCEPTION_VECTOR);
+void exception_raise(enum EXCEPTION_VECTOR);
 
 #endif /* _MACHINE_GBA_ARM7TDMI_EXCEPTIONS_H_ */
