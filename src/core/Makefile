@@ -13,6 +13,7 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						panic.o				\
 						exceptions.o		\
 						core.o				\
+						registers.o			\
 					)
 
 sinclude $(local)/hooks/Makefile

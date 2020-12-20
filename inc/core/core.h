@@ -54,12 +54,9 @@ enum ARM7TDMI_REGISTER {
     R10 = 10,
     R11 = 11,
     R12 = 12,
-    R13 = 13,
-    SP  = 13,
-    R14 = 14,
-    LR  = 14,
-    R15 = 15,
-    PC  = 15
+    R13 = 13, SP  = 13,
+    R14 = 14, LR  = 14,
+    R15 = 15, PC  = 15
 };
 
 enum OPCODE_CONDITION {
@@ -109,7 +106,7 @@ static_assert(sizeof(struct register32) == 4);
 /**
  * CPSR register articulation
  */
-struct arm7tdmi_psr
+struct register_psr
 {
     union
     {
@@ -125,28 +122,11 @@ struct arm7tdmi_psr
             uint32_t zero          : 1;
             uint32_t negative      : 1;
         };
-        uint32_t val;
+        uint32_t raw;
     };
 };
 
-static_assert(sizeof(struct arm7tdmi_psr) == sizeof(uint32_t));
-
-/**
- * Program counter AKA r15
- */
-struct arm7tdmi_r15
-{
-    union
-    {
-        struct
-        {
-            uint32_t e;
-        };
-        uint32_t val;
-    };
-};
-
-static_assert(sizeof(struct arm7tdmi_r15) == sizeof(uint32_t));
+static_assert(sizeof(struct register_psr) == sizeof(uint32_t));
 
 /**
  * All processor registers over operation modes
@@ -202,13 +182,13 @@ struct arm7tdmi
     struct register32 r15;
 
     /* Controls registers */
-    struct arm7tdmi_psr cpsr;
+    struct register_psr cpsr;
 
-    struct arm7tdmi_psr spsr_fiq;
-    struct arm7tdmi_psr spsr_svc;
-    struct arm7tdmi_psr spsr_abt;
-    struct arm7tdmi_psr spsr_irq;
-    struct arm7tdmi_psr spsr_und;
+    struct register_psr spsr_fiq;
+    struct register_psr spsr_svc;
+    struct register_psr spsr_abt;
+    struct register_psr spsr_irq;
+    struct register_psr spsr_und;
 };
 
 /**
@@ -236,8 +216,8 @@ struct arm7tdmi_arm_opmode
     /* program counter */
     struct register32 *r15;
 
-    struct arm7tdmi_psr *cpsr;
-    struct arm7tdmi_psr *spsr;
+    struct register_psr *cpsr;
+    struct register_psr *spsr;
 };
 
 /**
@@ -260,24 +240,23 @@ struct arm7tdmi_thumb_opmode
     /* program counter */
     struct register32 *r15;
 
-    struct arm7tdmi_psr *cpsr;
-    struct arm7tdmi_psr *spsr;
+    struct register_psr *cpsr;
+    struct register_psr *spsr;
 };
 
-uint32_t fetch_processor_state(void);
-uint32_t fetch_processor_opmode(void);
-void assign_processor_opmode(uint32_t opmode);
-void assign_processor_state(uint32_t state);
+struct register32 *register_read_ptr(uint32_t id);
+uint8_t register_read8(uint32_t id);
+uint16_t register_read16(uint32_t id);
+uint32_t register_read32(uint32_t id);
+void register_write8(uint32_t id, uint8_t val);
+void register_write16(uint32_t id, uint16_t val);
+void register_write32(uint32_t id, uint32_t val);
+struct register_psr register_read_cpsr(void);
+void register_write_cpsr(uint32_t wr);
+struct register_psr register_read_spsr(void);
+void register_write_spsr(uint32_t wr);
 
-uint8_t fetch_register_base8(uint32_t id);
-uint16_t fetch_register_base16(uint32_t id);
-uint32_t fetch_register_base32(uint32_t id);
-void assign_register_base8(uint32_t id, uint8_t val);
-void assign_register_base16(uint32_t id, uint16_t val);
-void assign_register_base32(uint32_t id, uint32_t val);
-struct arm7tdmi_psr fetch_register_cpsr(void);
-struct arm7tdmi_psr fetch_register_spsr(void);
-void assign_register_cpsr(struct arm7tdmi_psr cpsr);
-void assign_register_spsr(struct arm7tdmi_psr spsr);
+uint32_t core_read_state(void);
+uint32_t core_read_opmode(void);
 
 #endif /* _MACHINE_GBA_ARM7TDMI_CORE_H_ */

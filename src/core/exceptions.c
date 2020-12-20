@@ -120,19 +120,19 @@ static void cpu_exception_perform_entry(enum EXCEPTION_VECTOR vector)
     - CPSR new F bit         ;FIQs disabled (F=1), done by Reset and FIQ only
     - PC=exception_vector    ;see table above
     */
-    uint32_t pc = (uint32_t)fetch_register_base32(PC);
-    struct arm7tdmi_psr cpsr = fetch_register_cpsr();
-    struct cpu_exception_vector_trait vec = cpu_fetch_exception_vector_trait(vector);
-    assign_processor_opmode(vec.opmode);
-    assign_register_spsr(cpsr);
-    assign_register_base32(LR, pc + (fetch_processor_state() == PROCESSOR_STATE_ARM ? 4 : 2));
-    cpsr.opmode = vec.opmode;
-    cpsr.state = PROCESSOR_STATE_ARM;
-    cpsr.irq_disable = true;
-    if (vec.is_fiq_disable == true)
-        cpsr.fiq_disable = true;
-    assign_register_cpsr(cpsr);
-    assign_register_base32(PC, vec.address);
+    // uint32_t pc = (uint32_t)fetch_register_base32(PC);
+    // struct arm7tdmi_psr cpsr = fetch_register_cpsr();
+    // struct cpu_exception_vector_trait vec = cpu_fetch_exception_vector_trait(vector);
+    // assign_processor_opmode(vec.opmode);
+    // assign_register_spsr(cpsr);
+    // assign_register_base32(LR, pc + (fetch_processor_state() == PROCESSOR_STATE_ARM ? 4 : 2));
+    // cpsr.opmode = vec.opmode;
+    // cpsr.state = PROCESSOR_STATE_ARM;
+    // cpsr.irq_disable = true;
+    // if (vec.is_fiq_disable == true)
+    //     cpsr.fiq_disable = true;
+    // assign_register_cpsr(cpsr);
+    // assign_register_base32(PC, vec.address);
 }
 
 /**
