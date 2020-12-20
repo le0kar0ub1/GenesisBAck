@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "machine/gba/cpu/exceptions.h"
+# include "core/exceptions.h"
 
 static struct cpu_exception_vector_trait reset_vector = {
     .address  = EXCEPTION_RESET,

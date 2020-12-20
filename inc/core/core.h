@@ -11,8 +11,6 @@
 # define _MACHINE_GBA_ARM7TDMI_CORE_H_
 
 # include "genesisback.h"
-# include "machine/gba/gba.h"
-# include "machine/shared/cpu.h"
 
 /**
  * The cpu has to deal with these type of data only
@@ -81,6 +79,32 @@ enum OPCODE_CONDITION {
     CONDITION_LE = 0b1101,  // Less than or equal
     CONDITION_AL = 0b1110,  // Always
 };
+
+/**
+ * A basic wide 32 bits register
+ */
+struct register32
+{
+    union
+    {
+        union
+        {
+            union
+            {
+                struct
+                {
+                    uint8_t r8;
+                    uint8_t _reserved8;
+                };
+                uint16_t r16;
+            };
+            uint16_t _reserverd16;
+        };
+        uint32_t r32;
+    };
+};
+
+static_assert(sizeof(struct register32) == 4);
 
 /**
  * CPSR register articulation

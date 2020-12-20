@@ -7,7 +7,6 @@
 \*****************************************************************************/
 
 # include "genesisback.h"
-# include "machine/gba/cpu/core.h"
 
 /**
  * Program entry point

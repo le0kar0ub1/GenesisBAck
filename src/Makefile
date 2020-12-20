@@ -18,12 +18,13 @@ else
     CCFLAGS			+= #-g3
 endif
 
-TARGET_OBJECTS :=
+TARGET_OBJECTS 	:=	$(PROJECT_PATH)/src/main.o
 
 ifeq ($(tgt),all)
-sinclude $(PROJECT_PATH)/src/machine/Makefile
-sinclude $(PROJECT_PATH)/src/emulator/Makefile
-sinclude $(PROJECT_PATH)/src/isa/Makefile
+sinclude $(PROJECT_PATH)/src/core/Makefile
+sinclude $(PROJECT_PATH)/src/debug/Makefile
+sinclude $(PROJECT_PATH)/src/init/Makefile
+sinclude $(PROJECT_PATH)/src/mmu/Makefile
 else
 ifeq ($(shell test -e $(PROJECT_PATH)/src/$(tgt)/main.c && echo -n found),found)
 sinclude $(PROJECT_PATH)/src/$(tgt)/Makefile

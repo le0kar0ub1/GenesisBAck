@@ -9,4 +9,11 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-sinclude $(local)/cpu/Makefile
+TARGET_OBJECTS	+= $(addprefix $(local),	\
+						panic.o				\
+						exceptions.o		\
+						core.o				\
+					)
+
+sinclude $(local)/hooks/Makefile
+sinclude $(local)/cycle/Makefile

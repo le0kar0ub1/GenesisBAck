@@ -65,7 +65,6 @@ export CCFLAGS	=	-I $(PROJECT_PATH)/inc						\
 					-fno-tree-loop-vectorize 					\
 					-fno-tree-slp-vectorize						\
 					-Wno-override-init							\
-					-imacros $(PROJECT_PATH)/inc/config.h		\
 
 # Some macros
 export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\

@@ -7,7 +7,10 @@
 **
 \******************************************************************************/
 
-# include <stdint.h>
+#ifndef _EMULATOR_MMU_MMU_H_
+# define _EMULATOR_MMU_MMU_H_
+
+# include "genesisback.h"
 
 // BIOS ROM     16 KBytes
 // Work RAM     288 KBytes (Fast 32K on-chip, plus Slow 256K on-board)
@@ -49,3 +52,17 @@ struct memory
         uint8_t raw[0x10000000];
     };
 } __packed;
+
+static_assert(sizeof(struct memory) == MEMORY_SIZE);
+
+void mmu_init(void);
+void mmu_exit(void);
+void mmu_reset(void);
+uint8_t mmu_read8(uint32_t addr);
+uint8_t mmu_read16(uint32_t addr);
+uint8_t mmu_read32(uint32_t addr);
+void mmu_write8(uint32_t addr, uint8_t val);
+void mmu_write16(uint32_t addr, uint16_t val);
+void mmu_write32(uint32_t addr, uint32_t val);
+
+#endif /* _EMULATOR_MMU_MMU_H_ */

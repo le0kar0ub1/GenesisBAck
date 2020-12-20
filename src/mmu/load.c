@@ -6,10 +6,3 @@
 **  Copyright (C) 2020 - Leo Karoubi
 **
 \******************************************************************************/
-
-#ifndef _ISA_ARMV7_H_
-# define _ISA_ARMV7_H_
-
-# include "isa/isa.h"
-
-#endif _ISA_ARMV7_H_

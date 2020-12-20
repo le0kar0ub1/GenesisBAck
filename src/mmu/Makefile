@@ -9,9 +9,6 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-TARGET_OBJECTS	+= $(addprefix $(local),	\
-						main.o				\
-						panic.o				\
+TARGET_OBJECTS	+= $(addprefix $(local),		\
+						mmu.o					\
 					)
-
-sinclude $(local)/hooks/Makefile

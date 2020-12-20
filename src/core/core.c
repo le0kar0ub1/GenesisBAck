@@ -6,7 +6,7 @@
 **
 \*****************************************************************************/
 
-# include  "machine/gba/cpu/core.h"
+# include  "core/core.h"
 
 /**
  * The totality of the ar7tdmi registers
