@@ -64,6 +64,24 @@ enum ARM7TDMI_REGISTER {
     PC  = 15
 };
 
+enum OPCODE_CONDITION {
+    CONDITION_EQ = 0b0000,  // Equal
+    CONDITION_NE = 0b0001,  // Not Equal
+    CONDITION_CS = 0b0010,  // Unsigned higher or same
+    CONDITION_CC = 0b0011,  // Unsigned lower
+    CONDITION_MI = 0b0100,  // Negative
+    CONDITION_PL = 0b0101,  // Positive or zero
+    CONDITION_VS = 0b0110,  // Overflow
+    CONDITION_VC = 0b0111,  // No overflow
+    CONDITION_HI = 0b1000,  // Unsigned higher
+    CONDITION_LS = 0b1001,  // Unsigned lower or same
+    CONDITION_GE = 0b1010,  // Greater or equal
+    CONDITION_LT = 0b1011,  // Less than
+    CONDITION_GT = 0b1100,  // Greather than
+    CONDITION_LE = 0b1101,  // Less than or equal
+    CONDITION_AL = 0b1110,  // Always
+};
+
 /**
  * CPSR register articulation
  */
@@ -73,16 +91,15 @@ struct arm7tdmi_psr
     {
         struct
         {
-            uint32_t opmode          : 5;
-            uint32_t state           : 1;
-            uint32_t fiq_disable     : 1;
-            uint32_t irq_disable     : 1;
-            uint32_t _reserved       : 20;
-            // uint32_t sticky_overflow : 1;
-            uint32_t overflow_flg    : 1;
-            uint32_t carry_flg       : 1;
-            uint32_t zero_flg        : 1;
-            uint32_t sign_flg        : 1;
+            uint32_t opmode        : 5;
+            uint32_t state         : 1;
+            uint32_t fiq_disable   : 1;
+            uint32_t irq_disable   : 1;
+            uint32_t _reserved     : 20;
+            uint32_t overflow      : 1;
+            uint32_t carry         : 1;
+            uint32_t zero          : 1;
+            uint32_t negative      : 1;
         };
         uint32_t val;
     };

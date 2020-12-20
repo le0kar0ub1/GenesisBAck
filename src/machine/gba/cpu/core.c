@@ -349,7 +349,7 @@ void assign_processor_state(uint32_t state)
 }
 
 /**
- * There is no rights consideration, the capcity to R/W must be decided before this function call.
+ * There are no rights consideration, the capcity to R/W must be decided before this function call.
  */
 static struct register32 *fetch_register_base_ptr(enum ARM7TDMI_REGISTER id)
 {
