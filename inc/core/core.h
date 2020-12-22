@@ -155,7 +155,7 @@ void core_start(void);
 void core_reset(void);
 void core_switch_state(uint32_t state);
 void core_switch_opmode(uint32_t opmode);
-void core_reload_pipeline(void);
+void core_flush_pipeline(void);
 
 void core_scheduler(void);
 bool schedule_opcode_condition(uint32_t cond);

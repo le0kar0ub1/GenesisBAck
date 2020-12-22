@@ -149,7 +149,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     register_write_cpsr(new_cpsr.raw);
     /* Set PC to vector address */
     register_write32(PC, vec.address);
-    panic(__fund__, "Must reload pipeline");
+    panic(__func__, "Must reload pipeline");
 }
 
 /**

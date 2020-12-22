@@ -10,4 +10,6 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
+						arm.o					\
+						thumb.o					\
 					)

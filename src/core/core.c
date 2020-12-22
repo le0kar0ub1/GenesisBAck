@@ -44,7 +44,7 @@ void core_reset(void)
     core_switch_opmode(PROCESSOR_OPERATION_MODE_SYSTEM);
     register_write32(PC, 0x8000000);
     register_write32(SP, 0x3007F00);
-    core_reload_pipeline();
+    core_flush_pipeline();
 }
 
 void core_start(void)
@@ -53,7 +53,7 @@ void core_start(void)
         core_scheduler();
 }
 
-void core_reload_pipeline(void)
+void core_flush_pipeline(void)
 {
     uint32_t pc = register_read32(PC);
 

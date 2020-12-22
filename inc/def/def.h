@@ -122,6 +122,7 @@ struct genesisback_data {
 # define bitfld_read1(val, bit)  ((bool)(val & (1 << bit)))
 # define bitfld_write1(val, bit) (val |= (1 << bit))
 
+// inclusive from, exclusive to
 # define bitfld_readx(val, from, to) ((typeof(val))(val << (sizeof(val) * 8 - to) >> (sizeof(val) * 8 - to + from)))
 
 #endif /* !_GENESISBACK_DEF_H_ */
