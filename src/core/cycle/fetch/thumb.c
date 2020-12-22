@@ -9,7 +9,7 @@
 
 # include "core/cycle/fetch.h"
 
-uint16_t cycle_fetch_thumb(void)
+uint16_t core_fetch_thumb(void)
 {
     return (mmu_read16(register_read32(PC)));
 }

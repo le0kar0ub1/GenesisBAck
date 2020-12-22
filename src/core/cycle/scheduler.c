@@ -18,22 +18,22 @@ static void schedule_arm(void)
     uint32_t op;
     
     op = core_read_prefetch();
-    core_write_prefetch(cycle_fetch_arm());
+    core_write_prefetch(core_fetch_arm());
     register_uadd32(PC, 4);
 
     if (!schedule_opcode_condition(OPCODE_CONDITION_MASK(op)))
         return;
-    cycle_route_arm(op);
+    core_route_arm(op);
 }
 
 static void schedule_thumb(void)
 {
-    uint32_t op;
+    uint16_t op;
     
-    op = core_read_prefetch();
-    core_write_prefetch((uint32_t)cycle_fetch_thumb());
+    op = (uint16_t)core_read_prefetch();
+    core_write_prefetch((uint32_t)core_fetch_thumb());
     register_uadd32(PC, 2);
-    cycle_route_thumb(op);
+    core_route_thumb(op);
 }
 
 void core_scheduler(void)

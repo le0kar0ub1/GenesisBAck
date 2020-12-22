@@ -17,7 +17,7 @@
  * The public set of function, used to fetch an instruction
  * As an emulator, the mode checkup has not to be everywhere, the caller must know the machine state
  */
-uint32_t cycle_fetch_arm(void);
-uint16_t cycle_fetch_thumb(void);
+uint32_t core_fetch_arm(void);
+uint16_t core_fetch_thumb(void);
 
 #endif /* _CORE_CYCLE_FECTH_H_ */
