@@ -9,7 +9,10 @@
 
 # include "core/cycle/route.h"
 # include "core/cycle/exec.h"
-
+/**
+ * https://pdf.dzsc.com/ARM/ARM7TDMI.pdf
+ * page 44
+ */
 void *core_route_arm(uint32_t op)
 {
     switch (bitfld_readx(op, 25, 27))

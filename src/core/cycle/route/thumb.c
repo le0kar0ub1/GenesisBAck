@@ -10,6 +10,10 @@
 # include "core/cycle/route.h"
 # include "core/cycle/exec.h"
 
+/**
+ * https://pdf.dzsc.com/ARM/ARM7TDMI.pdf
+ * page 108
+ */
 void *core_route_thumb(uint16_t op)
 {
     switch (op >> 12)

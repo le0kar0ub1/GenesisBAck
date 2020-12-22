@@ -13,8 +13,6 @@ void core_arm_data_processing(uint32_t op) {}
 
 void core_arm_multiply(uint32_t op) {}
 
-void core_arm_branch_exchange(uint32_t op) {}
-
 void core_arm_reg_data_transfer(uint32_t op) {}
 
 void core_arm_imm_data_transfer(uint32_t op) {}
@@ -24,8 +22,6 @@ void core_arm_undefined(uint32_t op) {}
 void core_arm_single_data_transfer(uint32_t op) {}
 
 void core_arm_block_data_trabsfer(uint32_t op) {}
-
-void core_arm_branch(uint32_t op) {}
 
 void core_arm_coprocessor_data_transfer(uint32_t op) {}
 

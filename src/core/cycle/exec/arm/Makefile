@@ -10,9 +10,5 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						arm.o					\
-						thumb.o					\
+						branch.o				\
 					)
-
-sinclude $(local)/arm/Makefile		\
-		 $(local)/thumb/Makefile
