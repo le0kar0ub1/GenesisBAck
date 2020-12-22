@@ -7,6 +7,7 @@
 \*****************************************************************************/
 
 # include  "core/core.h"
+# include <string.h>
 
 /**
  * All processor registers over operation modes
@@ -69,6 +70,8 @@ struct arm7tdmi
     struct register_psr spsr_abt;
     struct register_psr spsr_irq;
     struct register_psr spsr_und;
+
+    uint32_t prefetch;
 };
 
 /**
@@ -444,6 +447,11 @@ static struct arm7tdmi_thumb_opmode thumb_und = {
     .spsr = &arm7tdmi.spsr_und
 };
 
+void register_reset(void)
+{
+    memset(&arm7tdmi, 0x0, sizeof(struct arm7tdmi));
+}
+
 /**
  * There are no rights consideration, the capcity to R/W must be decided before this function call.
  */
@@ -451,8 +459,8 @@ struct register32 *register_read_ptr(uint32_t id)
 {
     if (id < 8)
         return (((struct register32 **)&arm7tdmi)[id]);
-    if (arm7tdmi.cpsr.state == PROCESSOR_STATE_ARM && id < 16)
-    {
+    // if (arm7tdmi.cpsr.state == PROCESSOR_STATE_ARM && id < 16)
+    // {
         switch (arm7tdmi.cpsr.opmode)
         {
             case PROCESSOR_OPERATION_MODE_USER:
@@ -480,7 +488,7 @@ struct register32 *register_read_ptr(uint32_t id)
                 LOG_ERR(__func__, "Invalid operation mode");
                 panic("Invalid operation mode");
         }
-    }
+    // }
     LOG_DEBUG(__func__, "Register id: %d, state: %d, opmode: %d", id, arm7tdmi.cpsr.state, arm7tdmi.cpsr.opmode);
     panic(__func__);
 }
@@ -513,6 +521,18 @@ void register_write16(uint32_t id, uint16_t val)
 void register_write32(uint32_t id, uint32_t val)
 {
     ((*(register_read_ptr(id))).r32) = val;
+}
+
+void register_uadd32(uint32_t id, uint32_t val)
+{
+    struct register32 *r = register_read_ptr(id);
+    (*r).r32 += val;
+}
+
+void register_usub32(uint32_t id, uint32_t val)
+{
+    struct register32 *r = register_read_ptr(id);
+    (*r).r32 -= val;
 }
 
 struct register_psr register_read_cpsr(void)
@@ -573,4 +593,14 @@ void register_write_spsr(uint32_t wr)
             LOG_ERR(__func__, "Invalid operation mode");
             panic("Invalid operation mode");
     }
+}
+
+uint32_t core_read_prefetch(void)
+{
+    return (arm7tdmi.prefetch);
+}
+
+void core_write_prefetch(uint32_t prefetch)
+{
+    arm7tdmi.prefetch = prefetch;
 }

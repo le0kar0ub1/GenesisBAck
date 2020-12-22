@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _MACHINE_GBA_ARM7TDMI_EXCEPTIONS_H_
-# define _MACHINE_GBA_ARM7TDMI_EXCEPTIONS_H_
+#ifndef _CORE_EXCEPTIONS_H_
+# define _CORE_EXCEPTIONS_H_
 
 # include "genesisback.h"
 # include "io/log.h"
@@ -32,4 +32,4 @@ enum EXCEPTION_VECTOR
 
 void exception_raise(enum EXCEPTION_VECTOR);
 
-#endif /* _MACHINE_GBA_ARM7TDMI_EXCEPTIONS_H_ */
+#endif /* _CORE_EXCEPTIONS_H_ */

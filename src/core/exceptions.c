@@ -14,8 +14,8 @@ struct exception_vector_trait
     uint32_t address;    // vector address
     uint32_t priority;   // priority compared to others ones
     uint32_t opmode;     // operation mode while taking the given exception
-    bool is_irq_disable; // 1 if the flag irq_disable must be set to 1, no action else 
-    bool is_fiq_disable; // 1 if the flag fiq_disable must be set to 1, no action else 
+    bool is_irq_disable; // 1 if the flag irq_disable must be set, no action else 
+    bool is_fiq_disable; // 1 if the flag fiq_disable must be set, no action else 
 };
 
 static struct exception_vector_trait reset_vector = {
@@ -149,6 +149,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     register_write_cpsr(new_cpsr.raw);
     /* Set PC to vector address */
     register_write32(PC, vec.address);
+    panic(__fund__, "Must reload pipeline");
 }
 
 /**

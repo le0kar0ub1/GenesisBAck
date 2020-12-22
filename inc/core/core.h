@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _MACHINE_GBA_ARM7TDMI_CORE_H_
-# define _MACHINE_GBA_ARM7TDMI_CORE_H_
+#ifndef _CORE_CORE_H_
+# define _CORE_CORE_H_
 
 # include "genesisback.h"
 
@@ -26,6 +26,9 @@ enum {
     PROCESSOR_STATE_ARM   = 0b0,
     PROCESSOR_STATE_THUMB = 0b1
 };
+
+# define MASK_ARM_RELOAD(x)   (x & 0xFFFFFFFC)
+# define MASK_THUMB_RELOAD(x) (x & 0xFFFFFFFE) 
 
 /**
  * Define the 7 operations modes of the processor
@@ -128,6 +131,7 @@ struct register_psr
 
 static_assert(sizeof(struct register_psr) == sizeof(uint32_t));
 
+void register_reset(void);
 struct register32 *register_read_ptr(uint32_t id);
 uint8_t register_read8(uint32_t id);
 uint16_t register_read16(uint32_t id);
@@ -135,12 +139,25 @@ uint32_t register_read32(uint32_t id);
 void register_write8(uint32_t id, uint8_t val);
 void register_write16(uint32_t id, uint16_t val);
 void register_write32(uint32_t id, uint32_t val);
+void register_uadd32(uint32_t id, uint32_t val);
+void register_usub32(uint32_t id, uint32_t val);
 struct register_psr register_read_cpsr(void);
 void register_write_cpsr(uint32_t wr);
 struct register_psr register_read_spsr(void);
 void register_write_spsr(uint32_t wr);
 
+uint32_t core_read_prefetch(void);
+void core_write_prefetch(uint32_t prefetch);
 uint32_t core_read_state(void);
 uint32_t core_read_opmode(void);
+void core_init(void);
+void core_start(void);
+void core_reset(void);
+void core_switch_state(uint32_t state);
+void core_switch_opmode(uint32_t opmode);
+void core_reload_pipeline(void);
 
-#endif /* _MACHINE_GBA_ARM7TDMI_CORE_H_ */
+void core_scheduler(void);
+bool schedule_opcode_condition(uint32_t cond);
+
+#endif /* _CORE_CORE_H_ */

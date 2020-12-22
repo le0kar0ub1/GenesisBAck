@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _EMULATOR_MMU_MMU_H_
-# define _EMULATOR_MMU_MMU_H_
+#ifndef _MMU_MMU_H_
+# define _MMU_MMU_H_
 
 # include "genesisback.h"
 
@@ -65,4 +65,4 @@ void mmu_write8(uint32_t addr, uint8_t val);
 void mmu_write16(uint32_t addr, uint16_t val);
 void mmu_write32(uint32_t addr, uint32_t val);
 
-#endif /* _EMULATOR_MMU_MMU_H_ */
+#endif /* _MMU_MMU_H_ */

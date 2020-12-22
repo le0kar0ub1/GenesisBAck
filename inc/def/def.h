@@ -74,6 +74,24 @@ typedef uintptr *       archp_t;
 # define likely(x)       __builtin_expect((x), 1)
 # define unlikely(x)     __builtin_expect((x), 0)
 
+# define ANSI_RESET          "\e[0m"
+
+# define ANSI_RED            "\e[31m"
+# define ANSI_GREEN          "\e[32m"
+# define ANSI_YELLOW         "\e[33m"
+# define ANSI_BLUE           "\e[34m"
+# define ANSI_MAGENTA        "\e[35m"
+# define ANSI_CYAN           "\e[36m"
+# define ANSI_LIGHT_GRAY     "\e[37m"
+# define ANSI_DARK_GRAY      "\e[90m"
+# define ANSI_LIGHT_RED      "\e[91m"
+# define ANSI_LIGHT_GREEN    "\e[92m"
+# define ANSI_LIGHT_YELLOW   "\e[93m"
+# define ANSI_LIGHT_BLUE     "\e[94m"
+# define ANSI_LIGHT_MAGENTA  "\e[95m"
+# define ANSI_LIGHT_CYAN     "\e[96m"
+# define ANSI_WHITE          "\e[97m"
+
 /**
  * align and keep given type 
 */
@@ -101,7 +119,9 @@ struct genesisback_data {
 # define ADD_PTR(x, y) ((typeof(x))((uintptr_t)x + (uintptr_t)y))
 # define SUB_PTR(x, y) ((typeof(x))((uintptr_t)x - (uintptr_t)y))
 
-# define CLEAR_BIT(val, bit) (val & ~(1 << bit))
-# define SET_BIT(val, bit)   (val | (1 << bit))
+# define bitfld_read1(val, bit)  ((bool)(val & (1 << bit)))
+# define bitfld_write1(val, bit) (val |= (1 << bit))
+
+# define bitfld_readx(val, from, to) ((typeof(val))(val << (sizeof(val) * 8 - to) >> (sizeof(val) * 8 - to + from)))
 
 #endif /* !_GENESISBACK_DEF_H_ */

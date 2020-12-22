@@ -7,16 +7,9 @@
 **
 \******************************************************************************/
 
-#ifndef _CORE_CYCLE_ROUTE_H_
-# define _CORE_CYCLE_ROUTE_H_
+# include "core/cycle/fetch.h"
 
-# include "core/core.h"
-# include "mmu/mmu.h"
-
-/**
- * Return the exec cycle handler
- */
-void *cycle_route_thumb(uint32_t op);
-void *cycle_route_arm(uint32_t op);
-
-#endif /* _CORE_CYCLE_ROUTE_H_ */
+uint32_t cycle_fetch_arm(void)
+{
+    return (mmu_read32(register_read32(PC)));
+}

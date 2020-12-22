@@ -10,5 +10,6 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						fetch.o					\
+						arm.o					\
+						thumb.o					\
 					)

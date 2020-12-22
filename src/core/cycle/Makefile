@@ -9,6 +9,10 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
+TARGET_OBJECTS += $(addprefix $(local), 	\
+					scheduler.o				\
+				)
+
 sinclude $(local)/exec/Makefile		\
 		 $(local)/fetch/Makefile	\
 		 $(local)/route/Makefile	\
