@@ -9,8 +9,6 @@
 
 # include "core/cycle/exec.h"
 
-void core_arm_data_processing(uint32_t op) {}
-
 void core_arm_multiply(uint32_t op) {}
 
 void core_arm_reg_data_transfer(uint32_t op) {}

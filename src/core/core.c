@@ -40,9 +40,13 @@ void core_init(void)
 
 void core_exit(void) {}
 
+/**
+ *  Reset the machine
+ */
 void core_reset(void)
 {
     register_reset();
+    // mmu_reset();
     core_switch_opmode(PROCESSOR_OPERATION_MODE_SYSTEM);
     core_switch_state(PROCESSOR_STATE_ARM);
     register_write32(PC, 0x08000000);
@@ -50,6 +54,9 @@ void core_reset(void)
     core_flush_pipeline();
 }
 
+/**
+ * Start the execution
+ */
 void core_start(void)
 {
     LOG_VERBOSE("Core starting...");
@@ -57,6 +64,9 @@ void core_start(void)
         core_scheduler();
 }
 
+/**
+ * Flush/Reload the pipeline
+ */
 void core_flush_pipeline(void)
 {
     uint32_t pc = register_read32(PC);

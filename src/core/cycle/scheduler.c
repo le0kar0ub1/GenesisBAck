@@ -40,6 +40,7 @@ static void schedule_thumb(void)
     core_route_thumb(op);
 }
 
+# include <stdlib.h>
 void core_scheduler(void)
 {
     static size_t cnt = 0;
@@ -90,6 +91,6 @@ bool schedule_opcode_condition(uint32_t cond)
             return (true);
         case 1111: // obsolete never
         default:
-            panic(__func__, "Invalid opcode condition %u", cond);
+            panic("Invalid opcode condition %u", cond);
     }
 }

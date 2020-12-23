@@ -11,4 +11,5 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						branch.o				\
+						data_processing.o		\
 					)

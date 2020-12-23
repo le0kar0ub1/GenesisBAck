@@ -119,11 +119,10 @@ struct genesisback_data {
 # define ADD_PTR(x, y) ((typeof(x))((uintptr_t)x + (uintptr_t)y))
 # define SUB_PTR(x, y) ((typeof(x))((uintptr_t)x - (uintptr_t)y))
 
-# define bitfld_read1(val, bit)  ((bool)(val & (1 << bit)))
-# define bitfld_write1(val, bit) (val |= (1 << bit))
-
+# define bitfield_read1(val, bit)  ((bool)(val & (1 << bit)))
+# define bitfield_write1(val, bit) (val |= (1 << bit))
 // inclusive from, exclusive to
-# define bitfld_readx(val, from, to) ((typeof(val))(val << (sizeof(val) * 8 - to) >> (sizeof(val) * 8 - to + from)))
+# define bitfield_readx(val, from, to) ((typeof(val))(val << (sizeof(val) * 8 - to) >> (sizeof(val) * 8 - to + from)))
 
 static inline int32_t sign_extend_to_i32(uint32_t val, uint32_t extend)
 {
@@ -136,5 +135,7 @@ static inline int32_t sign_extend_to_i32(uint32_t val, uint32_t extend)
 # define sign_extend11_to_i32(val) sign_extend_to_i32(val, 11)
 # define sign_extend12_to_i32(val) sign_extend_to_i32(val, 12)
 # define sign_extend24_to_i32(val) sign_extend_to_i32(val, 24)
+
+# define mask_low(x) ((1 << x) - 1)
 
 #endif /* !_GENESISBACK_DEF_H_ */

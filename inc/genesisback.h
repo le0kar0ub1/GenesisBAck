@@ -17,6 +17,7 @@
 # include "def/assert.h"
 # include "io/log.h"
 
-void __noreturn panic(char const *fmt, ...);
+void __noreturn _panic(char const *anywhere, char const *fmt, ...);
+# define panic(...) _panic(__func__, __VA_ARGS__)
 
 #endif /* !_GENESISBACK_H_ */

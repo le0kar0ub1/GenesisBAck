@@ -24,7 +24,7 @@ void core_arm_branch(uint32_t op)
     struct arm_regs *regs = core_get_arm_regs();
     int32_t off = sign_extend24_to_i32(op & 0xFFFFFF) << 2;
 
-    if (bitfld_read1(op, 24) == 0b1)
+    if (bitfield_read1(op, 24) == 0b1)
         (*(regs->r14)).r32 = (*(regs->r15)).r32; // the next instruction
 
     (*(regs->r15)).r32 += off;

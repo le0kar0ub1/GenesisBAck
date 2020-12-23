@@ -14,6 +14,10 @@
 
 extern struct memory *mem;
 
+/**
+ * Load the given rom in the good memory area
+ * Currently make a copy in all the slots 
+ */
 bool mmu_load_rom(char const *path)
 {
     int fd;

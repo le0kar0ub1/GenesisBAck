@@ -18,9 +18,9 @@
  *
  * TODO: A reset for the machine and/or a dump debug
  */
-void __noreturn panic(char const *fmt, ...)
+void __noreturn _panic(char const *anywhere, char const *fmt, ...)
 {
-    printf("(%spanicked%s): ", ANSI_RED, ANSI_RESET);
+    printf("[%s%s%s](%spanicked%s): ", ANSI_RED, anywhere, ANSI_RESET, ANSI_RED, ANSI_RESET);
     va_list ap;
     va_start(ap, fmt);
     vprintf(fmt, ap);

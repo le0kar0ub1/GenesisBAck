@@ -394,11 +394,18 @@ static struct thumb_regs thumb_und = {
     .spsr = &arm7tdmi.spsr_und
 };
 
+/**
+ * When reset the machine, reset the registers
+ */
 void register_reset(void)
 {
     memset(&arm7tdmi, 0x0, sizeof(struct arm7tdmi));
 }
 
+/**
+ * In fact, owned by the core module
+ * return a structure which describe the thumb registers according to the processor operation
+ */
 struct thumb_regs *core_get_thumb_regs(void)
 {
     switch (arm7tdmi.cpsr.opmode)
@@ -429,6 +436,10 @@ struct thumb_regs *core_get_thumb_regs(void)
     }
 }
 
+/**
+ * In fact, owned by the core module
+ * return a structure which describe the arm registers according to the processor operation
+ */
 struct arm_regs *core_get_arm_regs(void)
 {
     switch (arm7tdmi.cpsr.opmode)
@@ -492,64 +503,97 @@ struct register32 *register_read_ptr(uint32_t id)
                 return (((struct register32 **)&arm_und)[id]);
                 break;
             default:
-                panic("Invalid operation mode");
+                break;
         }
-    LOG_DEBUG("Register id: %d, state: %d, opmode: %d", id, arm7tdmi.cpsr.state, arm7tdmi.cpsr.opmode);
-    panic(__func__);
+    // }
+    panic("Invalid operation mode");
 }
 
+/**
+ * Read 8bits from the given BASE register
+ */
 uint8_t register_read8(uint32_t id)
 {
     return ((*(register_read_ptr(id))).r8);
 }
 
+/**
+ * Read 16bits from the given BASE register
+ */
 uint16_t register_read16(uint32_t id)
 {
     return ((*(register_read_ptr(id))).r16);
 }
 
+/**
+ * Read 32bits from the given BASE register
+ */
 uint32_t register_read32(uint32_t id)
 {
     return ((*(register_read_ptr(id))).r32);
 }
 
+/**
+ * Write 8bits to the given BASE register
+ */
 void register_write8(uint32_t id, uint8_t val)
 {
     ((*(register_read_ptr(id))).r8) = val;
 }
 
+/**
+ * Write 16bits to the given BASE register
+ */
 void register_write16(uint32_t id, uint16_t val)
 {
     ((*(register_read_ptr(id))).r16) = val;
 }
 
+/**
+ * Write 32bits to the given BASE register
+ */
 void register_write32(uint32_t id, uint32_t val)
 {
     ((*(register_read_ptr(id))).r32) = val;
 }
 
+/**
+ * Add the given value to the given BASE register
+ */
 void register_uadd32(uint32_t id, uint32_t val)
 {
     struct register32 *r = register_read_ptr(id);
     (*r).r32 += val;
 }
 
+/**
+ * Add the given value to the given BASE register
+ */
 void register_usub32(uint32_t id, uint32_t val)
 {
     struct register32 *r = register_read_ptr(id);
     (*r).r32 -= val;
 }
 
+/**
+ * Read the cpsr register, any operation mode
+ */
 struct register_psr register_read_cpsr(void)
 {
     return (arm7tdmi.cpsr);
 }
 
+/**
+ * Write the cpsr register, any operation mode
+ */
 void register_write_cpsr(uint32_t wr)
 {
     arm7tdmi.cpsr.raw = wr;
 }
 
+/**
+ * Read the spsr register according to the operation mode
+ */
 struct register_psr register_read_spsr(void)
 {
     switch (arm7tdmi.cpsr.opmode)
@@ -574,6 +618,9 @@ struct register_psr register_read_spsr(void)
     }
 }
 
+/**
+ * Write the spsr register according to the operation mode
+ */
 void register_write_spsr(uint32_t wr)
 {
     switch (arm7tdmi.cpsr.opmode)
@@ -598,11 +645,17 @@ void register_write_spsr(uint32_t wr)
     }
 }
 
+/**
+ * Read the cheated prefetch
+ */
 uint32_t core_read_prefetch(void)
 {
     return (arm7tdmi.prefetch);
 }
 
+/**
+ * Write the cheated prefetch
+ */
 void core_write_prefetch(uint32_t prefetch)
 {
     arm7tdmi.prefetch = prefetch;

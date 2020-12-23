@@ -15,45 +15,45 @@
  */
 void *core_route_arm(uint32_t op)
 {
-    switch (bitfld_readx(op, 26, 28))
+    switch (bitfield_readx(op, 26, 28))
     {
         case 0b00:
-            if (bitfld_read1(op, 25) == 0b1 || (bitfld_read1(op, 25) == 0 && bitfld_readx(op, 4, 12) == 0b0))
+            if (bitfield_read1(op, 25) == 0b1 || (bitfield_read1(op, 25) == 0 && bitfield_readx(op, 4, 12) == 0b0))
                 {ROUTE_RETURN (core_arm_data_processing);}
-            else if ((bitfld_readx(op, 22, 26) == 0b0000 || bitfld_readx(op, 23, 26) == 0b001) && bitfld_readx(op, 4, 8) == 0b1001)
+            else if ((bitfield_readx(op, 22, 26) == 0b0000 || bitfield_readx(op, 23, 26) == 0b001) && bitfield_readx(op, 4, 8) == 0b1001)
                 {ROUTE_RETURN (core_arm_multiply);}
-            else if (bitfld_readx(op, 4, 26) == 0b010010111111111111000)
+            else if (bitfield_readx(op, 4, 26) == 0b010010111111111111000)
                 {ROUTE_RETURN (core_arm_branch_exchange);}
-            else if (bitfld_readx(op, 7, 12) == 0b00001 && bitfld_read1(op, 4) == 0b1 && bitfld_read1(op, 22) == 0b0 && bitfld_read1(op, 25) == 0b0)
+            else if (bitfield_readx(op, 7, 12) == 0b00001 && bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 22) == 0b0 && bitfield_read1(op, 25) == 0b0)
                 {ROUTE_RETURN (core_arm_reg_data_transfer);}
-            else if (bitfld_read1(op, 4) == 0b1 && bitfld_read1(op, 7) == 0b1 && bitfld_read1(op, 22) == 0b1 && bitfld_read1(op, 25) == 0b0)
+            else if (bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 7) == 0b1 && bitfield_read1(op, 22) == 0b1 && bitfield_read1(op, 25) == 0b0)
                 {ROUTE_RETURN (core_arm_imm_data_transfer);}
             goto err;
         case 0b01:
-            if (bitfld_read1(op, 25) == 0b1 && bitfld_read1(op, 4) == 0b1)
+            if (bitfield_read1(op, 25) == 0b1 && bitfield_read1(op, 4) == 0b1)
                 {ROUTE_RETURN (core_arm_undefined);}
             else
                 {ROUTE_RETURN (core_arm_single_data_transfer);}
             goto err;
         case 0b10:
-            if (bitfld_read1(op, 25) == 0b0)
+            if (bitfield_read1(op, 25) == 0b0)
                 {ROUTE_RETURN (core_arm_block_data_trabsfer);}
             else
                 {ROUTE_RETURN (core_arm_branch);}
             goto err;
         case 0b11:
-            if (bitfld_read1(op, 25) == 0b0)
+            if (bitfield_read1(op, 25) == 0b0)
                 {ROUTE_RETURN (core_arm_coprocessor_data_transfer);}
-            else if (bitfld_readx(op, 24, 26) == 0b10 && bitfld_read1(op, 4) == 0b0)
+            else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b0)
                 {ROUTE_RETURN (core_arm_coprocessor_data_operation);}
-            else if (bitfld_readx(op, 24, 26) == 0b10 && bitfld_read1(op, 4) == 0b1)
+            else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b1)
                 {ROUTE_RETURN (core_arm_coprocessor_register_transfer);}
-            else if (bitfld_readx(op, 24, 26) == 0b11)
+            else if (bitfield_readx(op, 24, 26) == 0b11)
                 {ROUTE_RETURN (core_arm_swi);}
             goto err;
         default:
             goto err;
     }
     err:
-    panic("[%s]: Invalid Opcode %#x", __func__, op);
+    panic("Invalid Opcode %#x", op);
 }

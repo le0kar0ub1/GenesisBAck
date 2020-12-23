@@ -14,6 +14,9 @@
 
 struct memory *mem;
 
+/**
+ * Initialize the memory module
+ */
 bool mmu_init(void)
 {
     mem = malloc(sizeof(struct memory));
@@ -25,11 +28,17 @@ bool mmu_init(void)
     return (true);
 }
 
+/**
+ * destroy the memory module
+ */
 void mmu_exit(void)
 {
     free(mem);
 }
 
+/**
+ * When reset the machine, reset the memory module
+ */
 void mmu_reset(void)
 {
     memset(mem->raw, 0x0, MEMORY_SIZE);
@@ -43,17 +52,23 @@ static inline void is_aligned(uint32_t addr, uint8_t on)
         panic("Unaligned address %#08x", addr);
 }
 
+/**
+ * Read 8bits from the given address
+ */
 uint8_t mmu_read8(uint32_t addr)
 {
     if (addr >= MEMORY_SIZE)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     return (mem->raw[addr]);
 }
 
+/**
+ * Read 16bits from the given address
+ */
 uint16_t mmu_read16(uint32_t addr)
 {
     if (addr >= MEMORY_SIZE - 1)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     is_aligned(addr, 2);
     #ifdef __BIG_ENDIAN__
         return be16toh(*((uint16_t *)(mem->raw + addr)));
@@ -62,10 +77,13 @@ uint16_t mmu_read16(uint32_t addr)
     #endif
 }
 
+/**
+ * Read 32bits from the given address
+ */
 uint32_t mmu_read32(uint32_t addr)
 {
     if (addr >= MEMORY_SIZE - 3)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     is_aligned(addr, 4);
     #ifdef __BIG_ENDIAN__
         return be32toh(*((uint32_t *)(mem->raw + addr)));
@@ -74,17 +92,23 @@ uint32_t mmu_read32(uint32_t addr)
     #endif
 }
 
+/**
+ * Write 8bits from the given address
+ */
 void mmu_write8(uint32_t addr, uint8_t val)
 {
     if (addr >= MEMORY_SIZE)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     mem->raw[addr] = val;
 }
 
+/**
+ * Write 16bits from the given address
+ */
 void mmu_write16(uint32_t addr, uint16_t val)
 {
     if (addr >= MEMORY_SIZE - 1)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     is_aligned(addr, 2);
     #ifdef __BIG_ENDIAN__
         *((uint16_t *)(mem->raw + addr)) = htobe16(val);
@@ -93,10 +117,13 @@ void mmu_write16(uint32_t addr, uint16_t val)
     #endif
 }
 
+/**
+ * Write 32bits from the given address
+ */
 void mmu_write32(uint32_t addr, uint32_t val)
 {
     if (addr >= MEMORY_SIZE - 3)
-        panic("[%s]: Segmentation fault: Address %#08x", __func__, addr);
+        panic("Segmentation fault: Address %#08x", addr);
     is_aligned(addr, 4);
     #ifdef __BIG_ENDIAN__
         *((uint32_t *)(mem->raw + addr)) = htobe32(val);

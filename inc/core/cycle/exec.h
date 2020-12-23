@@ -47,4 +47,6 @@ void core_thumb_mult_load_store(uint16_t op);
 void core_thumb_unconditional_branch(uint16_t op);
 void core_thumb_branch_link(uint16_t op);
 
+uint32_t core_exec_interpret_shifts(uint32_t val, uint32_t shift, bool carry_mod);
+
 #endif /* _CORE_CYCLE_EXEC_H_ */
