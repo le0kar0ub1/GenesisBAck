@@ -7,18 +7,13 @@
 **
 \******************************************************************************/
 
-#ifndef _CORE_CYCLE_ROUTE_H_
-# define _CORE_CYCLE_ROUTE_H_
+#ifndef _CFG_H_
+# define _CFG_H_
 
-# include "core/core.h"
-# include "mmu/mmu.h"
+# define DEBUG_STATE_MASTER true
 
-/**
- * Return the exec cycle handler
- */
-void *core_route_thumb(uint16_t op);
-void *core_route_arm(uint32_t op);
+# define VERBOSE_RUN true
 
-# define ROUTE_RETURN(x) LOG_DEBUG("Routing %s()", #x); return (x);
+# define CONFIG_INITLEVEL 4
 
-#endif /* _CORE_CYCLE_ROUTE_H_ */
+#endif /* _CFG_H_ */

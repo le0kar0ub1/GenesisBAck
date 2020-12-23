@@ -134,7 +134,7 @@ static inline int32_t sign_extend_to_i32(uint32_t val, uint32_t extend)
 }
 
 # define sign_extend11_to_i32(val) sign_extend_to_i32(val, 11)
-# define sign_extend24_to_i32(val) sign_extend_to_i32(val, 24)
 # define sign_extend12_to_i32(val) sign_extend_to_i32(val, 12)
+# define sign_extend24_to_i32(val) sign_extend_to_i32(val, 24)
 
 #endif /* !_GENESISBACK_DEF_H_ */

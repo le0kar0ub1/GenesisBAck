@@ -20,4 +20,6 @@
 uint32_t core_fetch_arm(void);
 uint16_t core_fetch_thumb(void);
 
+# define FETCH_RETURN(x) LOG_DEBUG("Fetching %#08X", x); return (x);
+
 #endif /* _CORE_CYCLE_FECTH_H_ */

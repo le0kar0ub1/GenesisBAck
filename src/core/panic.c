@@ -20,7 +20,7 @@
  */
 void __noreturn panic(char const *fmt, ...)
 {
-    printf("PANIC: ");
+    printf("(%spanicked%s): ", ANSI_RED, ANSI_RESET);
     va_list ap;
     va_start(ap, fmt);
     vprintf(fmt, ap);

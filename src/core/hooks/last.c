@@ -12,7 +12,6 @@
 
 static void inithook_last(void)
 {
-    run_initcall_level(4);
 }
 
 REGISTER_LAST_INITHOOK(inithook_last);

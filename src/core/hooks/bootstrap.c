@@ -9,10 +9,19 @@
 
 # include "init/inithooks.h"
 # include "init/initcalls.h"
+# include "mmu/mmu.h"
+# include "core/core.h"
+# include <stdlib.h>
+
+extern char const *rom;
 
 static void inithook_bootstrap(void)
 {
-    run_initcall_level(0);
+    LOG_VERBOSE("Welcome to GenesisBack");
+    if (!mmu_init())
+        panic("MMU init failed");
+    if (!mmu_load_rom(rom))
+        panic("Load rom failed");
 }
 
 REGISTER_BOOTSTRAP_INITHOOK(inithook_bootstrap);

@@ -235,6 +235,7 @@ void core_write_prefetch(uint32_t prefetch);
 uint32_t core_read_state(void);
 uint32_t core_read_opmode(void);
 void core_init(void);
+void core_exit(void);
 void core_start(void);
 void core_reset(void);
 void core_switch_state(uint32_t state);

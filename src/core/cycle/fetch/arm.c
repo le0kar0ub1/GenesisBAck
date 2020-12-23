@@ -11,5 +11,5 @@
 
 uint32_t core_fetch_arm(void)
 {
-    return (mmu_read32(register_read32(PC)));
+    FETCH_RETURN (mmu_read32(register_read32(PC)));
 }

@@ -38,17 +38,21 @@ void core_init(void)
     core_reset();
 }
 
+void core_exit(void) {}
+
 void core_reset(void)
 {
     register_reset();
     core_switch_opmode(PROCESSOR_OPERATION_MODE_SYSTEM);
-    register_write32(PC, 0x8000000);
+    core_switch_state(PROCESSOR_STATE_ARM);
+    register_write32(PC, 0x08000000);
     register_write32(SP, 0x3007F00);
     core_flush_pipeline();
 }
 
 void core_start(void)
 {
+    LOG_VERBOSE("Core starting...");
     while (1)
         core_scheduler();
 }

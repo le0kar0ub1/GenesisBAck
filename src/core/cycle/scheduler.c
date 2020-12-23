@@ -16,14 +16,17 @@
 static void schedule_arm(void)
 {
     uint32_t op;
+    void *(*handler)(uint32_t);
     
     op = core_read_prefetch();
+    LOG_DEBUG("Running prefetched instruction: %#x", op);
     core_write_prefetch(core_fetch_arm());
     register_uadd32(PC, 4);
 
     if (!schedule_opcode_condition(OPCODE_CONDITION_MASK(op)))
         return;
-    core_route_arm(op);
+    handler = core_route_arm(op);
+    handler(op);
 }
 
 static void schedule_thumb(void)
@@ -31,6 +34,7 @@ static void schedule_thumb(void)
     uint16_t op;
     
     op = (uint16_t)core_read_prefetch();
+    LOG_VERBOSE("Running instruction: %#x", op);
     core_write_prefetch((uint32_t)core_fetch_thumb());
     register_uadd32(PC, 2);
     core_route_thumb(op);
@@ -38,6 +42,11 @@ static void schedule_thumb(void)
 
 void core_scheduler(void)
 {
+    static size_t cnt = 0;
+
+    if (cnt++ > 10)
+        exit(0);
+    LOG_DEBUG("\n");
     if (core_read_state() == PROCESSOR_STATE_ARM)
         schedule_arm();
     else

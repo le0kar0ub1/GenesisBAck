@@ -9,10 +9,12 @@
 
 # include "init/inithooks.h"
 # include "init/initcalls.h"
+# include "core/core.h"
 
 static void inithook_core(void)
 {
-    run_initcall_level(1);
+    LOG_VERBOSE("Initializing core");
+	core_init();
 }
 
 REGISTER_CORE_INITHOOK(inithook_core);

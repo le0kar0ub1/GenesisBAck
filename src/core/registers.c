@@ -77,7 +77,7 @@ struct arm7tdmi
 /**
  * The totality of the ar7tdmi registers
  */
-struct arm7tdmi arm7tdmi;
+static struct arm7tdmi arm7tdmi;
 
 /**
  * AR7TDMI user operation mode and ARM state
@@ -425,7 +425,6 @@ struct thumb_regs *core_get_thumb_regs(void)
             return (&thumb_und);
             break;
         default:
-            LOG_ERR(__func__, "Invalid operation mode");
             panic("Invalid operation mode");
     }
 }
@@ -456,7 +455,6 @@ struct arm_regs *core_get_arm_regs(void)
             return (&arm_und);
             break;
         default:
-            LOG_ERR(__func__, "Invalid operation mode");
             panic("Invalid operation mode");
     }
 }
@@ -494,11 +492,9 @@ struct register32 *register_read_ptr(uint32_t id)
                 return (((struct register32 **)&arm_und)[id]);
                 break;
             default:
-                LOG_ERR(__func__, "Invalid operation mode");
                 panic("Invalid operation mode");
         }
-    // }
-    LOG_DEBUG(__func__, "Register id: %d, state: %d, opmode: %d", id, arm7tdmi.cpsr.state, arm7tdmi.cpsr.opmode);
+    LOG_DEBUG("Register id: %d, state: %d, opmode: %d", id, arm7tdmi.cpsr.state, arm7tdmi.cpsr.opmode);
     panic(__func__);
 }
 
@@ -574,7 +570,6 @@ struct register_psr register_read_spsr(void)
             return (*arm_und.spsr);
             break;
         default:
-            LOG_ERR(__func__, "Invalid operation mode");
             panic("Invalid operation mode");
     }
 }
@@ -599,7 +594,6 @@ void register_write_spsr(uint32_t wr)
             (*arm_und.spsr).raw = wr;
             break;
         default:
-            LOG_ERR(__func__, "Invalid operation mode");
             panic("Invalid operation mode");
     }
 }

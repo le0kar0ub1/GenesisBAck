@@ -17,10 +17,6 @@
 # include "def/assert.h"
 # include "io/log.h"
 
-# define DEBUG_STATE_MASTER false
-
-# define VERBOSE_RUN
-
 void __noreturn panic(char const *fmt, ...);
 
 #endif /* !_GENESISBACK_H_ */

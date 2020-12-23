@@ -15,7 +15,7 @@
  */
 void *core_route_arm(uint32_t op)
 {
-    switch (bitfld_readx(op, 25, 27))
+    switch (bitfld_readx(op, 26, 28))
     {
         case 0b00:
             if (bitfld_read1(op, 25) == 0b1 || (bitfld_read1(op, 25) == 0 && bitfld_readx(op, 4, 12) == 0b0))
@@ -55,5 +55,5 @@ void *core_route_arm(uint32_t op)
             goto err;
     }
     err:
-    panic(__func__, "Invalid Opcode %u", op);
+    panic("[%s]: Invalid Opcode %#x", __func__, op);
 }

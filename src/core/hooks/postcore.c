@@ -12,7 +12,6 @@
 
 static void inithook_postcore(void)
 {
-    run_initcall_level(2);
 }
 
 REGISTER_POSTCORE_INITHOOK(inithook_postcore);

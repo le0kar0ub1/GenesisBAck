@@ -13,22 +13,22 @@
 # include "def/def.h"
 # include <stdio.h>
 
-# define LOG(component, color, ...) printf("[%s%s\x1B[0m]: ", color, #component); printf(__VA_ARGS__)
+# define LOG(color, ...) printf("[%s%s\x1B[0m]: ", color, __func__); printf(__VA_ARGS__); printf("\n");
 
-# define LOG_INF(component, ...) LOG(component, "\x1B[34m", __VA_ARGS__)
-# define LOG_WRN(component, ...) LOG(component, "\x1B[33m", __VA_ARGS__)
-# define LOG_ERR(component, ...) LOG(component, "\x1B[31m", __VA_ARGS__)
+# define LOG_INF(...) LOG("\x1B[34m", __VA_ARGS__)
+# define LOG_WRN(...) LOG("\x1B[33m", __VA_ARGS__)
+# define LOG_ERR(...) LOG("\x1B[31m", __VA_ARGS__)
 
-#ifdef VERBOSE_RUN
-    # define LOG_VERBOSE(component, ...) LOG_INF(component, __VA_ARGS__)
+#if VERBOSE_RUN == true
+    # define LOG_VERBOSE(...) LOG_INF(__VA_ARGS__)
 #else
-    # define LOG_VERBOSE(component, ...)
+    # define LOG_VERBOSE(...)
 #endif
 
-#ifdef DEBUG_STATE_MASTER
-    # define LOG_DEBUG(component, ...) LOG_INF(component, __VA_ARGS__)
+#if DEBUG_STATE_MASTER == true
+    # define LOG_DEBUG(...) LOG_INF(__VA_ARGS__)
 #else
-    # define LOG_DEBUG(component, ...)
+    # define LOG_DEBUG(...)
 #endif
 
 #endif /* _IO_LOG_H_ */

@@ -49,20 +49,22 @@ struct memory
             uint8_t external_sram[0x10000];
             uint8_t _reserved8[0x1ff0000];
         };
-        uint8_t raw[0x10000000];
+        uint8_t raw[MEMORY_SIZE];
     };
 } __packed;
 
 static_assert(sizeof(struct memory) == MEMORY_SIZE);
 
-void mmu_init(void);
+bool mmu_init(void);
 void mmu_exit(void);
 void mmu_reset(void);
 uint8_t mmu_read8(uint32_t addr);
-uint8_t mmu_read16(uint32_t addr);
-uint8_t mmu_read32(uint32_t addr);
+uint16_t mmu_read16(uint32_t addr);
+uint32_t mmu_read32(uint32_t addr);
 void mmu_write8(uint32_t addr, uint8_t val);
 void mmu_write16(uint32_t addr, uint16_t val);
 void mmu_write32(uint32_t addr, uint32_t val);
+
+bool mmu_load_rom(char const *path);
 
 #endif /* _MMU_MMU_H_ */
