@@ -47,6 +47,26 @@ void core_thumb_mult_load_store(uint16_t op);
 void core_thumb_unconditional_branch(uint16_t op);
 void core_thumb_branch_link(uint16_t op);
 
-uint32_t core_exec_interpret_shifts(uint32_t val, uint32_t shift, bool carry_mod);
+uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod);
+
+static inline bool uadd32_carry(uint32_t x, uint32_t y)
+{
+    return ((x >> 31) && (y >> 31));
+}
+
+static inline bool iadd32_overflow(int32_t x, int32_t y)
+{
+    return ((!((x ^ y) >> 31)) && ((x ^ ((uint32_t)x + (uint32_t)y) >> 31)));
+}
+
+static inline bool usub32_carry(uint32_t x, uint32_t y)
+{
+    return (x >= y);
+}
+
+static inline bool isub32_overflow(int32_t x, int32_t y)
+{
+    return ((x ^ y) >> 31) && ((x ^ ((uint32_t)x - (uint32_t)y) >> 31));
+}
 
 #endif /* _CORE_CYCLE_EXEC_H_ */

@@ -14,7 +14,7 @@
  * Interpret an encoded shift for execution constraint
  * https://pdf.dzsc.com/ARM/ARM7TDMI.pdf page 54
  */
-uint32_t core_exec_interpret_shifts(uint32_t val, uint32_t shift, bool carry_mod)
+uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod)
 {
     uint32_t base;
     uint32_t stype = (shift >> 1) & 0x3;
