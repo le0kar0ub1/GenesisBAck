@@ -22,14 +22,14 @@ void *core_route_thumb(uint16_t op)
             if (bitfield_readx(op, 11, 13) == 0b11)
                 {ROUTE_RETURN (core_thumb_add_sub);}
             else
-                {ROUTE_RETURN (core_thumb_mv_shifted_reg);}
+                {ROUTE_RETURN (core_thumb_shifts);}
             goto err;
         case 0b001:
             {ROUTE_RETURN (core_thumb_imm_op);}
             goto err;
         case 0b010:
             if (bitfield_readx(op, 10, 13) == 0b000)
-                {ROUTE_RETURN (core_thumb_alu_op);}
+                {ROUTE_RETURN (core_thumb_alu);}
             else if (bitfield_readx(op, 12, 13) == 0b001)
                 {ROUTE_RETURN (core_thumb_hireg_op_br_exch);}
             else if (bitfield_readx(op, 11, 13) == 0b01)
@@ -74,5 +74,5 @@ void *core_route_thumb(uint16_t op)
             goto err;
     }
     err:
-    panic("Invalid Opcode %#x", op);
+    panic("Invalid Opcode %#04x", op);
 }

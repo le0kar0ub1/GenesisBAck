@@ -9,14 +9,6 @@
 
 # include "core/cycle/exec.h"
 
-void core_thumb_add_sub(uint16_t op) {}
-
-void core_thumb_mv_shifted_reg(uint16_t op) {}
-
-void core_thumb_imm_op(uint16_t op) {}
-
-void core_thumb_alu_op(uint16_t op) {}
-
 void core_thumb_hireg_op_br_exch(uint16_t op) {}
 
 void core_thumb_pc_rel_load(uint16_t op) {}

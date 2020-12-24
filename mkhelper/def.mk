@@ -72,6 +72,8 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D COMPILER_VERSION=$(shell $(CC) -dumpversion)	\
 					-D PROJECT_VERSION=$(VERSION)					\
 					-D ARCH=$(ARCH)									\
+					-D ROUTINE_RELEASE=0							\
+					-D ROUTINE_DEBUG=1								\
 
 export LDFLAGS	:=	
 

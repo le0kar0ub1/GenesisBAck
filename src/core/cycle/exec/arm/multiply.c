@@ -8,6 +8,7 @@
 \******************************************************************************/
 
 # include "core/cycle/exec.h"
+# include "core/exceptions.h"
 
 void core_arm_multiply(uint32_t op)
 {
@@ -40,7 +41,7 @@ void core_arm_multiply_long(uint32_t op)
     bool sign = bitfield_read1(op, 22);
 
     if (rdlo == rdhi)
-        panic("must raise an exception");
+        exception_raise(EXCEPTION_UND_INSTR);
     if (bitfield_read1(op, 21) == 0b0) {
         if (sign == 0) {
             uint64_t res = (uint64_t)(*(regs->raw[rm])) * (uint64_t)(*(regs->raw[rs]));
@@ -68,6 +69,6 @@ void core_arm_multiply_long(uint32_t op)
     if (bitfield_read1(op, 20) == 0b1) {
         regs->cpsr->zero = !(*(regs->raw[rdlo])) && !(*(regs->raw[rdhi]));
         regs->cpsr->negative = (*(regs->raw[rdhi])) >> 31;
-        // Carry flag take a "meaningless value" : lol
+        // Carry & overflow flag take a "meaningless value" : lol
     }
 }

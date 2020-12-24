@@ -16,7 +16,6 @@ char const *rom = NULL;
 
 /**
  * Program entry point
- * Obviously the emulator take the flow firstly to initialize the targeted machine
  */
 int main(int argc, char **argv)
 {
@@ -29,7 +28,16 @@ int main(int argc, char **argv)
 	}
 	run_inithooks_bylevel();
 
+#if ROUTINE == ROUTINE_RELEASE
 	core_start();
+#elif ROUTINE == ROUTINE_DEBUG
+	/**
+	 * TODO: Call the debugger 
+	*/
+	core_start();
+#else
+	#error
+#endif
 
 	core_exit();
 	mmu_exit();

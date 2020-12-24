@@ -8,6 +8,7 @@
 \******************************************************************************/
 
 # include "core/cycle/exec.h"
+# include "core/exceptions.h"
 
 void core_arm_mrs(uint32_t op)
 {
@@ -19,7 +20,7 @@ void core_arm_mrs(uint32_t op)
     } else if (regs->cpsr->opmode != OPERATION_MODE_USER && rd != R15) {
         *(regs->raw[rd]) = regs->spsr->raw;
     } else {
-        panic("must raise an exception");
+        exception_raise(EXCEPTION_UND_INSTR);
     }
 }
 
@@ -33,7 +34,7 @@ void core_arm_msr(uint32_t op)
     } else if (regs->cpsr->opmode != OPERATION_MODE_USER && rs != R15) {
         regs->spsr->raw = *(regs->raw[rs]);
     } else {
-        panic("must raise an exception");
+        exception_raise(EXCEPTION_UND_INSTR);
     }
 }
 
@@ -44,7 +45,7 @@ void core_arm_msrf(uint32_t op)
 
     if (bitfield_read1(op, 25) == 0b0) { // register
         if ((op & 0xF) == R15)
-            panic("must raise an exception");
+        exception_raise(EXCEPTION_UND_INSTR);
         op2 = *(regs->raw[(op & 0xF)]);
     } else { // immediate
         op2 = core_exec_imm8_rotate4(op & 0xFF, (op >> 8) & 0xF);
@@ -55,6 +56,6 @@ void core_arm_msrf(uint32_t op)
     } else if (regs->cpsr->opmode != OPERATION_MODE_USER) {
         regs->spsr->raw = op2;
     } else {
-        panic("must raise an exception");
+        exception_raise(EXCEPTION_UND_INSTR);
     }
 }

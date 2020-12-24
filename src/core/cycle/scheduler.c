@@ -47,7 +47,6 @@ void core_scheduler(void)
 
     if (cnt++ > 10)
         exit(0);
-    LOG_DEBUG("\n");
     if (core_read_state() == STATE_ARM)
         schedule_arm();
     else

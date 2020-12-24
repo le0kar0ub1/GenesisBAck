@@ -34,7 +34,7 @@ uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod)
             if (base == 0) {
                 carry = cpsr.carry;
             } else {
-                carry = (val >> (31 - base)) & 0b1;
+                carry = (val >> (32 - base)) & 0b1;
                 val = val << base;
             }
             break;

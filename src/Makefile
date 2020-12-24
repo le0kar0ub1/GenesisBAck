@@ -13,9 +13,10 @@ sinclude $(PROJECT_PATH)/mkhelper/toolchain.mk
 # Build directory, defaulting to debug
 ifeq ($(BUILD_MODE),release)
     TARGET_PATH		:= $(TARGET_BASE_PATH)/release
+    CCFLAGS			+= -D ROUTINE=ROUTINE_RELEASE
 else
     TARGET_PATH		:= $(TARGET_BASE_PATH)/debug
-    CCFLAGS			+= #-g3
+    CCFLAGS			+= -D ROUTINE=ROUTINE_DEBUG
 endif
 
 TARGET_OBJECTS 	:=	$(PROJECT_PATH)/src/main.o

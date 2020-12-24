@@ -37,21 +37,21 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op1 & op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         case 0b0001: // EOR (op1 XOR op2)
             *(regs->raw[rd]) = op1 ^ op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         case 0b0010: // SUB (op1 - op2)
             *(regs->raw[rd]) = op1 - op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = usub32_carry(op1, op2);
                 regs->cpsr->overflow = isub32_overflow(op1, op2);
             }
@@ -60,7 +60,7 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op2 - op1;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = usub32_carry(op2, op1);
                 regs->cpsr->overflow = isub32_overflow(op2, op1);
             }
@@ -69,7 +69,7 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op1 + op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = uadd32_carry(op1, op2);
                 regs->cpsr->overflow = iadd32_overflow(op1, op2);
             }
@@ -78,7 +78,7 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op1 + op2 + regs->cpsr->carry;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = uadd32_carry(op1, op2);
                 regs->cpsr->carry |= uadd32_carry(op1 + op2, regs->cpsr->carry);
                 regs->cpsr->overflow = iadd32_overflow(op1, op2);
@@ -89,7 +89,7 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op1 - op2 + regs->cpsr->carry - 1;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = usub32_carry(op1, op2);
                 regs->cpsr->carry |= uadd32_carry(op1 - op2, regs->cpsr->carry);
                 regs->cpsr->carry |= usub32_carry(op1 - op2 + regs->cpsr->carry, 1);
@@ -102,7 +102,7 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op2 - op1 + regs->cpsr->carry - 1;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
                 regs->cpsr->carry = usub32_carry(op2, op1);
                 regs->cpsr->carry |= uadd32_carry(op2 - op1, regs->cpsr->carry);
                 regs->cpsr->carry |= usub32_carry(op2 - op1 + regs->cpsr->carry, 1);
@@ -113,28 +113,28 @@ void core_arm_alu(uint32_t op)
             break;
         case 0b1000: // TST (as AND, but result is not written)
             if (condition && rd != R15) {
-                regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->zero = !(op1 & op2);
+                regs->cpsr->negative = ((op1 & op2) >> 31) & 0b1;
             }
             break;
         case 0b1001: // TEQ (as EOR, but result is not written)
             if (condition && rd != R15) {
-                regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->zero = !(op1 ^ op2);
+                regs->cpsr->negative = ((op1 ^ op2) >> 31) & 0b1;
             }
             break;
         case 0b1010: // CMP (as SUB, but result is not written)
             if (condition && rd != R15) {
-                regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->zero = !(op1 - op2);
+                regs->cpsr->negative = ((op1 - op2) >> 31) & 0b1;
                 regs->cpsr->carry = usub32_carry(op1, op2);
                 regs->cpsr->overflow = isub32_overflow(op1, op2);
             }
             break;
         case 0b1011: // CMN (as ADD, but result is not written)
             if (condition && rd != R15) {
-                regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->zero = !(op1 + op2);
+                regs->cpsr->negative = ((op1 + op2) >> 31) & 0b1;
                 regs->cpsr->carry = uadd32_carry(op1, op2);
                 regs->cpsr->overflow = iadd32_overflow(op1, op2);
             }
@@ -143,28 +143,28 @@ void core_arm_alu(uint32_t op)
             *(regs->raw[rd]) = op1 | op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         case 0b1101: // MOV (op2, op1 is ignored)
             *(regs->raw[rd]) = op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         case 0b1110: // BIC (op1 AND NOT op2)
             *(regs->raw[rd]) = op1 & ~op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         case 0b1111: // MVN (NOT op2, op1 is ignored)
             *(regs->raw[rd]) = ~op2;
             if (condition && rd != R15) {
                 regs->cpsr->zero = !(*(regs->raw[rd]));
-                regs->cpsr->negative = (bool)((*(regs->raw[rd])) >> 31);
+                regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             }
             break;
         default:

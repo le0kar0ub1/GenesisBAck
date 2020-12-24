@@ -16,4 +16,6 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						multiply.o				\
 						sdt.o					\
 						hfsdt.o					\
+						undefined.o				\
+						swi.o					\
 					)
