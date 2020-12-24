@@ -13,8 +13,12 @@
 # include "core/core.h"
 # include "mmu/mmu.h"
 
+void core_arm_mrs(uint32_t op);
+void core_arm_msr(uint32_t op);
+void core_arm_msrf(uint32_t op);
 void core_arm_data_processing(uint32_t op);
 void core_arm_multiply(uint32_t op);
+void core_arm_multiply_long(uint32_t op);
 void core_arm_branch_exchange(uint32_t op);
 void core_arm_reg_data_transfer(uint32_t op);
 void core_arm_imm_data_transfer(uint32_t op);
@@ -48,6 +52,7 @@ void core_thumb_unconditional_branch(uint16_t op);
 void core_thumb_branch_link(uint16_t op);
 
 uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod);
+uint32_t core_exec_imm8_rotate4(uint32_t imm, uint32_t rotate);
 
 static inline bool uadd32_carry(uint32_t x, uint32_t y)
 {

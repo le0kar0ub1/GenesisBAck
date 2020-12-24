@@ -27,11 +27,9 @@ void core_arm_data_processing(uint32_t op)
         op2 = core_exec_interpret_shift(*(regs->raw[op & 0xF]), (op >> 4) & 0xFF, condition && rd != R15);
     } else {
         uint32_t imm = op & 0xFF;
-        uint32_t rot = ((op >> 8) & 0xF) * 2;
-        op2 = (imm >> rot) | (imm << (32 - rot));
+        uint32_t rot = ((op >> 8) & 0xF);
+        op2 = core_exec_imm8_rotate4(imm, rot);
     }
-
-
 
     switch (bitfield_readx(op, 21, 25))
     {

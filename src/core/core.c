@@ -47,8 +47,8 @@ void core_reset(void)
 {
     register_reset();
     // mmu_reset();
-    core_switch_opmode(PROCESSOR_OPERATION_MODE_SYSTEM);
-    core_switch_state(PROCESSOR_STATE_ARM);
+    core_switch_opmode(OPERATION_MODE_SYSTEM);
+    core_switch_state(STATE_ARM);
     register_write32(PC, 0x08000000);
     register_write32(SP, 0x3007F00);
     core_flush_pipeline();
@@ -71,7 +71,7 @@ void core_flush_pipeline(void)
 {
     uint32_t pc = register_read32(PC);
 
-    if (core_read_state() == PROCESSOR_STATE_ARM) {
+    if (core_read_state() == STATE_ARM) {
         pc = MASK_ARM_RELOAD(pc);
         core_write_prefetch(mmu_read32(pc));
         pc += 4;

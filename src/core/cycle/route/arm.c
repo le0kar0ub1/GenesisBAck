@@ -18,10 +18,18 @@ void *core_route_arm(uint32_t op)
     switch (bitfield_readx(op, 26, 28))
     {
         case 0b00:
-            if (bitfield_read1(op, 25) == 0b1 || (bitfield_read1(op, 25) == 0 && bitfield_readx(op, 4, 12) == 0b0))
+            if (bitfield_readx(op, 23, 26) == 0b010 && bitfield_readx(op, 16, 22) == 0b001111 && bitfield_readx(op, 0, 12) == 0)
+                {ROUTE_RETURN (core_arm_mrs);}
+            else if (bitfield_readx(op, 23, 26) == 0b010 && bitfield_readx(op, 12, 22) == 0b1010011111 && bitfield_readx(op, 4, 12) == 0)
+                {ROUTE_RETURN (core_arm_msr);}
+            else if (bitfield_readx(op, 23, 25) == 0b10 && bitfield_readx(op, 12, 22) == 0b1010001111)
+                {ROUTE_RETURN (core_arm_msrf);}
+            else if (bitfield_read1(op, 25) == 0b1 || (bitfield_read1(op, 25) == 0 && bitfield_readx(op, 4, 12) == 0b0))
                 {ROUTE_RETURN (core_arm_data_processing);}
-            else if ((bitfield_readx(op, 22, 26) == 0b0000 || bitfield_readx(op, 23, 26) == 0b001) && bitfield_readx(op, 4, 8) == 0b1001)
+            else if (bitfield_readx(op, 22, 26) == 0b0000 && bitfield_readx(op, 4, 8) == 0b1001)
                 {ROUTE_RETURN (core_arm_multiply);}
+            else if (bitfield_readx(op, 23, 26) == 0b001 && bitfield_readx(op, 4, 8) == 0b1001)
+                {ROUTE_RETURN (core_arm_multiply_long);}
             else if (bitfield_readx(op, 4, 26) == 0b010010111111111111000)
                 {ROUTE_RETURN (core_arm_branch_exchange);}
             else if (bitfield_readx(op, 7, 12) == 0b00001 && bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 22) == 0b0 && bitfield_read1(op, 25) == 0b0)

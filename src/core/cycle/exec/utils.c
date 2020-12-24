@@ -68,3 +68,13 @@ uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod)
         register_write_cpsr(cpsr.raw);
     return (val);
 }
+
+/**
+ * Core apply a imm8 rotate4
+ */
+uint32_t core_exec_imm8_rotate4(uint32_t imm, uint32_t rotate)
+{
+    rotate *= 2;
+    imm = (imm >> rotate) | (imm << (32 - rotate));
+    return (imm);
+}

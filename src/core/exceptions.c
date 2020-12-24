@@ -21,7 +21,7 @@ struct exception_vector_trait
 static struct exception_vector_trait reset_vector = {
     .address  = EXCEPTION_RESET,
     .priority = 1,
-    .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
+    .opmode = OPERATION_MODE_SUPERVISOR,
     .is_irq_disable = true,
     .is_fiq_disable = true
 };
@@ -29,7 +29,7 @@ static struct exception_vector_trait reset_vector = {
 static struct exception_vector_trait und_instr_vector = {
     .address  = EXCEPTION_UND_INSTR,
     .priority = 7,
-    .opmode = PROCESSOR_OPERATION_MODE_UNDEFINED,
+    .opmode = OPERATION_MODE_UNDEFINED,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -37,7 +37,7 @@ static struct exception_vector_trait und_instr_vector = {
 static struct exception_vector_trait swi_vector = {
     .address  = EXCEPTION_SWI,
     .priority = 6,
-    .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
+    .opmode = OPERATION_MODE_SUPERVISOR,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -45,7 +45,7 @@ static struct exception_vector_trait swi_vector = {
 static struct exception_vector_trait prefetch_abt_vector = {
     .address  = EXCEPTION_PREFETCH_ABT,
     .priority = 5,
-    .opmode = PROCESSOR_OPERATION_MODE_ABORT,
+    .opmode = OPERATION_MODE_ABORT,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -53,7 +53,7 @@ static struct exception_vector_trait prefetch_abt_vector = {
 static struct exception_vector_trait data_abt_vector = {
     .address  = EXCEPTION_DATA_ABT,
     .priority = 2,
-    .opmode = PROCESSOR_OPERATION_MODE_ABORT,
+    .opmode = OPERATION_MODE_ABORT,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -61,7 +61,7 @@ static struct exception_vector_trait data_abt_vector = {
 static struct exception_vector_trait addr_exceed_vector = {
     .address  = EXCEPTION_ADDR_EXCEED,
     .priority = -1,
-    .opmode = PROCESSOR_OPERATION_MODE_SUPERVISOR,
+    .opmode = OPERATION_MODE_SUPERVISOR,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -69,7 +69,7 @@ static struct exception_vector_trait addr_exceed_vector = {
 static struct exception_vector_trait irq_vector = {
     .address  = EXCEPTION_IRQ,
     .priority = 4,
-    .opmode = PROCESSOR_OPERATION_MODE_IRQ,
+    .opmode = OPERATION_MODE_IRQ,
     .is_irq_disable = true,
     .is_fiq_disable = false
 };
@@ -77,7 +77,7 @@ static struct exception_vector_trait irq_vector = {
 static struct exception_vector_trait fiq_vector = {
     .address  = EXCEPTION_FIQ,
     .priority = 3,
-    .opmode = PROCESSOR_OPERATION_MODE_FIQ,
+    .opmode = OPERATION_MODE_FIQ,
     .is_irq_disable = true,
     .is_fiq_disable = true
 };
@@ -142,7 +142,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     /* Link register to current address */
     register_write32(LR, pc);
     /* update CPSR */
-    new_cpsr.state = PROCESSOR_STATE_ARM;
+    new_cpsr.state = STATE_ARM;
     new_cpsr.irq_disable = true;
     if (vec.is_fiq_disable == true)
         new_cpsr.fiq_disable = true;

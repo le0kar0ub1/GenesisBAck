@@ -410,25 +410,25 @@ struct thumb_regs *core_get_thumb_regs(void)
 {
     switch (arm7tdmi.cpsr.opmode)
     {
-        case PROCESSOR_OPERATION_MODE_USER:
+        case OPERATION_MODE_USER:
             return (&thumb_usr);
             break;
-        case PROCESSOR_OPERATION_MODE_FIQ:
+        case OPERATION_MODE_FIQ:
             return (&thumb_fiq);
             break;
-        case PROCESSOR_OPERATION_MODE_IRQ:
+        case OPERATION_MODE_IRQ:
             return (&thumb_irq);
             break;
-        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+        case OPERATION_MODE_SUPERVISOR:
             return (&thumb_svc);
             break;
-        case PROCESSOR_OPERATION_MODE_ABORT:
+        case OPERATION_MODE_ABORT:
             return (&thumb_abt);
             break;
-        case PROCESSOR_OPERATION_MODE_SYSTEM:
+        case OPERATION_MODE_SYSTEM:
             return (&thumb_sys);
             break;
-        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+        case OPERATION_MODE_UNDEFINED:
             return (&thumb_und);
             break;
         default:
@@ -444,25 +444,25 @@ struct arm_regs *core_get_arm_regs(void)
 {
     switch (arm7tdmi.cpsr.opmode)
     {
-        case PROCESSOR_OPERATION_MODE_USER:
+        case OPERATION_MODE_USER:
             return (&arm_usr);
             break;
-        case PROCESSOR_OPERATION_MODE_FIQ:
+        case OPERATION_MODE_FIQ:
             return (&arm_fiq);
             break;
-        case PROCESSOR_OPERATION_MODE_IRQ:
+        case OPERATION_MODE_IRQ:
             return (&arm_irq);
             break;
-        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+        case OPERATION_MODE_SUPERVISOR:
             return (&arm_svc);
             break;
-        case PROCESSOR_OPERATION_MODE_ABORT:
+        case OPERATION_MODE_ABORT:
             return (&arm_abt);
             break;
-        case PROCESSOR_OPERATION_MODE_SYSTEM:
+        case OPERATION_MODE_SYSTEM:
             return (&arm_sys);
             break;
-        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+        case OPERATION_MODE_UNDEFINED:
             return (&arm_und);
             break;
         default:
@@ -477,29 +477,29 @@ struct register32 *register_read_ptr(uint32_t id)
 {
     if (id < 8)
         return (((struct register32 **)&arm7tdmi)[id]);
-    // if (arm7tdmi.cpsr.state == PROCESSOR_STATE_ARM && id < 16)
+    // if (arm7tdmi.cpsr.state == STATE_ARM && id < 16)
     // {
         switch (arm7tdmi.cpsr.opmode)
         {
-            case PROCESSOR_OPERATION_MODE_USER:
+            case OPERATION_MODE_USER:
                 return (((struct register32 **)&arm_usr)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_FIQ:
+            case OPERATION_MODE_FIQ:
                 return (((struct register32 **)&arm_fiq)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_IRQ:
+            case OPERATION_MODE_IRQ:
                 return (((struct register32 **)&arm_irq)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+            case OPERATION_MODE_SUPERVISOR:
                 return (((struct register32 **)&arm_svc)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_ABORT:
+            case OPERATION_MODE_ABORT:
                 return (((struct register32 **)&arm_abt)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_SYSTEM:
+            case OPERATION_MODE_SYSTEM:
                 return (((struct register32 **)&arm_sys)[id]);
                 break;
-            case PROCESSOR_OPERATION_MODE_UNDEFINED:
+            case OPERATION_MODE_UNDEFINED:
                 return (((struct register32 **)&arm_und)[id]);
                 break;
             default:
@@ -598,19 +598,19 @@ struct register_psr register_read_spsr(void)
 {
     switch (arm7tdmi.cpsr.opmode)
     {
-        case PROCESSOR_OPERATION_MODE_FIQ:
+        case OPERATION_MODE_FIQ:
             return (*arm_usr.spsr);
             break;
-        case PROCESSOR_OPERATION_MODE_IRQ:
+        case OPERATION_MODE_IRQ:
             return (*arm_irq.spsr);
             break;
-        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+        case OPERATION_MODE_SUPERVISOR:
             return (*arm_svc.spsr);
             break;
-        case PROCESSOR_OPERATION_MODE_ABORT:
+        case OPERATION_MODE_ABORT:
             return (*arm_abt.spsr);
             break;
-        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+        case OPERATION_MODE_UNDEFINED:
             return (*arm_und.spsr);
             break;
         default:
@@ -625,19 +625,19 @@ void register_write_spsr(uint32_t wr)
 {
     switch (arm7tdmi.cpsr.opmode)
     {
-        case PROCESSOR_OPERATION_MODE_FIQ:
+        case OPERATION_MODE_FIQ:
             (*arm_usr.spsr).raw = wr;
             break;
-        case PROCESSOR_OPERATION_MODE_IRQ:
+        case OPERATION_MODE_IRQ:
             (*arm_irq.spsr).raw = wr;
             break;
-        case PROCESSOR_OPERATION_MODE_SUPERVISOR:
+        case OPERATION_MODE_SUPERVISOR:
             (*arm_svc.spsr).raw = wr;
             break;
-        case PROCESSOR_OPERATION_MODE_ABORT:
+        case OPERATION_MODE_ABORT:
             (*arm_abt.spsr).raw = wr;
             break;
-        case PROCESSOR_OPERATION_MODE_UNDEFINED:
+        case OPERATION_MODE_UNDEFINED:
             (*arm_und.spsr).raw = wr;
             break;
         default:
