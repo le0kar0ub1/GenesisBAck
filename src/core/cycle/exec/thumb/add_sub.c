@@ -11,7 +11,7 @@
 
 void core_thumb_add_sub(uint16_t op)
 {
-    struct thumb_regs *regs = core_get_thumb_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rd  = bitfield_readx(op, 0, 3);
     uint32_t rs  = bitfield_readx(op, 3, 6);
     uint32_t op2;

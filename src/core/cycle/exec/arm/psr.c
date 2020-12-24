@@ -12,7 +12,7 @@
 
 void core_arm_mrs(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rd = (op >> 12) & 0xF;
 
     if (bitfield_read1(op, 22) == 0b0 && rd != R15) {
@@ -26,9 +26,10 @@ void core_arm_mrs(uint32_t op)
 
 void core_arm_msr(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
-    uint32_t rs = (op >> 12) & 0xF;
+    struct opmode_regs *regs = core_get_context_regs();
+    uint32_t rs = op & 0xF;
 
+    printf("%u\n", *(regs->raw[rs]));
     if (bitfield_read1(op, 22) == 0b0 && regs->cpsr->opmode != OPERATION_MODE_USER && rs != R15) {
         regs->cpsr->raw = *(regs->raw[rs]);
     } else if (regs->cpsr->opmode != OPERATION_MODE_USER && rs != R15) {
@@ -40,7 +41,7 @@ void core_arm_msr(uint32_t op)
 
 void core_arm_msrf(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t op2;
 
     if (bitfield_read1(op, 25) == 0b0) { // register

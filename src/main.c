@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 #elif ROUTINE == ROUTINE_DEBUG
 	/**
 	 * TODO: Call the debugger 
-	*/
+	 */
 	core_start();
 #else
 	#error

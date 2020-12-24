@@ -83,7 +83,7 @@ static struct arm7tdmi arm7tdmi;
  * AR7TDMI user operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_usr = {
+static struct opmode_regs regs_usr = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -108,7 +108,7 @@ static struct arm_regs arm_usr = {
  * AR7TDMI fiq operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_fiq = {
+static struct opmode_regs regs_fiq = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -133,7 +133,7 @@ static struct arm_regs arm_fiq = {
  * AR7TDMI irq operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_irq = {
+static struct opmode_regs regs_irq = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -158,7 +158,7 @@ static struct arm_regs arm_irq = {
  * AR7TDMI supervisor operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_svc = {
+static struct opmode_regs regs_svc = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -183,7 +183,7 @@ static struct arm_regs arm_svc = {
  * AR7TDMI abort operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_abt = {
+static struct opmode_regs regs_abt = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -208,7 +208,7 @@ static struct arm_regs arm_abt = {
  * AR7TDMI system operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_sys = {
+static struct opmode_regs regs_sys = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -233,7 +233,7 @@ static struct arm_regs arm_sys = {
  * AR7TDMI undefined operation mode and ARM state
  * The registers below target the good one in the arm7tdmi mass
  */
-static struct arm_regs arm_und = {
+static struct opmode_regs regs_und = {
     .r0   = &arm7tdmi.r0,
     .r1   = &arm7tdmi.r1,
     .r2   = &arm7tdmi.r2,
@@ -255,146 +255,6 @@ static struct arm_regs arm_und = {
 };
 
 /**
- * AR7TDMI user operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_usr = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13,
-    .r14  = &arm7tdmi.r14,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = NULL
-};
-
-/**
- * AR7TDMI fiq operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_fiq = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13_fiq,
-    .r14  = &arm7tdmi.r14_fiq,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = &arm7tdmi.spsr_fiq
-};
-
-/**
- * AR7TDMI irq operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_irq = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13_irq,
-    .r14  = &arm7tdmi.r14_irq,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = &arm7tdmi.spsr_irq
-};
-
-/**
- * AR7TDMI supervisor operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_svc = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13_svc,
-    .r14  = &arm7tdmi.r14_svc,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = &arm7tdmi.spsr_svc
-};
-
-/**
- * AR7TDMI abort operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_abt = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13_abt,
-    .r14  = &arm7tdmi.r14_abt,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = &arm7tdmi.spsr_abt
-};
-
-/**
- * AR7TDMI system operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_sys = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13,
-    .r14  = &arm7tdmi.r14,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = NULL
-};
-
-/**
- * AR7TDMI undefined operation mode and Thumb state
- * The registers below target the good one in the arm7tdmi mass
- */
-static struct thumb_regs thumb_und = {
-    .r0   = &arm7tdmi.r0,
-    .r1   = &arm7tdmi.r1,
-    .r2   = &arm7tdmi.r2,
-    .r3   = &arm7tdmi.r3,
-    .r4   = &arm7tdmi.r4,
-    .r5   = &arm7tdmi.r5,
-    .r6   = &arm7tdmi.r6,
-    .r7   = &arm7tdmi.r7,
-    .r13  = &arm7tdmi.r13_und,
-    .r14  = &arm7tdmi.r14_und,
-    .r15  = &arm7tdmi.r15,
-    .cpsr = &arm7tdmi.cpsr,
-    .spsr = &arm7tdmi.spsr_und
-};
-
-/**
  * When reset the machine, reset the registers
  */
 void register_reset(void)
@@ -404,66 +264,32 @@ void register_reset(void)
 
 /**
  * In fact, owned by the core module
- * return a structure which describe the thumb registers according to the processor operation
- */
-struct thumb_regs *core_get_thumb_regs(void)
-{
-    switch (arm7tdmi.cpsr.opmode)
-    {
-        case OPERATION_MODE_USER:
-            return (&thumb_usr);
-            break;
-        case OPERATION_MODE_FIQ:
-            return (&thumb_fiq);
-            break;
-        case OPERATION_MODE_IRQ:
-            return (&thumb_irq);
-            break;
-        case OPERATION_MODE_SUPERVISOR:
-            return (&thumb_svc);
-            break;
-        case OPERATION_MODE_ABORT:
-            return (&thumb_abt);
-            break;
-        case OPERATION_MODE_SYSTEM:
-            return (&thumb_sys);
-            break;
-        case OPERATION_MODE_UNDEFINED:
-            return (&thumb_und);
-            break;
-        default:
-            panic("Invalid operation mode");
-    }
-}
-
-/**
- * In fact, owned by the core module
  * return a structure which describe the arm registers according to the processor operation
  */
-struct arm_regs *core_get_arm_regs(void)
+struct opmode_regs *core_get_context_regs(void)
 {
     switch (arm7tdmi.cpsr.opmode)
     {
         case OPERATION_MODE_USER:
-            return (&arm_usr);
+            return (&regs_usr);
             break;
         case OPERATION_MODE_FIQ:
-            return (&arm_fiq);
+            return (&regs_fiq);
             break;
         case OPERATION_MODE_IRQ:
-            return (&arm_irq);
+            return (&regs_irq);
             break;
         case OPERATION_MODE_SUPERVISOR:
-            return (&arm_svc);
+            return (&regs_svc);
             break;
         case OPERATION_MODE_ABORT:
-            return (&arm_abt);
+            return (&regs_abt);
             break;
         case OPERATION_MODE_SYSTEM:
-            return (&arm_sys);
+            return (&regs_sys);
             break;
         case OPERATION_MODE_UNDEFINED:
-            return (&arm_und);
+            return (&regs_und);
             break;
         default:
             panic("Invalid operation mode");
@@ -477,36 +303,33 @@ struct register32 *register_read_ptr(uint32_t id)
 {
     if (id < 8)
         return (((struct register32 **)&arm7tdmi)[id]);
-    // if (arm7tdmi.cpsr.state == STATE_ARM && id < 16)
-    // {
-        switch (arm7tdmi.cpsr.opmode)
-        {
-            case OPERATION_MODE_USER:
-                return (((struct register32 **)&arm_usr)[id]);
-                break;
-            case OPERATION_MODE_FIQ:
-                return (((struct register32 **)&arm_fiq)[id]);
-                break;
-            case OPERATION_MODE_IRQ:
-                return (((struct register32 **)&arm_irq)[id]);
-                break;
-            case OPERATION_MODE_SUPERVISOR:
-                return (((struct register32 **)&arm_svc)[id]);
-                break;
-            case OPERATION_MODE_ABORT:
-                return (((struct register32 **)&arm_abt)[id]);
-                break;
-            case OPERATION_MODE_SYSTEM:
-                return (((struct register32 **)&arm_sys)[id]);
-                break;
-            case OPERATION_MODE_UNDEFINED:
-                return (((struct register32 **)&arm_und)[id]);
-                break;
-            default:
-                break;
-        }
-    // }
-    panic("Invalid operation mode");
+    switch (arm7tdmi.cpsr.opmode)
+    {
+        case OPERATION_MODE_USER:
+            return (((struct register32 **)&regs_usr)[id]);
+            break;
+        case OPERATION_MODE_FIQ:
+            return (((struct register32 **)&regs_fiq)[id]);
+            break;
+        case OPERATION_MODE_IRQ:
+            return (((struct register32 **)&regs_irq)[id]);
+            break;
+        case OPERATION_MODE_SUPERVISOR:
+            return (((struct register32 **)&regs_svc)[id]);
+            break;
+        case OPERATION_MODE_ABORT:
+            return (((struct register32 **)&regs_abt)[id]);
+            break;
+        case OPERATION_MODE_SYSTEM:
+            return (((struct register32 **)&regs_sys)[id]);
+            break;
+        case OPERATION_MODE_UNDEFINED:
+            return (((struct register32 **)&regs_und)[id]);
+            break;
+        default:
+            break;
+    }
+    panic("Invalid operation mode: %d", arm7tdmi.cpsr.opmode);
 }
 
 /**
@@ -599,19 +422,19 @@ struct register_psr register_read_spsr(void)
     switch (arm7tdmi.cpsr.opmode)
     {
         case OPERATION_MODE_FIQ:
-            return (*arm_usr.spsr);
+            return (*regs_usr.spsr);
             break;
         case OPERATION_MODE_IRQ:
-            return (*arm_irq.spsr);
+            return (*regs_irq.spsr);
             break;
         case OPERATION_MODE_SUPERVISOR:
-            return (*arm_svc.spsr);
+            return (*regs_svc.spsr);
             break;
         case OPERATION_MODE_ABORT:
-            return (*arm_abt.spsr);
+            return (*regs_abt.spsr);
             break;
         case OPERATION_MODE_UNDEFINED:
-            return (*arm_und.spsr);
+            return (*regs_und.spsr);
             break;
         default:
             panic("Invalid operation mode");
@@ -626,19 +449,19 @@ void register_write_spsr(uint32_t wr)
     switch (arm7tdmi.cpsr.opmode)
     {
         case OPERATION_MODE_FIQ:
-            (*arm_usr.spsr).raw = wr;
+            (*regs_usr.spsr).raw = wr;
             break;
         case OPERATION_MODE_IRQ:
-            (*arm_irq.spsr).raw = wr;
+            (*regs_irq.spsr).raw = wr;
             break;
         case OPERATION_MODE_SUPERVISOR:
-            (*arm_svc.spsr).raw = wr;
+            (*regs_svc.spsr).raw = wr;
             break;
         case OPERATION_MODE_ABORT:
-            (*arm_abt.spsr).raw = wr;
+            (*regs_abt.spsr).raw = wr;
             break;
         case OPERATION_MODE_UNDEFINED:
-            (*arm_und.spsr).raw = wr;
+            (*regs_und.spsr).raw = wr;
             break;
         default:
             panic("Invalid operation mode");

@@ -43,6 +43,7 @@ void mmu_reset(void)
 {
     memset(mem->raw, 0x0, MEMORY_SIZE);
 }
+
 /** 
  * TODO: Raise an unaligned exception  
  */

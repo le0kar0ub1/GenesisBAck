@@ -12,8 +12,8 @@
 
 void core_arm_reg_hfdt(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
-    struct arm_regs *regs = core_get_arm_regs();
+    panic("unimplemented");
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rm = bitfield_readx(op, 0, 4);
     uint32_t rd = (op >> 12) & 0xF;
     uint32_t rn = (op >> 16) & 0xF;
@@ -28,25 +28,25 @@ void core_arm_reg_hfdt(uint32_t op)
 
 void core_arm_imm_hfdt(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
+    panic("unimplemented");
 }
 
 void core_arm_block_dt(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
+    panic("unimplemented");
 }
 
 void core_arm_coproc_dt(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
+    panic("unimplemented");
 }
 
 void core_arm_coproc_data_operation(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
+    panic("unimplemented");
 }
 
 void core_arm_coproc_register_transfer(uint32_t op)
 {
-    panic("UNIMPLEMENTED");
+    panic("unimplemented");
 }

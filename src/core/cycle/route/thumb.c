@@ -31,22 +31,22 @@ void *core_route_thumb(uint16_t op)
             if (bitfield_readx(op, 10, 13) == 0b000)
                 {ROUTE_RETURN (core_thumb_alu);}
             else if (bitfield_readx(op, 12, 13) == 0b001)
-                {ROUTE_RETURN (core_thumb_hireg_op_br_exch);}
+                {ROUTE_RETURN (core_thumb_reg_op);}
             else if (bitfield_readx(op, 11, 13) == 0b01)
-                {ROUTE_RETURN (core_thumb_pc_rel_load);}
+                {ROUTE_RETURN (core_thumb_ldr_pc);}
             else if (bitfield_read1(op, 12) == 0b1 && bitfield_read1(op, 9) == 0b0)
-                {ROUTE_RETURN (core_thumb_reg_off_load_store);}
+                {ROUTE_RETURN (core_thumb_sdt_reg);}
             else if (bitfield_read1(op, 12) == 0b1 && bitfield_read1(op, 9) == 0b1)
-                {ROUTE_RETURN (core_thumb_sign_ext_load_store);}
+                {ROUTE_RETURN (core_thumb_sdt_shw);}
             goto err;
         case 0b011:
-            {ROUTE_RETURN (core_thumb_immoff_load_store);}
+            {ROUTE_RETURN (core_thumb_sdt_imm);}
             goto err;
         case 0b100:
             if (bitfield_read1(op, 12) == 0b0)
-                {ROUTE_RETURN (core_thumb_hf_load_store);}
+                {ROUTE_RETURN (core_thumb_sdt_hw);}
             else
-                {ROUTE_RETURN (core_thumb_sp_rel_load_store);}
+                {ROUTE_RETURN (core_thumb_sdt_sp_rel);}
             goto err;
         case 0b101:
             if (bitfield_read1(op, 12) == 0b0)

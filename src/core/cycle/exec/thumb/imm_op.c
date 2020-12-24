@@ -11,7 +11,7 @@
 
 void core_thumb_imm_op(uint16_t op)
 {
-    struct thumb_regs *regs = core_get_thumb_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t off = bitfield_readx(op, 0, 8);
     uint32_t rd  = bitfield_readx(op, 8, 11);
 

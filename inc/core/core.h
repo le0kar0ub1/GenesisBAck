@@ -150,7 +150,7 @@ static_assert(sizeof(struct register_psr) == sizeof(uint32_t));
 /**
  * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
  */
-struct arm_regs
+struct opmode_regs
 {
     union
     {
@@ -183,36 +183,6 @@ struct arm_regs
     };
 };
 
-/**
- * Will be staticaly declared for each mode and will refered to the good register in the arm7dmi global
- */
-struct thumb_regs
-{
-    union
-    {
-        struct {
-            struct register32 *r0;
-            struct register32 *r1;
-            struct register32 *r2;
-            struct register32 *r3;
-            struct register32 *r4;
-            struct register32 *r5;
-            struct register32 *r6;
-            struct register32 *r7;
-            /* stack pointer */
-            struct register32 *r13;
-            /* link register */
-            struct register32 *r14;
-            /* program counter */
-            struct register32 *r15;
-
-            struct register_psr *cpsr;
-            struct register_psr *spsr;
-        };
-        uint32_t *raw[13];
-    };
-};
-
 void register_reset(void);
 struct register32 *register_read_ptr(uint32_t id);
 uint8_t register_read8(uint32_t id);
@@ -227,8 +197,7 @@ struct register_psr register_read_cpsr(void);
 void register_write_cpsr(uint32_t wr);
 struct register_psr register_read_spsr(void);
 void register_write_spsr(uint32_t wr);
-struct thumb_regs *core_get_thumb_regs(void);
-struct arm_regs *core_get_arm_regs(void);
+struct opmode_regs *core_get_context_regs(void);
 
 uint32_t core_read_prefetch(void);
 void core_write_prefetch(uint32_t prefetch);

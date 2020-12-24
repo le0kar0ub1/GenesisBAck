@@ -12,7 +12,7 @@
 
 void core_arm_multiply(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rm = (op >> 0) & 0xF;
     uint32_t rs = (op >> 8) & 0xF;
     uint32_t rn = (op >> 12) & 0xF;
@@ -33,7 +33,7 @@ void core_arm_multiply(uint32_t op)
 
 void core_arm_multiply_long(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rm = (op >> 0) & 0xF;
     uint32_t rs = (op >> 8) & 0xF;
     uint32_t rdlo = (op >> 12) & 0xF;

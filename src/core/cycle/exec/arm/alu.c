@@ -16,7 +16,7 @@
  */
 void core_arm_alu(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t rd = (op >> 12) & 0xF;
     uint32_t rn = (op >> 16) & 0xF;
     uint32_t op1 = *(regs->raw[rn]);

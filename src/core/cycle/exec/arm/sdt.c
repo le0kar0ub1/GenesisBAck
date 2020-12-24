@@ -12,7 +12,7 @@
 
 void core_arm_single_dt(uint32_t op)
 {
-    struct arm_regs *regs = core_get_arm_regs();
+    struct opmode_regs *regs = core_get_context_regs();
     uint32_t off = bitfield_readx(op, 0, 12);
     uint32_t rd = (op >> 12) & 0xF;
     uint32_t rn = (op >> 16) & 0xF;
