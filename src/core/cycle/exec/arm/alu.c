@@ -14,7 +14,7 @@
  * The ALU job
  * https://pdf.dzsc.com/ARM/ARM7TDMI.pdf  page 52
  */
-void core_arm_data_processing(uint32_t op)
+void core_arm_alu(uint32_t op)
 {
     struct arm_regs *regs = core_get_arm_regs();
     uint32_t rd = (op >> 12) & 0xF;

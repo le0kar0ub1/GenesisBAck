@@ -11,7 +11,9 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						branch.o				\
-						data_processing.o		\
+						alu.o					\
 						psr.o					\
 						multiply.o				\
+						sdt.o					\
+						hfsdt.o					\
 					)

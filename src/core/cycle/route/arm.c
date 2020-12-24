@@ -25,7 +25,7 @@ void *core_route_arm(uint32_t op)
             else if (bitfield_readx(op, 23, 25) == 0b10 && bitfield_readx(op, 12, 22) == 0b1010001111)
                 {ROUTE_RETURN (core_arm_msrf);}
             else if (bitfield_read1(op, 25) == 0b1 || (bitfield_read1(op, 25) == 0 && bitfield_readx(op, 4, 12) == 0b0))
-                {ROUTE_RETURN (core_arm_data_processing);}
+                {ROUTE_RETURN (core_arm_alu);}
             else if (bitfield_readx(op, 22, 26) == 0b0000 && bitfield_readx(op, 4, 8) == 0b1001)
                 {ROUTE_RETURN (core_arm_multiply);}
             else if (bitfield_readx(op, 23, 26) == 0b001 && bitfield_readx(op, 4, 8) == 0b1001)
@@ -33,25 +33,25 @@ void *core_route_arm(uint32_t op)
             else if (bitfield_readx(op, 4, 26) == 0b010010111111111111000)
                 {ROUTE_RETURN (core_arm_branch_exchange);}
             else if (bitfield_readx(op, 7, 12) == 0b00001 && bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 22) == 0b0 && bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_reg_data_transfer);}
+                {ROUTE_RETURN (core_arm_reg_dt);}
             else if (bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 7) == 0b1 && bitfield_read1(op, 22) == 0b1 && bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_imm_data_transfer);}
+                {ROUTE_RETURN (core_arm_imm_dt);}
             goto err;
         case 0b01:
             if (bitfield_read1(op, 25) == 0b1 && bitfield_read1(op, 4) == 0b1)
                 {ROUTE_RETURN (core_arm_undefined);}
             else
-                {ROUTE_RETURN (core_arm_single_data_transfer);}
+                {ROUTE_RETURN (core_arm_single_dt);}
             goto err;
         case 0b10:
             if (bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_block_data_trabsfer);}
+                {ROUTE_RETURN (core_arm_block_dt);}
             else
                 {ROUTE_RETURN (core_arm_branch);}
             goto err;
         case 0b11:
             if (bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_coprocessor_data_transfer);}
+                {ROUTE_RETURN (core_arm_coprocessor_dt);}
             else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b0)
                 {ROUTE_RETURN (core_arm_coprocessor_data_operation);}
             else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b1)
