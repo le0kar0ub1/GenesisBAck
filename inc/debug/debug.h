@@ -38,6 +38,7 @@ void debug_cmd_dump(int ac, char const **av);
 void debug_cmd_regs(int ac, char const **av);
 void debug_cmd_burst(int ac, char const **av);
 void debug_cmd_breakpoint(int ac, char const **av);
+void debug_cmd_wreg(int ac, char const **av);
 
 static inline int get_base(char const *inp)
 {
@@ -50,6 +51,16 @@ static inline int get_base(char const *inp)
     if (!strncmp(inp, "0o", 2))
         return (8);
     return (10);
+}
+
+static inline int32_t get_reg(char const *s)
+{
+    if (strlen(s) < 2)
+        return (-1);
+    int ret = atoi(s++);
+    if (ret > 15)
+        return (-1);
+    return (ret);
 }
 
 #endif /* _DEBUG_DEBUG_H_ */

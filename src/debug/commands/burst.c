@@ -1,4 +1,5 @@
 /******************************************************************************
+**
 **  This file is part of the GenesisBack project, and is made available under
 **  the terms of the GNU General Public License version 3.
 **
@@ -23,6 +24,7 @@ void debug_cmd_burst(int ac, char const **av)
     if (ac == 1) {
         addr = register_read32(PC);
         addr = state == STATE_ARM ? addr - 4 : addr - 2;
+        size = 1;
     } else if (ac == 2) {
         addr = register_read32(PC);
         addr = state == STATE_ARM ? addr - 4 : addr - 2;

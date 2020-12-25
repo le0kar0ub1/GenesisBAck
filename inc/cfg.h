@@ -12,7 +12,7 @@
 
 # define DEBUG_STATE_MASTER true
 
-# define VERBOSE_RUN true
+# define VERBOSE_RUN false
 
 # define CONFIG_INITLEVEL 4
 

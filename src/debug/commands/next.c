@@ -1,4 +1,5 @@
 /******************************************************************************
+**
 **  This file is part of the GenesisBack project, and is made available under
 **  the terms of the GNU General Public License version 3.
 **
@@ -17,6 +18,9 @@ void debug_cmd_next(int ac, char const **av)
         n = strtoul(av[1], NULL, get_base(av[1]));
     }
     while (n > 0) {
+    #if DEBUG_STATE_MASTER
+        debug_cmd_burst(1, NULL);
+    #endif
         core_scheduler();
         n--;
     }

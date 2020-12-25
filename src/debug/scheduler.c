@@ -1,4 +1,5 @@
 /******************************************************************************
+**
 **  This file is part of the GenesisBack project, and is made available under
 **  the terms of the GNU General Public License version 3.
 **
@@ -64,16 +65,16 @@ const struct command commands[] =
         .minimal = "r",
         .minargs = 0,
         .maxargs = 1,
-        .help = "regs [R]",
-        .description = "Display all the registers or the register R",
+        .help = "regs [REG]",
+        .description = "Display all the registers or the REG",
         .handler = debug_cmd_regs
     },
     {
         .name = "burst",
-        .minimal = NULL,
+        .minimal = "b",
         .minargs = 0,
         .maxargs = 2,
-        .help = "burst [N] [ADDR]",
+        .help = "burst [[N]|[N ADDR]]",
         .description = "Disassemble N instructions at the given address, defaulting to PC",
         .handler = debug_cmd_burst
     },
@@ -85,6 +86,15 @@ const struct command commands[] =
         .help = "breakpoint ADDR",
         .description = "Put a breakpoint at the given address",
         .handler = debug_cmd_breakpoint
+    },
+    {
+        .name = "wreg",
+        .minimal = NULL,
+        .minargs = 2,
+        .maxargs = 2,
+        .help = "wreg REG EXPR",
+        .description = "Write the EXPR in the REG",
+        .handler = debug_cmd_wreg
     },
     {
         .name = NULL,

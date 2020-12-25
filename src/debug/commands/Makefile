@@ -18,4 +18,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						regs.o				\
 						burst.o				\
 						breakpoint.o		\
+						wreg.o				\
 					)

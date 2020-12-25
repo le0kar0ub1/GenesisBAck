@@ -302,7 +302,7 @@ struct opmode_regs *core_get_context_regs(void)
 struct register32 *register_read_ptr(uint32_t id)
 {
     if (id < 8)
-        return (((struct register32 **)&arm7tdmi)[id]);
+        return (&(((struct register32 *)&arm7tdmi)[id]));
     switch (arm7tdmi.cpsr.opmode)
     {
         case OPERATION_MODE_USER:

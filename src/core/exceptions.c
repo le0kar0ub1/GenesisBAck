@@ -157,6 +157,6 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
  */
 void exception_raise(enum EXCEPTION_VECTOR vector)
 {
-    LOG_DEBUG("Raising exception %d", vector);
+    LOG_VERBOSE("Raising exception %d", vector);
     exception_perform_entry(vector);
 }
