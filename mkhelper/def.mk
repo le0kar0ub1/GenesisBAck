@@ -75,7 +75,9 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D ROUTINE_RELEASE=0							\
 					-D ROUTINE_DEBUG=1								\
 
-export LDFLAGS	:=	
+export LDFLAGS	:=	$(STATIC_LIBS) 			\
+					$(DYNAMIC_LIBS)			\
+					-l readline
 
 # Output color
 export Red			:= \e[0;31m

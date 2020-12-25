@@ -6,10 +6,12 @@
 **
 \*****************************************************************************/
 
+# include <stdlib.h>
+
 # include "genesisback.h"
 # include "mmu/mmu.h"
 # include "core/core.h"
-# include <stdlib.h>
+# include "debug/debug.h"
 # include "init/inithooks.h"
 
 char const *rom = NULL; 
@@ -31,10 +33,7 @@ int main(int argc, char **argv)
 #if ROUTINE == ROUTINE_RELEASE
 	core_start();
 #elif ROUTINE == ROUTINE_DEBUG
-	/**
-	 * TODO: Call the debugger 
-	 */
-	core_start();
+	debug_start();
 #else
 	#error
 #endif

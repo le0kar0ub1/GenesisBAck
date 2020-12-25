@@ -6,7 +6,7 @@
 **
 \*****************************************************************************/
 
-# include  "core/core.h"
+# include "core/core.h"
 # include <string.h>
 
 /**
@@ -329,7 +329,7 @@ struct register32 *register_read_ptr(uint32_t id)
         default:
             break;
     }
-    panic("Invalid operation mode: %d", arm7tdmi.cpsr.opmode);
+    panic("Invalid operation mode %d", arm7tdmi.cpsr.opmode);
 }
 
 /**

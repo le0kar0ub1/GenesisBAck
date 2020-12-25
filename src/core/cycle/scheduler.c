@@ -19,7 +19,7 @@ static void schedule_arm(void)
     void *(*handler)(uint32_t);
     
     op = core_read_prefetch();
-    LOG_DEBUG("Running prefetched instruction: %#x", op);
+    LOG_DEBUG("Running instruction %#x", op);
     core_write_prefetch(core_fetch_arm());
     register_uadd32(PC, 4);
 
@@ -32,12 +32,15 @@ static void schedule_arm(void)
 static void schedule_thumb(void)
 {
     uint16_t op;
+    void *(*handler)(uint16_t);
     
     op = (uint16_t)core_read_prefetch();
-    LOG_VERBOSE("Running instruction: %#x", op);
+    LOG_DEBUG("Running instruction %#x", op);
     core_write_prefetch((uint32_t)core_fetch_thumb());
     register_uadd32(PC, 2);
-    core_route_thumb(op);
+
+    handler = core_route_thumb(op);
+    handler(op);
 }
 
 # include <stdlib.h>

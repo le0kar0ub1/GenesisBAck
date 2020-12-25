@@ -80,6 +80,7 @@ download "$GNU_MIRROR/binutils/binutils-$BIN_VERSION.tar.xz"
 run "Extract binutils-$BIN_VERSION.tar.xz" tar xf binutils-$BIN_VERSION.tar.xz
 
 mkdir -p binutils-build || exit 1
+
 # cd binutils-build
 
 # run "Configure binutils-$BIN_VERSION-$TARGET"  ../binutils-$BIN_VERSION/configure --target=$TARGET-elf --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
@@ -145,5 +146,12 @@ run "Build binutils-$BIN_VERSION-armv7" "make && make install || exit 1"
 
 cd ..
 
-### We're done! ###################################################################
+### Build capstone ##################################################################
+run "Download capstone" git clone https://github.com/aquynh/capstone.git $PREFIX/capstone
+
+cd $PREFIX/capstone
+
+run "Build capstone" ./make.sh
+
+### We're done! #####################################################################
 printf "[\e[34;1mINFO\e[0m] Toolchain built!\n"

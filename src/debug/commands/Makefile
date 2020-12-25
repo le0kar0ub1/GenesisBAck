@@ -10,7 +10,12 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),	\
-						scheduler.o			\
+						quit.o				\
+						help.o				\
+						continue.o			\
+						next.o				\
+						dump.o				\
+						regs.o				\
+						burst.o				\
+						breakpoint.o		\
 					)
-
-sinclude $(local)/commands/Makefile

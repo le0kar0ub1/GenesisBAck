@@ -120,25 +120,25 @@ struct register_psr
         struct
         {
         #ifdef __BIG_ENDIAN__
-            uint32_t opmode        : 5;
-            uint32_t state         : 1;
-            uint32_t fiq_disable   : 1;
-            uint32_t irq_disable   : 1;
-            uint32_t _reserved     : 20;
-            uint32_t overflow      : 1;
-            uint32_t carry         : 1;
-            uint32_t zero          : 1;
             uint32_t negative      : 1;
+            uint32_t zero          : 1;
+            uint32_t carry         : 1;
+            uint32_t overflow      : 1;
+            uint32_t _reserved     : 20;
+            uint32_t irq_disable   : 1;
+            uint32_t fiq_disable   : 1;
+            uint32_t state         : 1;
+            uint32_t opmode        : 5;
         #else
-            uint32_t negative      : 1;
-            uint32_t zero          : 1;
-            uint32_t carry         : 1;
-            uint32_t overflow      : 1;
-            uint32_t _reserved     : 20;
-            uint32_t irq_disable   : 1;
-            uint32_t fiq_disable   : 1;
-            uint32_t state         : 1;
             uint32_t opmode        : 5;
+            uint32_t state         : 1;
+            uint32_t fiq_disable   : 1;
+            uint32_t irq_disable   : 1;
+            uint32_t _reserved     : 20;
+            uint32_t overflow      : 1;
+            uint32_t carry         : 1;
+            uint32_t zero          : 1;
+            uint32_t negative      : 1;
         #endif
         };
         uint32_t raw;
