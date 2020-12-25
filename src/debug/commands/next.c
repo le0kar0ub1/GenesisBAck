@@ -7,8 +7,17 @@
 \*****************************************************************************/
 
 # include "debug/debug.h"
+# include "core/core.h"
 
 void debug_cmd_next(int ac, char const **av)
 {
+    int n = 1;
 
+    if (ac == 2) {
+        n = strtoul(av[1], NULL, get_base(av[1]));
+    }
+    while (n > 0) {
+        core_scheduler();
+        n--;
+    }
 }

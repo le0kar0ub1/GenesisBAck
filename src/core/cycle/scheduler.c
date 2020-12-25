@@ -43,13 +43,8 @@ static void schedule_thumb(void)
     handler(op);
 }
 
-# include <stdlib.h>
 void core_scheduler(void)
 {
-    static size_t cnt = 0;
-
-    if (cnt++ > 10)
-        exit(0);
     if (core_read_state() == STATE_ARM)
         schedule_arm();
     else

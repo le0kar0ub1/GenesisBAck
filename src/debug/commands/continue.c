@@ -7,8 +7,11 @@
 \*****************************************************************************/
 
 # include "debug/debug.h"
+# include "core/core.h"
 
 void debug_cmd_continue(int ac, char const **av)
 {
-    
+    while (1) {
+        core_scheduler();
+    }
 }

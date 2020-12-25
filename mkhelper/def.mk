@@ -10,6 +10,8 @@
 export PROJECT		:= GenesisBack
 export PROJECT_PATH	:= $(realpath .)
 
+sinclude $(PROJECT_PATH)/mkhelper/toolchain.mk
+
 # Target architecture
 export ARCH ?= $(shell $(CC) -dumpmachine | cut -d '-' -f 1)
 
@@ -38,6 +40,7 @@ export TARGET	:=	$(PROJECT)-$(VERSION).$(EXTENSION_BIN)
 
 # Cleaner as possible
 export CCFLAGS	=	-I $(PROJECT_PATH)/inc						\
+					$(addprefix -I, $(TOOLCHAIN_INCLUDES))		\
 					-Wall										\
 					-MD											\
 					-Wcast-align					    		\
@@ -75,8 +78,8 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D ROUTINE_RELEASE=0							\
 					-D ROUTINE_DEBUG=1								\
 
-export LDFLAGS	:=	$(STATIC_LIBS) 			\
-					$(DYNAMIC_LIBS)			\
+export LDFLAGS	:=	$(STATIC_LIBS) 					 \
+					$(addprefix -l, $(DYNAMIC_LIBS)) \
 					-l readline
 
 # Output color

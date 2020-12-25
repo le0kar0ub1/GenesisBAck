@@ -16,6 +16,7 @@ const struct command commands[] =
 {
     {
         .name = "quit",
+        .minimal = "q",
         .minargs = 0,
         .maxargs = 0,
         .help = "quit",
@@ -24,6 +25,7 @@ const struct command commands[] =
     },
     {
         .name = "help",
+        .minimal = "h",
         .minargs = 0,
         .maxargs = 1,
         .help = "help [CMD]",
@@ -32,6 +34,7 @@ const struct command commands[] =
     },
     {
         .name = "continue",
+        .minimal = "c",
         .minargs = 0,
         .maxargs = 0,
         .help = "continue",
@@ -40,6 +43,7 @@ const struct command commands[] =
     },
     {
         .name = "next",
+        .minimal = "n",
         .minargs = 0,
         .maxargs = 1,
         .help = "next [N]",
@@ -48,6 +52,7 @@ const struct command commands[] =
     },
     {
         .name = "dump",
+        .minimal = NULL,
         .minargs = 2,
         .maxargs = 2,
         .help = "dump SIZE ADDRESS",
@@ -56,6 +61,7 @@ const struct command commands[] =
     },
     {
         .name = "regs",
+        .minimal = "r",
         .minargs = 0,
         .maxargs = 1,
         .help = "regs [R]",
@@ -64,22 +70,25 @@ const struct command commands[] =
     },
     {
         .name = "burst",
+        .minimal = NULL,
         .minargs = 0,
-        .maxargs = 1,
-        .help = "burst [ADDR]",
-        .description = "disassemble the given address, defaulting to PC",
+        .maxargs = 2,
+        .help = "burst [N] [ADDR]",
+        .description = "Disassemble N instructions at the given address, defaulting to PC",
         .handler = debug_cmd_burst
     },
     {
-        .name = "brk",
+        .name = "breakpoint",
+        .minimal = "brk",
         .minargs = 1,
         .maxargs = 1,
-        .help = "brk ADDR",
+        .help = "breakpoint ADDR",
         .description = "Put a breakpoint at the given address",
         .handler = debug_cmd_breakpoint
     },
     {
         .name = NULL,
+        .minimal = NULL,
         .minargs = 0,
         .maxargs = 0,
         .help = NULL,
@@ -157,12 +166,22 @@ void debug_start(void)
         cmd = strtotab(input, &args);
         if (args == 0)
             continue;
+        if ((!strcmp("quit", cmd[0]) || !strcmp("q", cmd[0])) && args == 1)
+                return;
         for (int i = 0; commands[i].name; i++)
         {
             if (
-                !strcmp(commands[i].name, cmd[0]) &&
-                args >= commands[i].minargs + 1 &&
-                args <= commands[i].maxargs + 1
+                (
+                    !strcmp(commands[i].name, cmd[0])   ||
+                    (
+                        commands[i].minimal &&
+                        !strcmp(commands[i].minimal, cmd[0])
+                    )
+                ) &&
+                (
+                    args >= commands[i].minargs + 1 &&
+                    args <= commands[i].maxargs + 1
+                )
             )
                 commands[i].handler(args, (char const **)cmd);
         }

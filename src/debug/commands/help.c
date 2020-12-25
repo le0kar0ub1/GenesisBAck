@@ -15,9 +15,9 @@ void debug_cmd_help(int ac, char const **av)
     if (ac == 2) {
         int idx = get_command_descriptor_index(av[1]);
         if (idx >= 0)
-            printf("    %s: %s\n", commands[idx].name, commands[idx].description);
+            printf("%s: \"%s\"  (%s)\n", commands[idx].name, commands[idx].help, commands[idx].description);
     } else if (ac == 1) {
         for (uint32_t i = 0; commands[i].name; i++)
-            printf("    %s: %s\n", commands[i].name, commands[i].description);
+            printf("%s: \"%s\"  (%s)\n", commands[i].name, commands[i].help, commands[i].description);
     }
 }
