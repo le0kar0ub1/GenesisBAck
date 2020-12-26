@@ -39,6 +39,7 @@ void debug_cmd_regs(int ac, char const **av);
 void debug_cmd_burst(int ac, char const **av);
 void debug_cmd_breakpoint(int ac, char const **av);
 void debug_cmd_wreg(int ac, char const **av);
+void debug_cmd_load(int ac, char const **av);
 
 static inline int get_base(char const *inp)
 {

@@ -97,12 +97,15 @@ typedef uintptr *       archp_t;
 */
 # define ALIGN(x, y)     ((typeof(x))(((uintptr)(x) + ((y) - 1)) & ~((y) - 1)))
 
+# define ALIGN2(x) (x & 0xFFFFFFFE)
+# define ALIGN4(x) (x & 0xFFFFFFFC)
+
 /**
  * Generate the following data in genesisback section 
 */
 struct genesisback_data {
-    u32_t blksize;
-    u32_t datasize;
+    uint32_t blksize;
+    uint32_t datasize;
     void *data;
     char const *name;
 } __packed;

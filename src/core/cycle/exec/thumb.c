@@ -9,31 +9,6 @@
 
 # include "core/cycle/exec.h"
 
-void core_thumb_ldr_pc(uint16_t op)
-{
-    panic("unimplemented");
-}
-
-void core_thumb_sdt_reg(uint16_t op)
-{
-    panic("unimplemented");
-}
-
-void core_thumb_sdt_shw(uint16_t op)
-{
-    panic("unimplemented");
-}
-
-void core_thumb_sdt_imm(uint16_t op)
-{
-    panic("unimplemented");
-}
-
-void core_thumb_sdt_hw(uint16_t op)
-{
-    panic("unimplemented");
-}
-
 void core_thumb_sdt_sp_rel(uint16_t op)
 {
     panic("unimplemented");

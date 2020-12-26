@@ -16,4 +16,6 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						alu.o					\
 						swi.o					\
 						reg_op.o				\
+						ldr_pc.o				\
+						load_store.o			\
 					)

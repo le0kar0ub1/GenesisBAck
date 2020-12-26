@@ -28,11 +28,8 @@ enum {
     STATE_THUMB = 0b1
 };
 
-# define MASK_ARM_RELOAD(x)   (x & 0xFFFFFFFC)
-# define MASK_THUMB_RELOAD(x) (x & 0xFFFFFFFE) 
-
-# define ALIGN2(x) (x & 0xFFFFFFFE)
-# define ALIGN4(x) (x & 0xFFFFFFFC)
+# define MASK_ARM_RELOAD(x)   ALIGN4(x)
+# define MASK_THUMB_RELOAD(x) ALIGN2(x) 
 
 /**
  * Define the 7 operations modes of the processor

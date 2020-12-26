@@ -57,7 +57,7 @@ const struct command commands[] =
         .minargs = 2,
         .maxargs = 2,
         .help = "dump SIZE ADDRESS",
-        .description = "Dump size bytes of the given address",
+        .description = "Hexdump SIZE bytes starting at the given ADDRESS",
         .handler = debug_cmd_dump
     },
     {
@@ -95,6 +95,15 @@ const struct command commands[] =
         .help = "wreg REG EXPR",
         .description = "Write the EXPR in the REG",
         .handler = debug_cmd_wreg
+    },
+    {
+        .name = "load",
+        .minimal = NULL,
+        .minargs = 1,
+        .maxargs = 2,
+        .help = "load [SIZE] ADDR",
+        .description = "Print SIZE of the given address, defaulting to 4",
+        .handler = debug_cmd_load
     },
     {
         .name = NULL,
