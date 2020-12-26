@@ -8,10 +8,11 @@ A cross-plateform GBA emulator.
   * `curl`
   * `tar`
 
-## Install (Unusable at time)
+## Install
 
-GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line.
-The dependencies are also checked-up.
+(GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line.) -> currently unusable, using host compiler.
+
+Install the dependencies.
 
 >   ./mktoolchain/mktoolchain [$architecture]
 
@@ -35,9 +36,27 @@ Example:
 
 >   make build tgt=emulator/core
 
+## Configure
+
+The file `inc/cfg.h` have some preprocessors configuration.
+
+`DEBUG_STATE_MASTER`:
+  * Debug mode: Dissassemble each executed instruction
+  * Release mode: nothing
+
+`VERBOSE_RUN`:
+  * Debug mode: nothing
+  * Release mode: Log for each cpu cycle
+
 ## Run
 
->   make run
+release mode: run the given rom normaly
+
+>   ./target/release/GenesisBack-$version.bin <path_to_tom>
+
+debug mode: run the given rom in a gdb like debugger
+
+>   ./target/release/GenesisBack-$version.bin <path_to_tom>
 
 ## Epilogue
 
