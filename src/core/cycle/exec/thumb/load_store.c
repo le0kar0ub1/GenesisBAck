@@ -147,3 +147,31 @@ void core_thumb_push_pop_reg(uint16_t op)
         }
     }
 }
+
+void core_thumb_mult_load_store(uint16_t op)
+{
+    struct opmode_regs *regs = core_get_context_regs();
+    uint32_t rd = bitfield_readx(op, 8, 11);
+    bool ls = bitfield_read1(op, 11);
+    ssize_t i;
+
+    if (!ls) { // store
+        i = 0;
+        while (i <= 7) {
+            if (bitfield_read1(op, i)) {
+                mmu_write32(*(regs->raw[rd]), *(regs->raw[i]));
+                *(regs->raw[rd]) += 4;
+            }
+            i++;
+        }
+    } else { // load
+        i = 0;
+        while (i <= 7) {
+            if (bitfield_read1(op, i)) {
+                *(regs->raw[i]) = mmu_read32(*(regs->raw[rd]));
+                *(regs->raw[rd]) += 4;
+            }
+            i++;
+        }
+    }
+}

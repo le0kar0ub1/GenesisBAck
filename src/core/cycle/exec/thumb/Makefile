@@ -18,4 +18,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						reg_op.o				\
 						manip_addr.o			\
 						load_store.o			\
+						branch.o				\
 					)

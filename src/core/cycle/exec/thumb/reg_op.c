@@ -24,12 +24,12 @@ void core_thumb_reg_op(uint16_t op)
 
     switch (bitfield_readx(op, 8, 10))
     {
-        case 0b00:
+        case 0b00: // ADD
             *(regs->raw[rd]) += *(regs->raw[rs]);
             if (rd == R15)
                 core_flush_pipeline();
             break;
-        case 0b01:
+        case 0b01: // CMP
             op1 = *(regs->raw[rd]);
             op2 = *(regs->raw[rs]);
             regs->cpsr->zero = !(op1 - op2);
@@ -37,13 +37,20 @@ void core_thumb_reg_op(uint16_t op)
             regs->cpsr->carry = usub32_carry(op1, op2);
             regs->cpsr->overflow = isub32_overflow(op1, op2);
             break;
-        case 0b10:
+        case 0b10: // MOV
             *(regs->raw[rd]) = *(regs->raw[rs]);
             if (rd == R15)
                 core_flush_pipeline();
             break;
-        default:
-            exception_raise(EXCEPTION_UND_INSTR);
+        case 0b11: // BX AKA branch &| switch state
+            if (!h1) {
+                op1 = *(regs->raw[rs]);
+                regs->r15->r32 = ALIGN2(op1);
+                regs->cpsr->state = (op1 & 0b1) ? STATE_THUMB : STATE_ARM;
+                core_flush_pipeline();
+            } else {
+                exception_raise(EXCEPTION_UND_INSTR);
+            }
             break;
     }
 }

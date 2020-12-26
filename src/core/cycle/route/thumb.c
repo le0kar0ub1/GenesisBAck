@@ -60,13 +60,13 @@ void *core_route_thumb(uint16_t op)
             if (bitfield_readx(op, 8, 13) == 0b11111)
                 {ROUTE_RETURN (core_thumb_swi);}
             else if (bitfield_read1(op, 12) == 0b1)
-                {ROUTE_RETURN (core_thumb_conditional_branch);}
+                {ROUTE_RETURN (core_thumb_cond_branch);}
             else
                 {ROUTE_RETURN (core_thumb_mult_load_store);}
             goto err;
         case 0b111:
             if (bitfield_read1(op, 12) == 0b0)
-                {ROUTE_RETURN (core_thumb_unconditional_branch);}
+                {ROUTE_RETURN (core_thumb_branch);}
             else
                 {ROUTE_RETURN (core_thumb_branch_link);}
             goto err;
