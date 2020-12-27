@@ -296,6 +296,36 @@ struct opmode_regs *core_get_context_regs(void)
     }
 }
 
+struct opmode_regs *core_get_opmode_regs(uint32_t mode)
+{
+    switch (mode)
+    {
+        case OPERATION_MODE_USER:
+            return (&regs_usr);
+            break;
+        case OPERATION_MODE_FIQ:
+            return (&regs_fiq);
+            break;
+        case OPERATION_MODE_IRQ:
+            return (&regs_irq);
+            break;
+        case OPERATION_MODE_SUPERVISOR:
+            return (&regs_svc);
+            break;
+        case OPERATION_MODE_ABORT:
+            return (&regs_abt);
+            break;
+        case OPERATION_MODE_SYSTEM:
+            return (&regs_sys);
+            break;
+        case OPERATION_MODE_UNDEFINED:
+            return (&regs_und);
+            break;
+        default:
+            panic("Invalid operation mode");
+    }
+}
+
 /**
  * There are no rights consideration, the capcity to R/W must be decided before this function call.
  */

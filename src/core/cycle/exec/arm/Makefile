@@ -14,8 +14,10 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						alu.o					\
 						psr.o					\
 						multiply.o				\
-						sdt.o					\
-						hfsdt.o					\
+						sgldt.o					\
+						hwsdt.o					\
+						dataswap.o				\
 						undefined.o				\
 						swi.o					\
+						blkdt.o					\
 					)

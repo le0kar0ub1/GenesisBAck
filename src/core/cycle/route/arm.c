@@ -28,12 +28,14 @@ void *core_route_arm(uint32_t op)
                 {ROUTE_RETURN (core_arm_multiply);}
             else if (bitfield_readx(op, 23, 26) == 0b001 && bitfield_readx(op, 4, 8) == 0b1001)
                 {ROUTE_RETURN (core_arm_multiply_long);}
+            else if (bitfield_readx(op, 4, 12) == 0b00001001 && bitfield_readx(op, 20, 22) == 0b00 && bitfield_readx(op, 23, 26) == 0b010)
+                {ROUTE_RETURN (core_arm_sgl_dataswap);}
             else if (bitfield_readx(op, 4, 26) == 0b010010111111111111000)
                 {ROUTE_RETURN (core_arm_branch_exchange);}
             else if (bitfield_readx(op, 7, 12) == 0b00001 && bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 22) == 0b0 && bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_reg_hfdt);}
+                {ROUTE_RETURN (core_arm_reg_hwdt);}
             else if (bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 7) == 0b1 && bitfield_read1(op, 22) == 0b1 && bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_imm_hfdt);}
+                {ROUTE_RETURN (core_arm_imm_hwdt);}
             else if (bitfield_read1(op, 4) == 0b0 || bitfield_read1(op, 7) == 0b0)
                 {ROUTE_RETURN (core_arm_alu);}
             goto err;

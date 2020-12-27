@@ -195,6 +195,7 @@ void register_write_cpsr(uint32_t wr);
 struct register_psr register_read_spsr(void);
 void register_write_spsr(uint32_t wr);
 struct opmode_regs *core_get_context_regs(void);
+struct opmode_regs *core_get_opmode_regs(uint32_t mode);
 
 uint32_t core_read_prefetch(void);
 void core_write_prefetch(uint32_t prefetch);
