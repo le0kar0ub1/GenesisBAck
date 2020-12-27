@@ -27,7 +27,7 @@ void core_arm_undefined(uint32_t op);
 void core_arm_single_dt(uint32_t op);
 void core_arm_block_dt(uint32_t op);
 void core_arm_branch(uint32_t op);
-void core_arm_coproc_dt(uint32_t op);
+void core_arm_coproc_data_transfer(uint32_t op);
 void core_arm_coproc_data_operation(uint32_t op);
 void core_arm_coproc_register_transfer(uint32_t op);
 void core_arm_swi(uint32_t op);

@@ -10,8 +10,7 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						utils.o					\
+						data_transfer.o			\
+						data_operation.o		\
+						register_transfer.o		\
 					)
-
-sinclude $(local)/arm/Makefile		\
-		 $(local)/thumb/Makefile

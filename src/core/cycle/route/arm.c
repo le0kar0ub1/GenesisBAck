@@ -53,7 +53,7 @@ void *core_route_arm(uint32_t op)
             goto err;
         case 0b11:
             if (bitfield_read1(op, 25) == 0b0)
-                {ROUTE_RETURN (core_arm_coproc_dt);}
+                {ROUTE_RETURN (core_arm_coproc_data_transfer);}
             else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b0)
                 {ROUTE_RETURN (core_arm_coproc_data_operation);}
             else if (bitfield_readx(op, 24, 26) == 0b10 && bitfield_read1(op, 4) == 0b1)

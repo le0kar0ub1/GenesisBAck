@@ -21,3 +21,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						swi.o					\
 						blkdt.o					\
 					)
+
+sinclude $(local)/coproc/Makefile
