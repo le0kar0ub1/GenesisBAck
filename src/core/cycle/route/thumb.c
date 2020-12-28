@@ -16,7 +16,7 @@
  */
 void *core_route_thumb(uint16_t op)
 {
-    switch (op >> 12)
+    switch (op >> 13)
     {
         case 0b000:
             if (bitfield_readx(op, 11, 13) == 0b11)
@@ -30,7 +30,7 @@ void *core_route_thumb(uint16_t op)
         case 0b010:
             if (bitfield_readx(op, 10, 13) == 0b000)
                 {ROUTE_RETURN (core_thumb_alu);}
-            else if (bitfield_readx(op, 12, 13) == 0b001)
+            else if (bitfield_readx(op, 10, 13) == 0b001)
                 {ROUTE_RETURN (core_thumb_reg_op);}
             else if (bitfield_readx(op, 11, 13) == 0b01)
                 {ROUTE_RETURN (core_thumb_ldr_pc);}

@@ -80,7 +80,7 @@ const struct command commands[] =
     },
     {
         .name = "breakpoint",
-        .minimal = "brk",
+        .minimal = "br",
         .minargs = 1,
         .maxargs = 1,
         .help = "breakpoint ADDR",

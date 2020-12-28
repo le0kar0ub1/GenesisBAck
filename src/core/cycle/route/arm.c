@@ -30,7 +30,7 @@ void *core_route_arm(uint32_t op)
                 {ROUTE_RETURN (core_arm_multiply_long);}
             else if (bitfield_readx(op, 4, 12) == 0b00001001 && bitfield_readx(op, 20, 22) == 0b00 && bitfield_readx(op, 23, 26) == 0b010)
                 {ROUTE_RETURN (core_arm_sgl_dataswap);}
-            else if (bitfield_readx(op, 4, 26) == 0b010010111111111111000)
+            else if (bitfield_readx(op, 4, 26) == 0b0100101111111111110001)
                 {ROUTE_RETURN (core_arm_branch_exchange);}
             else if (bitfield_readx(op, 7, 12) == 0b00001 && bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 22) == 0b0 && bitfield_read1(op, 25) == 0b0)
                 {ROUTE_RETURN (core_arm_reg_hwdt);}

@@ -125,7 +125,7 @@ struct genesisback_data {
 # define bitfield_read1(val, bit)  ((bool)(val & (1 << bit)))
 # define bitfield_write1(val, bit) (val |= (1 << bit))
 // inclusive from, exclusive to
-# define bitfield_readx(val, from, to) ((typeof(val))(val << (sizeof(val) * 8 - to) >> (sizeof(val) * 8 - to + from)))
+# define bitfield_readx(val, from, to) ((typeof(val))(((typeof(val))((val) << (sizeof(val) * 8 - (to)))) >> (sizeof(val) * 8 - (to) + (from)))) 
 
 static inline int32_t sign_extend_to_i32(uint32_t val, uint32_t extend)
 {

@@ -38,7 +38,7 @@ void core_thumb_branch_link(uint16_t op)
 
     if (h) {
         lr = regs->r14->r32 + (off << 1);
-        regs->r14->r32 = (regs->r15->r32 - 0b11) | 0b1;
+        regs->r14->r32 = regs->r15->r32 | 0b1;
         regs->r15->r32 = lr;
         core_flush_pipeline();
     } else {

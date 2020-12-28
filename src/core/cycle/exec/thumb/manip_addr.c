@@ -26,7 +26,7 @@ void core_thumb_load_addr(uint16_t op)
 void core_thumb_add_off_sp(uint16_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
-    uint32_t off = bitfield_readx(op, 0, 7);
+    uint32_t off = bitfield_readx(op, 0, 7) << 2;
 
     if (!bitfield_read1(op, 7)) {
         regs->r13->r32 += off;

@@ -48,13 +48,15 @@ static inline char const *get_state(uint32_t state)
 
 static inline void display_psr_regs(struct register_psr psr)
 {
-    printf("    opmode: %s\n", get_opmode(psr.opmode));
-    printf("     state: %s\n", get_state(psr.state));
-    printf("   fiq/irq: %u/%u\n", psr.fiq_disable, psr.irq_disable);
-    printf("  overflow: %u\n", psr.overflow);
-    printf("     carry: %u\n", psr.carry);
-    printf("      zero: %u\n", psr.zero);
-    printf("  negative: %u\n", psr.negative);
+    // printf("    opmode: %s\n", get_opmode(psr.opmode));
+    // printf("     state: %s\n", get_state(psr.state));
+    // printf("   fiq/irq: %u/%u\n", psr.fiq_disable, psr.irq_disable);
+    // printf("  overflow: %u\n", psr.overflow);
+    // printf("     carry: %u\n", psr.carry);
+    // printf("      zero: %u\n", psr.zero);
+    // printf("  negative: %u\n", psr.negative);
+    printf("  fiq: %u | overflow: %u |     zero: %u | opmode: %s\n", psr.fiq_disable, psr.overflow, psr.zero, get_opmode(psr.opmode));
+    printf("  irq: %u |    carry: %u | negative: %u |  state: %s\n", psr.irq_disable, psr.carry, psr.negative, get_state(psr.state));
 }
 
 void debug_cmd_regs(int ac, char const **av)
@@ -68,7 +70,7 @@ void debug_cmd_regs(int ac, char const **av)
         printf(" r4: %08x |  r5: %08x |  r6: %08x |  r7: %08x\n", *(regs->raw[4]), *(regs->raw[5]), *(regs->raw[6]), *(regs->raw[7]));
         printf(" r8: %08x |  r9: %08x | r10: %08x | r11: %08x\n", *(regs->raw[8]), *(regs->raw[9]), *(regs->raw[10]), *(regs->raw[11]));
         printf("r12: %08x | r13: %08x | r14: %08x | r15: %08x\n", *(regs->raw[12]), *(regs->raw[13]), *(regs->raw[14]), *(regs->raw[15]));
-        printf("cpsr:\n");
+        printf("\n");
         display_psr_regs(*(regs->cpsr));
         // if (regs->spsr) {
         //     printf("spsr:\n");

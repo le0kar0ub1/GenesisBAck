@@ -30,6 +30,8 @@ void debug_exit(void);
 void debug_start(void);
 int get_command_descriptor_index(char const *name);
 
+uint32_t breakpoint_get_and_remove(void);
+
 void debug_cmd_quit(int ac, char const **av);
 void debug_cmd_help(int ac, char const **av);
 void debug_cmd_continue(int ac, char const **av);
@@ -45,11 +47,11 @@ static inline int get_base(char const *inp)
 {
     if (strlen(inp) < 3)
         return (10);
-    if (!strncmp(inp, "0x", 2))
+    if (!strncmp(inp, "0x", 2) || !strncmp(inp, "0X", 2))
         return (16);
-    if (!strncmp(inp, "0b", 2))
+    if (!strncmp(inp, "0b", 2) || !strncmp(inp, "0B", 2))
         return (2);
-    if (!strncmp(inp, "0o", 2))
+    if (!strncmp(inp, "0o", 2) || !strncmp(inp, "0O", 2))
         return (8);
     return (10);
 }

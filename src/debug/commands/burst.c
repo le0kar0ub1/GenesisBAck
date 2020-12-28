@@ -18,6 +18,7 @@ void debug_cmd_burst(int ac, char const **av)
     size_t cnt;
     size_t size;
     bool state = core_read_state();
+    bool thumbshit = false;
     csh handle;
     cs_insn *burst;
 
@@ -42,6 +43,7 @@ void debug_cmd_burst(int ac, char const **av)
         &handle
     );
 
+retry:
     if (state == STATE_ARM) {
         uint32_t *code = malloc(size * 4);
         for (size_t fill = 0; fill < size; fill++)
@@ -60,8 +62,12 @@ void debug_cmd_burst(int ac, char const **av)
         for (size_t i = 0; i < cnt; i++)
             printf("%#08lx:\t%s\t%s\n", burst[i].address, burst[i].mnemonic, burst[i].op_str);
         cs_free(burst, cnt);
+    } else if (state == STATE_THUMB && thumbshit == false) {
+        thumbshit = true;
+        size += 1;
+        goto retry;
     } else {
-        printf("Dissassembling failed\n");
+        printf("Dissassembling failed address %#08x\n", addr);
     }
     cs_close(&handle);
 }
