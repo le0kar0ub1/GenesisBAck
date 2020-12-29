@@ -36,9 +36,9 @@ bool mmu_load_rom(char const *path)
         return (false);
     }
     read(fd, &(mem->external_rom_0), 0x2000000);
-    lseek(fd, 0, SEEK_SET);
-    read(fd, &(mem->external_rom_1), 0x2000000);
-    lseek(fd, 0, SEEK_SET);
-    read(fd, &(mem->external_rom_2), 0x2000000);
+    // lseek(fd, 0, SEEK_SET);
+    // read(fd, &(mem->external_rom_1), 0x2000000);
+    // lseek(fd, 0, SEEK_SET);
+    // read(fd, &(mem->external_rom_2), 0x2000000);
     return (true);
 }

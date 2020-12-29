@@ -65,6 +65,7 @@ retry:
     } else if (state == STATE_THUMB && thumbshit == false) {
         thumbshit = true;
         size += 1;
+        // addr -= 2;
         goto retry;
     } else {
         printf("Dissassembling failed address %#08x\n", addr);

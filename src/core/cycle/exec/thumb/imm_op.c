@@ -36,7 +36,6 @@ void core_thumb_imm_op(uint16_t op)
             regs->cpsr->negative = ((*(regs->raw[rd])) >> 31) & 0b1;
             break;
         case 0b11: // sub
-            printf("%u -= %u\n", rd, off);
             *(regs->raw[rd]) -= off;
             regs->cpsr->carry = usub32_carry(*(regs->raw[rd]), off);
             regs->cpsr->overflow = isub32_overflow(*(regs->raw[rd]), off);

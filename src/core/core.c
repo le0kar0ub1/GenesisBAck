@@ -49,7 +49,7 @@ void core_reset(void)
     // mmu_reset();
     core_switch_opmode(OPERATION_MODE_SYSTEM);
     core_switch_state(STATE_ARM);
-    register_write32(PC, 0x08000000);
+    register_write32(PC, 0x8000000);
     register_write32(SP, 0x3007F00);
     core_flush_pipeline();
 }

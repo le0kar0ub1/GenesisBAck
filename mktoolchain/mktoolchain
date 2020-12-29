@@ -7,6 +7,7 @@ GCC_VERSION="10.2.0"
 BIN_VERSION="2.35"
 LIB_VERSION="2.32"
 KRN_VERSION="5.9.8"
+RDL_VERSION="8.1"
 
 TARGET=$1
 
@@ -135,7 +136,7 @@ mkdir -p binutils-build || exit 1
 
 # cd ..
 
-# ### Build ARM utils ###############################################################
+### Build ARM utils ###############################################################
 cd binutils-build
 
 # make -C ../binutils-build distclean
@@ -152,6 +153,20 @@ run "Download capstone" git clone https://github.com/aquynh/capstone.git $PREFIX
 cd $PREFIX/capstone
 
 run "Build capstone" ./make.sh
+
+
+### Build readline ##################################################################
+# cd $WORKSPACE
+
+# download "$GNU_MIRROR/readline/readline-$RDL_VERSION.tar.gz"
+
+# run "Extract readline-$RDL_VERSION.tar.gz" tar xf readline-$RDL_VERSION.tar.gz --directory $PREFIX --transform "s/readline-$RDL_VERSION/readline/"
+
+# cd $PREFIX/readline
+
+# run "Configure readline" ./configure
+
+# run "Build readline" make
 
 ### We're done! #####################################################################
 printf "[\e[34;1mINFO\e[0m] Toolchain built!\n"

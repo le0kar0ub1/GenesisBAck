@@ -10,9 +10,9 @@
 export TOOLCHAIN_PATH	 :=	$(PROJECT_PATH)/mktoolchain/toolchain
 export TOOLCHAIN_GNUBASE := #$(TOOLCHAIN_PATH)/bin/$(ARCH)-elf-
 
-export TOOLCHAIN_INCLUDES	:=	$(TOOLCHAIN_PATH)/capstone/include
-export STATIC_LIBS	:=	$(TOOLCHAIN_PATH)/capstone/libcapstone.a
-export DYNAMIC_LIBS	:=
+export TOOLCHAIN_INCLUDES	:=	$(TOOLCHAIN_PATH)/capstone/include # $(TOOLCHAIN_PATH)/readline
+export STATIC_LIBS			:=	$(TOOLCHAIN_PATH)/capstone/libcapstone.a # $(TOOLCHAIN_PATH)/readline/libreadline.a
+export DYNAMIC_LIBS			:=
 
 export CC		:=	$(TOOLCHAIN_GNUBASE)gcc
 export AS		:=	$(TOOLCHAIN_GNUBASE)as

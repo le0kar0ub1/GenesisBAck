@@ -44,7 +44,7 @@ void core_thumb_shifts(uint16_t op)
             val = (int32_t)val >> off;
             break;
         default:
-            goto err;
+            panic("Invalid opcode %#04x", op);
     }
 
     regs->cpsr->carry    = carry;
@@ -52,7 +52,4 @@ void core_thumb_shifts(uint16_t op)
     regs->cpsr->negative = (val >> 31) & 0b1;
 
     *(regs->raw[rd]) = val;
-
-    err:
-    panic("Invalid opcode %#04x", op);
 }

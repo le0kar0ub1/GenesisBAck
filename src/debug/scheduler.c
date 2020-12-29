@@ -7,11 +7,11 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
+# include "debug/debug.h"
 
 const struct command commands[] =
 {
