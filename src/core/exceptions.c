@@ -82,7 +82,7 @@ static struct exception_vector_trait fiq_vector = {
     .is_fiq_disable = true
 };
 
-static inline struct exception_vector_trait cpu_fetch_exception_vector_trait(enum EXCEPTION_VECTOR vector)
+static inline struct exception_vector_trait exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
 {
     switch (vector)
     {
@@ -132,7 +132,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     uint32_t pc = (uint32_t)register_read32(PC);
     struct register_psr old_cpsr = register_read_cpsr();
     struct register_psr new_cpsr = old_cpsr;
-    struct exception_vector_trait vec = cpu_fetch_exception_vector_trait(vector);
+    struct exception_vector_trait vec = exception_fetch_vector_trait(vector);
 
     /* New opmode  */
     new_cpsr.opmode = vec.opmode;
@@ -148,14 +148,15 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
         new_cpsr.fiq_disable = true;
     register_write_cpsr(new_cpsr.raw);
     /* Set PC to vector address */
-    register_write32(PC, vec.address);
-    panic("Must reload pipeline");
+    register_write32(PC, 0x8000000 + vec.address);
+    core_flush_pipeline();
+    // panic("Must reload pipeline");
 }
 
 /**
  * Used by the cpu to raise an exception, all the need (for the switch) is handled here
  */
-void exception_raise(enum EXCEPTION_VECTOR vector)
+void exception_raise(enum EXCEPTION_VECTOR vector, uint32_t hdl)
 {
     LOG_VERBOSE("Raising exception %d", vector);
     exception_perform_entry(vector);

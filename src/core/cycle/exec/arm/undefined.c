@@ -12,5 +12,5 @@
 
 void core_arm_undefined(uint32_t op)
 {
-    exception_raise(EXCEPTION_UND_INSTR);
+    exception_raise(EXCEPTION_UND_INSTR, 0x0);
 }

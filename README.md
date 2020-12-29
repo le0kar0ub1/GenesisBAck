@@ -10,7 +10,7 @@ A cross-plateform GBA emulator.
 
 ## Install
 
-(GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line.) -> currently unusable, using host compiler.
+GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line. -> currently unusable, using host compiler.
 
 Install the dependencies.
 
@@ -31,10 +31,6 @@ Build a part of the project, the main must be contained in the given driectory.
 directory is given without `src` prefix. 
 
 defaulting to `debug` if unset.
-
-Example:
-
->   make build tgt=emulator/core
 
 ## Configure
 

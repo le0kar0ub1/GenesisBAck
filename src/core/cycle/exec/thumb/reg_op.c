@@ -20,7 +20,7 @@ void core_thumb_reg_op(uint16_t op)
     uint32_t op1, op2;
 
     if (h1 == 0 && h2 == 0)
-        exception_raise(EXCEPTION_UND_INSTR);
+        exception_raise(EXCEPTION_UND_INSTR, 0x0);
 
     switch (bitfield_readx(op, 8, 10))
     {
@@ -49,7 +49,7 @@ void core_thumb_reg_op(uint16_t op)
                 regs->cpsr->state = (op1 & 0b1) ? STATE_THUMB : STATE_ARM;
                 core_flush_pipeline();
             } else {
-                exception_raise(EXCEPTION_UND_INSTR);
+                exception_raise(EXCEPTION_UND_INSTR, 0x0);
             }
             break;
     }

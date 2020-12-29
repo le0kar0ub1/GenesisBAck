@@ -41,7 +41,7 @@ void core_arm_multiply_long(uint32_t op)
     bool sign = bitfield_read1(op, 22);
 
     if (rdlo == rdhi)
-        exception_raise(EXCEPTION_UND_INSTR);
+        exception_raise(EXCEPTION_UND_INSTR, 0x0);
     if (bitfield_read1(op, 21) == 0b0) {
         if (sign == 0) {
             uint64_t res = (uint64_t)(*(regs->raw[rm])) * (uint64_t)(*(regs->raw[rs]));

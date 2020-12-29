@@ -12,5 +12,7 @@
 
 void core_thumb_swi(uint16_t op)
 {
-    exception_raise(EXCEPTION_SWI);
+    uint32_t hdl = bitfield_readx(op, 0, 8);
+
+    exception_raise(EXCEPTION_SWI, hdl);
 }

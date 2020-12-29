@@ -12,5 +12,7 @@
 
 void core_arm_swi(uint32_t op) 
 {
-    exception_raise(EXCEPTION_SWI);
+    uint32_t hdl = bitfield_readx(op, 0, 24);
+
+    exception_raise(EXCEPTION_SWI, hdl);
 }
