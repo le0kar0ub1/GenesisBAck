@@ -150,7 +150,6 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     /* Set PC to vector address */
     register_write32(PC, 0x8000000 + vec.address);
     core_flush_pipeline();
-    // panic("Must reload pipeline");
 }
 
 /**

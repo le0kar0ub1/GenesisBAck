@@ -33,7 +33,7 @@ run: all
 	@$(TARGET_BASE_PATH)/debug/$(TARGET)
 
 disassemble:
-	@$(TOOLCHAIN_PATH)/bin/arm-tdmi-eabi-objdump --target=binary --architecture=armv4 -D res/Dragonball-GBA.gba
+	@$(TOOLCHAIN_PATH)/bin/arm-tdmi-eabi-objdump --target=binary --architecture=armv4 -D res/Dragonball.gba
 
 # Allow subdir targeted build - dev only
 build:

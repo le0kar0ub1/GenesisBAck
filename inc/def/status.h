@@ -16,9 +16,8 @@
  * GenesisBack status
 */
 typedef enum status {
-    OK = 0,
-
-    ERR_FATAL,
+    Ok = 0,
+    ERR_FATAL
 } status_t;
 
 /**

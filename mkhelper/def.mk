@@ -78,9 +78,10 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D ROUTINE_RELEASE=0							\
 					-D ROUTINE_DEBUG=1								\
 
-export LDFLAGS	:=	$(STATIC_LIBS) 					 \
-					$(addprefix -l, $(DYNAMIC_LIBS)) \
-					-l readline
+export LDFLAGS	:=	$(STATIC_LIBS) 					 	\
+					$(addprefix -l, $(DYNAMIC_LIBS)) 	\
+					-l readline							\
+					-l curses
 
 # Output color
 export Red			:= \e[0;31m

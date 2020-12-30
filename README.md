@@ -20,15 +20,7 @@ Defaulting to the host architecture if unset.
 
 ## Build
 
-Build all
-
 >   make [cfg={debug|release}]
-
-Build a part of the project, the main must be contained in the given driectory.
-
->   make build tgt=directory [cfg={debug|release}]
-
-directory is given without `src` prefix. 
 
 defaulting to `debug` if unset.
 
@@ -50,9 +42,17 @@ release mode: run the given rom normaly
 
 >   ./target/release/GenesisBack-$version.bin <path_to_tom>
 
-debug mode: run the given rom in a gdb like debugger
+debug mode: run the given rom in a gdb-like debugger
 
 >   ./target/release/GenesisBack-$version.bin <path_to_tom>
+
+## About
+
+The project is divided into 4 modules.
+
+| `Core`                               | `Debug`                  | `MMU`                   | `SoC`                                          |
+|--------------------------------------|--------------------------|-------------------------|------------------------------------------------|
+| The processor soul & functionalities | The gdb-like debugger    |  I/O memory interaction | All the components which are not the processor |
 
 ## Epilogue
 

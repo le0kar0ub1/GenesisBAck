@@ -13,13 +13,11 @@ extern initcall_t __start_initcall0[];
 extern initcall_t __start_initcall1[];
 extern initcall_t __start_initcall2[];
 extern initcall_t __start_initcall3[];
-extern initcall_t __start_initcall4[];
 
 extern initcall_t __stop_initcall0[];
 extern initcall_t __stop_initcall1[];
 extern initcall_t __stop_initcall2[];
 extern initcall_t __stop_initcall3[];
-extern initcall_t __stop_initcall4[];
 
 /*
 ** Run the given initcall level
@@ -45,10 +43,6 @@ void run_initcall_level(u8_t lvl)
         case 3:
             hook = &(*__get_calllevel_start(3));
             end  = &(*__get_calllevel_stop(3));
-            break;
-        case 4:
-            hook = &(*__get_calllevel_start(4));
-            end  = &(*__get_calllevel_stop(4));
             break;
         default:
             return;

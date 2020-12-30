@@ -13,7 +13,6 @@ extern inithook_t __start_inithook0[];
 extern inithook_t __start_inithook1[];
 extern inithook_t __start_inithook2[];
 extern inithook_t __start_inithook3[];
-extern inithook_t __start_inithook4[];
 
 # define INITHOOK_LEVEL(x)                      \
     hook = &(*__get_hooklevel(__start_inithook, x));   \
@@ -40,8 +39,5 @@ void run_inithooks_bylevel(void)
 #endif
 #if CONFIG_INITLEVEL >= 3
     INITHOOK_LEVEL(3)
-#endif
-#if CONFIG_INITLEVEL >= 4
-    INITHOOK_LEVEL(4)
 #endif
 }

@@ -23,17 +23,15 @@ typedef void (*initcall_t)(void);
 
 # define REGISTER_BOOTSTRAP_INITCALL(fn)  __define_initcall("0", fn, 0)
 # define REGISTER_CORE_INITCALL(fn)       __define_initcall("1", fn, 1)
-# define REGISTER_POSTCORE_INITCALL(fn)   __define_initcall("2", fn, 2)
-# define REGISTER_SOC_INITCALL(fn)        __define_initcall("3", fn, 3)
-# define REGISTER_LAST_INITCALL(fn)       __define_initcall("4", fn, 4)
+# define REGISTER_SOC_INITCALL(fn)        __define_initcall("2", fn, 2)
+# define REGISTER_LAST_INITCALL(fn)       __define_initcall("3", fn, 3)
 
 void run_initcalls(void);
 void run_initcall_level(u8_t);
 
 # define run_boot_initcalls()       run_initcall_level(0)
 # define run_core_initcalls()       run_initcall_level(1)
-# define run_postcore_initcalls()   run_initcall_level(2)
-# define run_soc_initcalls()        run_initcall_level(3)
-# define run_last_initcalls()       run_initcall_level(4)
+# define run_soc_initcalls()        run_initcall_level(2)
+# define run_last_initcalls()       run_initcall_level(3)
 
 #endif /* !_INIT_INITCALLS_H_ */
