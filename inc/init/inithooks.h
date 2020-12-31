@@ -24,7 +24,7 @@ enum inithooks {
     static const inithook_t __inithook_##fn##id \
     __attribute__((__used__, __section__("inithook" level))) = fn
 
-# define __get_hooklevel(type, level) __start_inithook##level
+# define __get_inithook_level(type, level) __start_inithook##level
 
 # define REGISTER_BOOTSTRAP_INITHOOK(fn)  __define_inithook("0", fn, 0)
 # define REGISTER_CORE_INITHOOK(fn)       __define_inithook("1", fn, 1)

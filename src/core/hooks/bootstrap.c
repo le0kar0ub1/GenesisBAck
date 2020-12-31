@@ -8,6 +8,7 @@
 \******************************************************************************/
 
 # include "init/inithooks.h"
+# include "init/exithooks.h"
 # include "init/initcalls.h"
 # include "mmu/mmu.h"
 # include "core/core.h"
@@ -26,3 +27,10 @@ static void inithook_bootstrap(void)
 
 REGISTER_BOOTSTRAP_INITHOOK(inithook_bootstrap);
 REGISTER_BOOTSTRAP_INITCALL(inithook_bootstrap);
+
+static void exithook_bootstrap(void)
+{
+    mmu_exit();
+}
+
+REGISTER_BOOTSTRAP_EXITHOOK(exithook_bootstrap);

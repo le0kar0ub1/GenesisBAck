@@ -11,5 +11,6 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						initcalls.o				\
+						exithooks.o				\
 						inithooks.o				\
 					)

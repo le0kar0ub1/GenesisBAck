@@ -15,7 +15,7 @@ extern inithook_t __start_inithook2[];
 extern inithook_t __start_inithook3[];
 
 # define INITHOOK_LEVEL(x)                      \
-    hook = &(*__get_hooklevel(__start_inithook, x));   \
+    hook = &(*__get_inithook_level(__start_inithook, x));   \
     (*hook)();
 
 #ifndef CONFIG_INITLEVEL

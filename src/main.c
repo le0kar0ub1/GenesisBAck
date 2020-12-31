@@ -28,6 +28,9 @@ int main(int argc, char **argv)
 	} else {
 		rom = argv[1];
 	}
+	/**
+	 * Run all the modules init calls by levels from start
+	 */
 	run_inithooks_bylevel();
 
 #if ROUTINE == ROUTINE_RELEASE
@@ -37,8 +40,9 @@ int main(int argc, char **argv)
 #else
 	#error
 #endif
-
-	core_exit();
-	mmu_exit();
+	/**
+	 * Run all the modules exit calls by levels from latest
+	 */
+	run_exithooks_bylevel();
 	return (0);
 }
