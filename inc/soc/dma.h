@@ -21,15 +21,15 @@ struct dma_ctrl
     {
         struct
         {
-            uint16_t _reserved1     : 5;
+            uint16_t _reserved1    : 5;
             uint16_t dst_ctrl      : 2;
-            uint16_t src_ctrl       : 2;
-            uint16_t dma_repeat     : 1;
-            uint16_t dma_trns_type  : 1;
-            uint16_t dma3_gamepak   : 1;
-            uint16_t dma_start_tim  : 2;
-            uint16_t irq            : 1;
-            uint16_t dma_enable     : 1;
+            uint16_t src_ctrl      : 2;
+            uint16_t dma_repeat    : 1;
+            uint16_t dma_trns_type : 1;
+            uint16_t dma3_gamepak  : 1;
+            uint16_t dma_start_tim : 2;
+            uint16_t irq           : 1;
+            uint16_t dma_enable    : 1;
         };
         uint16_t raw;
     };

@@ -41,11 +41,11 @@ static void dma0_transfer(void)
             case 0b00: //inc
                 dad += 2;
                 break;
-            case 0b01: // dev
+            case 0b01: // dec
                 dad -= 2;
                 break;
-            case 0b10: // fix
-                break;
+            // case 0b10: // fix
+                // break;
             case 0b11: // Prohibited
                 panic("Invalid DMA transfer");
                 break;
@@ -55,11 +55,11 @@ static void dma0_transfer(void)
             case 0b00: //inc
                 sad += 2;
                 break;
-            case 0b01: // dev
+            case 0b01: // dec
                 sad -= 2;
                 break;
-            case 0b10: // fix
-                break;
+            // case 0b10: // fix
+                // break;
             case 0b11: // Prohibited
                 panic("Invalid DMA transfer");
                 break;

@@ -197,6 +197,10 @@ void register_write_spsr(uint32_t wr);
 struct opmode_regs *core_get_context_regs(void);
 struct opmode_regs *core_get_opmode_regs(uint32_t mode);
 
+void core_cpu_stop_exec(void);
+void core_cpu_restart_exec(void);
+bool core_cpu_read_exec_state(void);
+void core_stop_exec(void);
 uint32_t core_read_prefetch(void);
 void core_write_prefetch(uint32_t prefetch);
 uint32_t core_read_state(void);

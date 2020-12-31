@@ -72,6 +72,7 @@ struct arm7tdmi
     struct register_psr spsr_und;
 
     uint32_t prefetch;
+    bool     running;
 };
 
 /**
@@ -512,4 +513,28 @@ uint32_t core_read_prefetch(void)
 void core_write_prefetch(uint32_t prefetch)
 {
     arm7tdmi.prefetch = prefetch;
+}
+
+/**
+ * Stop the CPU while running is false
+ */
+void core_cpu_stop_exec(void)
+{
+    arm7tdmi.running = false;
+}
+
+/**
+ * Run the CPU while running is true
+ */
+void core_cpu_restart_exec(void)
+{
+    arm7tdmi.running = true;
+}
+
+/**
+ * Read the running state
+ */
+bool core_cpu_read_exec_state(void)
+{
+    return (arm7tdmi.running);
 }

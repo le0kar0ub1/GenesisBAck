@@ -13,7 +13,7 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						panic.o				\
 						exceptions.o		\
 						core.o				\
-						registers.o			\
+						arm7tdmi.o			\
 					)
 
 sinclude 	$(local)/cycle/Makefile
