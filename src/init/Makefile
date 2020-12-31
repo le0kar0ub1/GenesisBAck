@@ -14,3 +14,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						exithooks.o				\
 						inithooks.o				\
 					)
+
+sinclude $(local)/hooks/Makefile

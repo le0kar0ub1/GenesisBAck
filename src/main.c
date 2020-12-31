@@ -13,6 +13,7 @@
 # include "core/core.h"
 # include "debug/debug.h"
 # include "init/inithooks.h"
+# include "init/exithooks.h"
 
 char const *rom = NULL; 
 

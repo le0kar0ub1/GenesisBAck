@@ -12,7 +12,6 @@
 # include "init/initcalls.h"
 # include "mmu/mmu.h"
 # include "core/core.h"
-# include <stdlib.h>
 
 extern char const *rom;
 

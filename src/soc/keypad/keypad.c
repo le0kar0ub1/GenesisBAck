@@ -13,13 +13,14 @@
 # include <stdio.h>
 # include <termios.h>
 
-struct keypad_iomem *io = (struct keypad_iomem *)KEYPAD_IOMEM_BASE;
-struct termios attr;
+static struct keypad_iomem *io = NULL;
+static struct termios attr;
 
 void keypad_init(void)
 {
     struct termios newattr;
 
+    io = (struct keypad_iomem *)KEYPAD_IOMEM_BASE;
     tcgetattr(STDIN_FILENO, &attr);
     newattr = attr;
     newattr.c_lflag &= ~(ICANON | ECHO);
@@ -29,6 +30,7 @@ void keypad_init(void)
 void keypad_exit(void)
 {
     tcsetattr(STDIN_FILENO, TCSANOW, &attr);
+    io = NULL;
 }
 
 void keypad_loop(void)

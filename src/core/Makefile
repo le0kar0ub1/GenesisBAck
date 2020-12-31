@@ -16,5 +16,4 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						registers.o			\
 					)
 
-sinclude 	$(local)/cycle/Makefile	\
-		 	$(local)/hooks/Makefile	\
+sinclude 	$(local)/cycle/Makefile
