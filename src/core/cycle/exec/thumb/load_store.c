@@ -103,9 +103,9 @@ void core_thumb_sdt_sp_rel(uint16_t op)
     bool ls = bitfield_read1(op, 11);
 
     if (ls) { // load
-        *(regs->raw[rd]) = mmu_read32(regs->r13->r32 + off);
+        *(regs->raw[rd]) = mmu_read32(*(regs->r13) + off);
     } else if (!ls) { // store
-        mmu_write32(regs->r13->r32 + off, *(regs->raw[rd]));
+        mmu_write32(*(regs->r13) + off, *(regs->raw[rd]));
     }
 }
 
@@ -115,7 +115,7 @@ void core_thumb_ldr_pc(uint16_t op)
     uint32_t imm = bitfield_readx(op, 0, 8) << 2;
     uint32_t rd = bitfield_readx(op, 8, 11);
 
-    *(regs->raw[rd]) = mmu_read32(ALIGN4(regs->r15->r32) + imm);
+    *(regs->raw[rd]) = mmu_read32(ALIGN4(*(regs->r15)) + imm);
 }
 
 void core_thumb_push_pop_reg(uint16_t op)
@@ -126,14 +126,14 @@ void core_thumb_push_pop_reg(uint16_t op)
     
     if (!bitfield_read1(op, 11)) { // push
         if (link) {
-            regs->r13->r32 -= 4;
-            mmu_write32(regs->r13->r32, regs->r14->r32);
+            *(regs->r13) -= 4;
+            mmu_write32(*(regs->r13), *(regs->r14));
         }
         i = 7;
         while (i >= 0) {
             if (bitfield_read1(op, i)) {
-                regs->r13->r32 -= 4;
-                mmu_write32(regs->r13->r32, *(regs->raw[i]));
+                *(regs->r13) -= 4;
+                mmu_write32(*(regs->r13), *(regs->raw[i]));
             }
             i--;
         }
@@ -141,14 +141,14 @@ void core_thumb_push_pop_reg(uint16_t op)
         i = 0;
         while (i <= 7) {
             if (bitfield_read1(op, i)) {
-                *(regs->raw[i]) = mmu_read32(regs->r13->r32);
-                regs->r13->r32 += 4;
+                *(regs->raw[i]) = mmu_read32(*(regs->r13));
+                *(regs->r13) += 4;
             }
             i++;
         }
         if (link) {
-            regs->r15->r32 = mmu_read32(regs->r13->r32);
-            regs->r13->r32 += 4;
+            *(regs->r15) = mmu_read32(*(regs->r13));
+            *(regs->r13) += 4;
             core_flush_pipeline();
         }
     }

@@ -17,9 +17,9 @@ void core_thumb_load_addr(uint16_t op)
     uint32_t rd = bitfield_readx(op, 8, 11);
 
     if (!bitfield_read1(op, 11)) {
-        *(regs->raw[rd]) = regs->r15->r32 + off;
+        *(regs->raw[rd]) = *(regs->r15) + off;
     } else {
-        *(regs->raw[rd]) = regs->r13->r32 + off;
+        *(regs->raw[rd]) = *(regs->r13) + off;
     }
 }
 
@@ -29,8 +29,8 @@ void core_thumb_add_off_sp(uint16_t op)
     uint32_t off = bitfield_readx(op, 0, 7) << 2;
 
     if (!bitfield_read1(op, 7)) {
-        regs->r13->r32 += off;
+        *(regs->r13) += off;
     } else {
-        regs->r13->r32 -= off;
+        *(regs->r13) -= off;
     }
 }

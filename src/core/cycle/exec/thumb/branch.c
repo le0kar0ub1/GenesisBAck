@@ -15,7 +15,7 @@ void core_thumb_cond_branch(uint16_t op)
     int32_t off = ((int32_t)(int8_t)bitfield_readx(op, 0, 8)) << 1;
     
     if (schedule_opcode_condition(bitfield_readx(op, 8, 12))) {
-        regs->r15->r32 += off;
+        *(regs->r15) += off;
         core_flush_pipeline();
     }
 }
@@ -25,7 +25,7 @@ void core_thumb_branch(uint16_t op)
     struct opmode_regs *regs = core_get_context_regs();
     int32_t off = sign_extend_to_i32(bitfield_readx(op, 0, 11) << 1, 12);
 
-    regs->r15->r32 += off;
+    *(regs->r15) += off;
     core_flush_pipeline();
 }
 
@@ -37,11 +37,11 @@ void core_thumb_branch_link(uint16_t op)
     bool h = bitfield_read1(op, 11);
 
     if (h) {
-        lr = regs->r14->r32 + (off << 1);
-        regs->r14->r32 = regs->r15->r32 | 0b1;
-        regs->r15->r32 = lr;
+        lr = *(regs->r14) + (off << 1);
+        *(regs->r14) = *(regs->r15) | 0b1;
+        *(regs->r15) = lr;
         core_flush_pipeline();
     } else {
-        regs->r14->r32 = regs->r15->r32 + (sign_extend_to_i32(off, 11) << 12);
+        *(regs->r14) = *(regs->r15) + (sign_extend_to_i32(off, 11) << 12);
     }
 }

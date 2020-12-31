@@ -15,52 +15,52 @@
 struct arm7tdmi
 {
     /* Basics registers */
-    struct register32 r0;
+    uint32_t r0;
 
-    struct register32 r1;
+    uint32_t r1;
 
-    struct register32 r2;
+    uint32_t r2;
 
-    struct register32 r3;
+    uint32_t r3;
 
-    struct register32 r4;
+    uint32_t r4;
 
-    struct register32 r5;
+    uint32_t r5;
 
-    struct register32 r6;
+    uint32_t r6;
 
-    struct register32 r7;
+    uint32_t r7;
 
-    struct register32 r8;
-    struct register32 r8_fiq;
+    uint32_t r8;
+    uint32_t r8_fiq;
 
-    struct register32 r9;
-    struct register32 r9_fiq;
+    uint32_t r9;
+    uint32_t r9_fiq;
 
-    struct register32 r10;
-    struct register32 r10_fiq;
+    uint32_t r10;
+    uint32_t r10_fiq;
 
-    struct register32 r11;
-    struct register32 r11_fiq;
+    uint32_t r11;
+    uint32_t r11_fiq;
 
-    struct register32 r12;
-    struct register32 r12_fiq;
+    uint32_t r12;
+    uint32_t r12_fiq;
 
-    struct register32 r13;
-    struct register32 r13_fiq;
-    struct register32 r13_svc;
-    struct register32 r13_abt;
-    struct register32 r13_irq;
-    struct register32 r13_und;
+    uint32_t r13;
+    uint32_t r13_fiq;
+    uint32_t r13_svc;
+    uint32_t r13_abt;
+    uint32_t r13_irq;
+    uint32_t r13_und;
 
-    struct register32 r14;
-    struct register32 r14_fiq;
-    struct register32 r14_svc;
-    struct register32 r14_abt;
-    struct register32 r14_irq;
-    struct register32 r14_und;
+    uint32_t r14;
+    uint32_t r14_fiq;
+    uint32_t r14_svc;
+    uint32_t r14_abt;
+    uint32_t r14_irq;
+    uint32_t r14_und;
 
-    struct register32 r15;
+    uint32_t r15;
 
     /* Controls registers */
     struct register_psr cpsr;
@@ -330,32 +330,32 @@ struct opmode_regs *core_get_opmode_regs(uint32_t mode)
 /**
  * There are no rights consideration, the capcity to R/W must be decided before this function call.
  */
-struct register32 *register_read_ptr(uint32_t id)
+uint32_t *register_read_ptr(uint32_t id)
 {
     if (id < 8)
-        return (&(((struct register32 *)&arm7tdmi)[id]));
+        return (&(((uint32_t *)&arm7tdmi)[id]));
     switch (arm7tdmi.cpsr.opmode)
     {
         case OPERATION_MODE_USER:
-            return (((struct register32 **)&regs_usr)[id]);
+            return (((uint32_t **)&regs_usr)[id]);
             break;
         case OPERATION_MODE_FIQ:
-            return (((struct register32 **)&regs_fiq)[id]);
+            return (((uint32_t **)&regs_fiq)[id]);
             break;
         case OPERATION_MODE_IRQ:
-            return (((struct register32 **)&regs_irq)[id]);
+            return (((uint32_t **)&regs_irq)[id]);
             break;
         case OPERATION_MODE_SUPERVISOR:
-            return (((struct register32 **)&regs_svc)[id]);
+            return (((uint32_t **)&regs_svc)[id]);
             break;
         case OPERATION_MODE_ABORT:
-            return (((struct register32 **)&regs_abt)[id]);
+            return (((uint32_t **)&regs_abt)[id]);
             break;
         case OPERATION_MODE_SYSTEM:
-            return (((struct register32 **)&regs_sys)[id]);
+            return (((uint32_t **)&regs_sys)[id]);
             break;
         case OPERATION_MODE_UNDEFINED:
-            return (((struct register32 **)&regs_und)[id]);
+            return (((uint32_t **)&regs_und)[id]);
             break;
         default:
             break;
@@ -368,7 +368,7 @@ struct register32 *register_read_ptr(uint32_t id)
  */
 uint8_t register_read8(uint32_t id)
 {
-    return ((*(register_read_ptr(id))).r8);
+    return (*(register_read_ptr(id)));
 }
 
 /**
@@ -376,7 +376,7 @@ uint8_t register_read8(uint32_t id)
  */
 uint16_t register_read16(uint32_t id)
 {
-    return ((*(register_read_ptr(id))).r16);
+    return (*(register_read_ptr(id)));
 }
 
 /**
@@ -384,7 +384,7 @@ uint16_t register_read16(uint32_t id)
  */
 uint32_t register_read32(uint32_t id)
 {
-    return ((*(register_read_ptr(id))).r32);
+    return (*(register_read_ptr(id)));
 }
 
 /**
@@ -392,7 +392,7 @@ uint32_t register_read32(uint32_t id)
  */
 void register_write8(uint32_t id, uint8_t val)
 {
-    ((*(register_read_ptr(id))).r8) = val;
+    (*(register_read_ptr(id))) = val;
 }
 
 /**
@@ -400,7 +400,7 @@ void register_write8(uint32_t id, uint8_t val)
  */
 void register_write16(uint32_t id, uint16_t val)
 {
-    ((*(register_read_ptr(id))).r16) = val;
+    (*(register_read_ptr(id))) = val;
 }
 
 /**
@@ -408,7 +408,7 @@ void register_write16(uint32_t id, uint16_t val)
  */
 void register_write32(uint32_t id, uint32_t val)
 {
-    ((*(register_read_ptr(id))).r32) = val;
+    (*(register_read_ptr(id))) = val;
 }
 
 /**
@@ -416,8 +416,8 @@ void register_write32(uint32_t id, uint32_t val)
  */
 void register_uadd32(uint32_t id, uint32_t val)
 {
-    struct register32 *r = register_read_ptr(id);
-    (*r).r32 += val;
+    uint32_t *r = register_read_ptr(id);
+    (*r) += val;
 }
 
 /**
@@ -425,8 +425,8 @@ void register_uadd32(uint32_t id, uint32_t val)
  */
 void register_usub32(uint32_t id, uint32_t val)
 {
-    struct register32 *r = register_read_ptr(id);
-    (*r).r32 -= val;
+    uint32_t *r = register_read_ptr(id);
+    (*r) -= val;
 }
 
 /**

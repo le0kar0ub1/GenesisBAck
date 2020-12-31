@@ -45,7 +45,7 @@ void core_thumb_reg_op(uint16_t op)
         case 0b11: // BX AKA branch &| switch state
             if (!h1) {
                 op1 = *(regs->raw[rs]);
-                regs->r15->r32 = ALIGN2(op1);
+                *(regs->r15) = ALIGN2(op1);
                 regs->cpsr->state = (op1 & 0b1) ? STATE_THUMB : STATE_ARM;
                 core_flush_pipeline();
             } else {

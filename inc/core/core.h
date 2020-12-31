@@ -105,7 +105,7 @@ struct register32
     };
 };
 
-static_assert(sizeof(struct register32) == 4);
+static_assert(sizeof(uint32_t) == 4);
 
 /**
  * CPSR register articulation
@@ -153,25 +153,25 @@ struct opmode_regs
     {
         struct
         {
-            struct register32 *r0;
-            struct register32 *r1;
-            struct register32 *r2;
-            struct register32 *r3;
-            struct register32 *r4;
-            struct register32 *r5;
-            struct register32 *r6;
-            struct register32 *r7;
-            struct register32 *r8;
-            struct register32 *r9;
-            struct register32 *r10;
-            struct register32 *r11;
-            struct register32 *r12;
+            uint32_t *r0;
+            uint32_t *r1;
+            uint32_t *r2;
+            uint32_t *r3;
+            uint32_t *r4;
+            uint32_t *r5;
+            uint32_t *r6;
+            uint32_t *r7;
+            uint32_t *r8;
+            uint32_t *r9;
+            uint32_t *r10;
+            uint32_t *r11;
+            uint32_t *r12;
             /* stack pointer */
-            struct register32 *r13;
+            uint32_t *r13;
             /* link register */
-            struct register32 *r14;
+            uint32_t *r14;
             /* program counter */
-            struct register32 *r15;
+            uint32_t *r15;
 
             struct register_psr *cpsr;
             struct register_psr *spsr;
@@ -181,7 +181,7 @@ struct opmode_regs
 };
 
 void register_reset(void);
-struct register32 *register_read_ptr(uint32_t id);
+uint32_t *register_read_ptr(uint32_t id);
 uint8_t register_read8(uint32_t id);
 uint16_t register_read16(uint32_t id);
 uint32_t register_read32(uint32_t id);
