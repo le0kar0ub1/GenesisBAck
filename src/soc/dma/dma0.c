@@ -24,14 +24,14 @@ void dma0_exit(void)
 
 static void dma0_transfer(void)
 {
-    uint32_t sad  = io->dma_sad & ((1 << 27) - 1);
-    uint32_t dad  = io->dma_dad & ((1 << 27) - 1);
+    uint32_t sad  = io->dma_sad   & ((1 << 27) - 1);
+    uint32_t dad  = io->dma_dad   & ((1 << 27) - 1);
     uint32_t unit = io->dma_count & ((1 << 14) - 1);
 
     if (io->dma_ctrl.dma_trns_type) { // word
         unit *= 2;
     } else {
-        // all come good
+        // all comes good
     }
     while (unit > 0)
     {

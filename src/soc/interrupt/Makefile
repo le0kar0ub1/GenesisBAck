@@ -10,13 +10,5 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
+						interrupt.o				\
 					)
-
-sinclude $(local)/dma/Makefile			\
-		 $(local)/control/Makefile		\
-		 $(local)/keypad/Makefile		\
-		 $(local)/sound/Makefile		\
-		 $(local)/timer/Makefile		\
-		 $(local)/video/Makefile		\
-		 $(local)/serial/Makefile		\
-		 $(local)/interrupt/Makefile	\
