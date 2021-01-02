@@ -10,38 +10,17 @@
 # include <endian.h>
 # include <stdlib.h>
 # include <string.h>
+# include "modules/module.h"
 # include "mmu/mmu.h"
 
 struct memory *mem;
 
 /**
- * Initialize the memory module
+ * Load the EMULATOR address shifted
  */
-bool mmu_init(void)
+uintptr_t mmu_load_addr(uint32_t shift)
 {
-    mem = malloc(sizeof(struct memory));
-    if (!mem) {
-        LOG_ERR("Memory initialization failed");
-        return (false);
-    }
-    mmu_reset();
-    return (true);
-}
-
-/**
- * destroy the memory module
- */
-void mmu_exit(void)
-{
-    free(mem);
-}
-
-/**
- * When reset the machine, reset the memory module
- */
-void mmu_reset(void)
-{
-    memset(mem->raw, 0x0, MEMORY_SIZE);
+    return ((uintptr_t)(mem->raw + shift));
 }
 
 /** 
@@ -132,3 +111,42 @@ void mmu_write32(uint32_t addr, uint32_t val)
         *((uint32_t *)(mem->raw + addr)) = htole32(val);
     #endif
 }
+
+/**
+ * destroy the memory module
+ */
+static void mmu_exit(void)
+{
+    free(mem);
+}
+
+/**
+ * When reset the machine, reset the memory module
+ */
+static void mmu_reset(void)
+{
+    memset(mem->raw, 0x0, MEMORY_SIZE);
+}
+
+/**
+ * Initialize the memory module
+ */
+static void mmu_init(void)
+{
+    mem = malloc(sizeof(struct memory));
+    if (!mem) {
+        panic("MMU init failed");
+    }
+    mmu_reset();
+}
+
+REGISTER_MODULE(
+    mmu,
+    "The MMU of the all the emulator core",
+    MODULE_HOOK_BOOTSTRAP,
+    mmu_init,
+    mmu_exit,
+    mmu_reset,
+    NULL,
+    NULL
+);

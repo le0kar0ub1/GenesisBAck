@@ -100,25 +100,6 @@ typedef uintptr *       archp_t;
 # define ALIGN2(x) (x & 0xFFFFFFFE)
 # define ALIGN4(x) (x & 0xFFFFFFFC)
 
-/**
- * Generate the following data in genesisback section 
-*/
-struct genesisback_data {
-    uint32_t blksize;
-    uint32_t datasize;
-    void *data;
-    char const *name;
-} __packed;
-
-# define REGISTER_GENESISBACK_DATA(xname, xdata, xdatasize)         \
-    __section("genesisback_dat") __used                             \
-    static const struct genesisback_data const xname = {            \
-        .blksize = sizeof(#xname) + sizeof(void *) + xdatasize,     \
-        .datasize = xdatasize,                                      \
-        .data = xdata,                                              \
-        .name = #xname                                              \
-    }
-
 # define ADD_PTR(x, y) ((typeof(x))((uintptr_t)x + (uintptr_t)y))
 # define SUB_PTR(x, y) ((typeof(x))((uintptr_t)x - (uintptr_t)y))
 

@@ -24,7 +24,7 @@ TARGET_OBJECTS 	:=	$(PROJECT_PATH)/src/main.o
 ifeq ($(tgt),all)
 sinclude $(PROJECT_PATH)/src/core/Makefile
 sinclude $(PROJECT_PATH)/src/debug/Makefile
-sinclude $(PROJECT_PATH)/src/init/Makefile
+sinclude $(PROJECT_PATH)/src/modules/Makefile
 sinclude $(PROJECT_PATH)/src/mmu/Makefile
 sinclude $(PROJECT_PATH)/src/soc/Makefile
 else

@@ -33,50 +33,6 @@ enum {
     KEYPAD_RELEASE_KEY = 1
 };
 
-struct keypad_iomem
-{
-    union
-    {
-        struct
-        {
-            uint32_t stat_a : 1;
-            uint32_t stat_b : 1;
-            uint32_t stat_select : 1;
-            uint32_t stat_start : 1;
-            uint32_t stat_right : 1;
-            uint32_t stat_left : 1;
-            uint32_t stat_up : 1;
-            uint32_t stat_down : 1;
-            uint32_t stat_r : 1;
-            uint32_t stat_l : 1;
-            uint32_t _reserved1 : 6;
-        };
-        uint16_t key_status;
-    };
-    union
-    {
-        struct
-        {
-            uint32_t ctrl_a : 1;
-            uint32_t ctrl_b : 1;
-            uint32_t ctrl_select : 1;
-            uint32_t ctrl_start : 1;
-            uint32_t ctrl_right : 1;
-            uint32_t ctrl_left : 1;
-            uint32_t ctrl_up : 1;
-            uint32_t ctrl_down : 1;
-            uint32_t ctrl_r : 1;
-            uint32_t ctrl_l : 1;
-            uint32_t _reserved2 : 4;
-            uint32_t irq_enable : 1;
-            uint32_t irq_cond : 1;
-        };
-        uint16_t key_ctrl;
-    };
-};
-
-void keypad_init(void);
-void keypad_exit(void);
 void keypad_trigger_key(uint32_t key, bool type);
 
 #endif /* _SOC_KEYPAD_H_ */

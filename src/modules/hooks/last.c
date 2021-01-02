@@ -7,16 +7,15 @@
 **
 \******************************************************************************/
 
-# include "init/inithooks.h"
-# include "init/exithooks.h"
-# include "init/initcalls.h"
+# include "modules/inithooks.h"
+# include "modules/exithooks.h"
+# include "modules/module.h"
 
 static void inithook_last(void)
 {
 }
 
 REGISTER_LAST_INITHOOK(inithook_last);
-REGISTER_LAST_INITCALL(inithook_last);
 
 static void exithook_last(void)
 {

@@ -11,8 +11,11 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						initcalls.o				\
+						exitcalls.o				\
 						exithooks.o				\
 						inithooks.o				\
+						handlercalls.o			\
+						resetcalls.o			\
 					)
 
 sinclude $(local)/hooks/Makefile

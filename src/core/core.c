@@ -8,6 +8,7 @@
 
 # include "core/core.h"
 # include "mmu/mmu.h"
+# include "modules/module.h"
 
 uint32_t core_read_state(void)
 {
@@ -33,37 +34,6 @@ void core_switch_opmode(uint32_t opmode)
     register_write_cpsr(cpsr.raw);
 }
 
-void core_init(void)
-{
-    core_reset();
-}
-
-void core_exit(void) {}
-
-/**
- *  Reset the machine
- */
-void core_reset(void)
-{
-    register_reset();
-    // mmu_reset();
-    core_switch_opmode(OPERATION_MODE_SYSTEM);
-    core_switch_state(STATE_ARM);
-    register_write32(PC, 0x8000000);
-    register_write32(SP, 0x3007F00);
-    core_flush_pipeline();
-}
-
-/**
- * Start the execution
- */
-void core_start(void)
-{
-    LOG_VERBOSE("Core starting...");
-    while (1)
-        core_scheduler();
-}
-
 /**
  * Flush/Reload the pipeline
  */
@@ -83,3 +53,40 @@ void core_flush_pipeline(void)
         register_write32(PC, pc);
     }
 }
+
+static void core_reset(void)
+{
+    register_reset();
+    core_switch_opmode(OPERATION_MODE_SYSTEM);
+    core_switch_state(STATE_ARM);
+    register_write32(PC, 0x8000000);
+    register_write32(SP, 0x3007F00);
+    core_flush_pipeline();
+}
+
+/**
+ * Start the execution
+ */
+static void core_start(void)
+{
+    while (1)
+        core_scheduler();
+}
+
+static void core_init(void)
+{
+    core_reset();
+}
+
+static void core_exit(void) {}
+
+REGISTER_MODULE(
+    core,
+    "The core of the emulator which schedule the execution",
+    MODULE_HOOK_CORE,
+    core_init,
+    core_exit,
+    core_reset,
+    core_start,
+    NULL
+);

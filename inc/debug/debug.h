@@ -25,9 +25,6 @@ struct command
     void (*handler)(int, char const **);
 };
 
-void debug_init(void);
-void debug_exit(void);
-void debug_start(void);
 int get_command_descriptor_index(char const *name);
 
 uint32_t breakpoint_get_and_remove(void);
@@ -42,6 +39,7 @@ void debug_cmd_burst(int ac, char const **av);
 void debug_cmd_breakpoint(int ac, char const **av);
 void debug_cmd_wreg(int ac, char const **av);
 void debug_cmd_load(int ac, char const **av);
+void debug_cmd_module(int ac, char const **av);
 
 static inline int get_base(char const *inp)
 {

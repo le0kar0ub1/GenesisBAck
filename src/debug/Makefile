@@ -10,7 +10,7 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),	\
-						scheduler.o			\
+						debug.o				\
 					)
 
 sinclude $(local)/commands/Makefile

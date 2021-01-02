@@ -7,9 +7,9 @@
 **
 \******************************************************************************/
 
-# include "init/inithooks.h"
-# include "init/exithooks.h"
-# include "init/initcalls.h"
+# include "modules/inithooks.h"
+# include "modules/exithooks.h"
+# include "modules/module.h"
 # include "mmu/mmu.h"
 # include "core/core.h"
 
@@ -17,19 +17,16 @@ extern char const *rom;
 
 static void inithook_bootstrap(void)
 {
-    LOG_VERBOSE("Welcome to GenesisBack");
-    if (!mmu_init())
-        panic("MMU init failed");
+    module_init_runhook(MODULE_HOOK_BOOTSTRAP);
     if (!mmu_load_rom(rom))
-        panic("Load rom failed");
+        panic("ROM load failed");
 }
 
 REGISTER_BOOTSTRAP_INITHOOK(inithook_bootstrap);
-REGISTER_BOOTSTRAP_INITCALL(inithook_bootstrap);
 
 static void exithook_bootstrap(void)
 {
-    mmu_exit();
+    module_exit_runhook(MODULE_HOOK_BOOTSTRAP);
 }
 
 REGISTER_BOOTSTRAP_EXITHOOK(exithook_bootstrap);

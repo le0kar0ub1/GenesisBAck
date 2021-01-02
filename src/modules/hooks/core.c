@@ -7,19 +7,21 @@
 **
 \******************************************************************************/
 
-# include "init/inithooks.h"
-# include "init/exithooks.h"
-# include "init/initcalls.h"
+# include "modules/inithooks.h"
+# include "modules/exithooks.h"
+# include "modules/module.h"
+# include "core/core.h"
 
-static void inithook_soc(void)
+static void inithook_core(void)
 {
+    module_init_runhook(MODULE_HOOK_CORE);
 }
 
-REGISTER_SOC_INITHOOK(inithook_soc);
-REGISTER_SOC_INITCALL(inithook_soc);
+REGISTER_CORE_INITHOOK(inithook_core);
 
-static void exithook_soc(void)
+static void exithook_core(void)
 {
+    module_exit_runhook(MODULE_HOOK_CORE);
 }
 
-REGISTER_SOC_EXITHOOK(exithook_soc);
+REGISTER_CORE_EXITHOOK(exithook_core);

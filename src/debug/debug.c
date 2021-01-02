@@ -12,6 +12,7 @@
 # include <string.h>
 # include <readline/readline.h>
 # include "debug/debug.h"
+# include "modules/module.h"
 
 const struct command commands[] =
 {
@@ -106,6 +107,15 @@ const struct command commands[] =
         .handler = debug_cmd_load
     },
     {
+        .name = "module",
+        .minimal = "mod",
+        .minargs = 1,
+        .maxargs = 1,
+        .help = "module NAME",
+        .description = "Display information about the given module",
+        .handler = debug_cmd_module
+    },
+    {
         .name = NULL,
         .minimal = NULL,
         .minargs = 0,
@@ -115,10 +125,6 @@ const struct command commands[] =
         .handler = NULL
     }
 };
-
-void debug_init(void) {}
-
-void debug_exit(void) {}
 
 int get_command_descriptor_index(char const *name)
 {
@@ -174,7 +180,7 @@ static char **strtotab(char *input, size_t *len)
 
 #undef IS_SPACE
 
-void debug_start(void)
+static void debug_start(void)
 {
     char *input;
     size_t args;
@@ -208,3 +214,20 @@ void debug_start(void)
         free(input);
     }
 }
+
+static void debug_init(void) {}
+
+static void debug_exit(void) {}
+
+static void debug_reset(void) {}
+
+REGISTER_MODULE(
+    debug,
+    "A GDB like debugger to help during developpment step",
+    MODULE_HOOK_CORE,
+    debug_init,
+    debug_exit,
+    debug_reset,
+    debug_start,
+    NULL
+);

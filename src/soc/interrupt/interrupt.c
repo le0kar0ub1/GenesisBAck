@@ -7,6 +7,9 @@
 **
 \******************************************************************************/
 
+
+
+# include "mmu/mmu.h"
 # include "soc/interrupt.h"
 # include "core/core.h"
 # include "core/exceptions.h"
@@ -58,7 +61,7 @@ static struct interrupt_iomem *io = NULL;
 
 void interrupt_init(void)
 {
-    io = (struct interrupt_iomem *)INTERRUPT_IOMEM_BASE;
+    io = (struct interrupt_iomem *)mmu_load_addr(INTERRUPT_IOMEM_BASE);
 }
 
 void interrupt_exit(void)
