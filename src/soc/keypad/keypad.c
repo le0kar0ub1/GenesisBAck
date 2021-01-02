@@ -10,8 +10,6 @@
 # include "soc/keypad.h"
 # include "soc/interrupt.h"
 # include "modules/module.h"
-
-
 # include "mmu/mmu.h"
 # include <string.h>
 

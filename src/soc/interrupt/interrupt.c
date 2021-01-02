@@ -7,8 +7,7 @@
 **
 \******************************************************************************/
 
-
-
+# include "modules/module.h"
 # include "mmu/mmu.h"
 # include "soc/interrupt.h"
 # include "core/core.h"
@@ -59,16 +58,6 @@ struct interrupt_iomem
 
 static struct interrupt_iomem *io = NULL;
 
-void interrupt_init(void)
-{
-    io = (struct interrupt_iomem *)mmu_load_addr(INTERRUPT_IOMEM_BASE);
-}
-
-void interrupt_exit(void)
-{
-    io = NULL;
-}
-
 /**
  * Are interrupts enabled
  * cpu flag & interrupt master enabled reg
@@ -115,3 +104,29 @@ void interrupt_loop(void)
 
     }
 }
+
+static void interrupt_init(void)
+{
+    io = (struct interrupt_iomem *)mmu_load_addr(INTERRUPT_IOMEM_BASE);
+}
+
+static void interrupt_exit(void)
+{
+    io = NULL;
+}
+
+static void interrupt_reset(void)
+{
+    interrupt_init();
+}
+
+REGISTER_MODULE(
+    interrupt,
+    "The interrupt controller of the GBA",
+    MODULE_HOOK_SOC,
+    interrupt_init,
+    interrupt_exit,
+    interrupt_reset,
+    NULL,
+    NULL
+);

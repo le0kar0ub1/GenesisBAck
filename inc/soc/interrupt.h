@@ -32,8 +32,6 @@ enum {
     IRQ_MAX = 13
 };
 
-void interrupt_init(void);
-void interrupt_exit(void);
 void interrupt_loop(void);
 void interrupt_raise_irq(uint32_t irq);
 bool interrupt_are_enabled(void);

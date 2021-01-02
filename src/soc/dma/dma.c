@@ -7,9 +7,10 @@
 **
 \******************************************************************************/
 
+# include "modules/module.h"
 # include "soc/dma.h"
 
-void dma_init(void)
+static void dma_init(void)
 {
     dma0_init();
     // dma1_init();
@@ -17,10 +18,26 @@ void dma_init(void)
     // dma3_init();
 }
 
-void dma_exit(void)
+static void dma_exit(void)
 {
     dma0_exit();
     // dma1_exit();
     // dma2_exit();
     // dma3_exit();
 }
+
+static void dma_reset(void)
+{
+    dma_init();
+}
+
+REGISTER_MODULE(
+    dma,
+    "The DMA engine of the GBA",
+    MODULE_HOOK_SOC,
+    dma_init,
+    dma_exit,
+    dma_reset,
+    NULL,
+    NULL
+);

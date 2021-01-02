@@ -65,9 +65,6 @@ struct dma_iomem
 //     struct dma_ctrl dma3_ctrl;  /* DMA 3 Control */
 // };
 
-void dma_init(void);
-void dma_exit(void);
-
 void dma0_init(void);
 void dma1_init(void);
 void dma2_init(void);
