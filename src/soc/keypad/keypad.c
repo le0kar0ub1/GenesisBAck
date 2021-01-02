@@ -8,41 +8,46 @@
 \******************************************************************************/
 
 # include "soc/keypad.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <termios.h>
+# include "soc/interrupt.h"
 
 static struct keypad_iomem *io = NULL;
-static struct termios attr;
 
 void keypad_init(void)
 {
-    struct termios newattr;
-
     io = (struct keypad_iomem *)KEYPAD_IOMEM_BASE;
-    tcgetattr(STDIN_FILENO, &attr);
-    newattr = attr;
-    newattr.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newattr);
 }
 
 void keypad_exit(void)
 {
-    tcsetattr(STDIN_FILENO, TCSANOW, &attr);
     io = NULL;
 }
 
-void keypad_loop(void)
+/**
+ * if keypad module has been initialized:
+ *    Then set the given key at pressed | released
+ * if Keypad irq are enabled:
+ *    Then trigger interrupt module
+ */
+void keypad_trigger_key(uint32_t key, bool type)
 {
-    struct termios oldattr, newattr;
-    int inp;
-    tcgetattr(STDIN_FILENO, &oldattr);
-    newattr = oldattr;
-    newattr.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
-    while (1) {
-        inp = getc(stdin);
-        printf("%d\n", inp);
+    if (io) {
+        if (key <= KEYPAD_KEY_MAX) {
+            if (type == KEYPAD_PRESS_KEY) { // pressed
+                io->key_status &= ~(1 << key);
+            } else { // released
+                io->key_status |= (1 << key);
+            }
+        }
+        if (io->irq_enable) {
+            if (
+                // OR -> one key triggered => IRQ
+                (!(io->irq_cond)) 
+                ||
+                (io->irq_cond && (bitfield_readx(io->key_ctrl, 0, 10) & bitfield_readx(io->key_ctrl, 0, 10)) == 0x0)
+                // AND -> all enabled keys pressed => IRQ
+            ) {
+                interrupt_raise_irq(IRQ_KEYPAD);
+            }
+        }
     }
 }

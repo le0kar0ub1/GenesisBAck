@@ -66,6 +66,9 @@ static void dma0_transfer(void)
         }
         unit--;
     }
+    /**
+     * If the DMA repeat is enabled then don't disable after transfer and loop
+     */
     if (!(io->dma_ctrl.dma_repeat))
         io->dma_ctrl.dma_enable = 0;
 }

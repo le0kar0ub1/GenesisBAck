@@ -36,8 +36,10 @@ disassemble:
 	@$(TOOLCHAIN_PATH)/bin/arm-tdmi-eabi-objdump --target=binary --architecture=armv4 -D res/Dragonball.gba
 
 # Allow subdir targeted build - dev only
+.PHONY: build
 build:
 	$(MAKE) -C src tgt=$(tgt)
 
+.PHONY: doc
 doc:
 	doxygen doc/doxygen.cfg

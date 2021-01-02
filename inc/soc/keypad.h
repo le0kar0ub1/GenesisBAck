@@ -17,14 +17,20 @@
 enum {
     KEYPAD_KEY_A = 0,
     KEYPAD_KEY_B = 1,
-    KEYPAD_KEY_Select = 2,
-    KEYPAD_KEY_Start = 3,
-    KEYPAD_KEY_Right = 4,
-    KEYPAD_KEY_Left = 5,
-    KEYPAD_KEY_Up = 6,
-    KEYPAD_KEY_Down = 7,
+    KEYPAD_KEY_SELECT = 2,
+    KEYPAD_KEY_START = 3,
+    KEYPAD_KEY_RIGHT = 4,
+    KEYPAD_KEY_LEFT = 5,
+    KEYPAD_KEY_UP = 6,
+    KEYPAD_KEY_DOWN = 7,
     KEYPAD_KEY_R = 8,
-    KEYPAD_KEY_L = 9
+    KEYPAD_KEY_L = 9,
+    KEYPAD_KEY_MAX = 9
+};
+
+enum {
+    KEYPAD_PRESS_KEY = 0,
+    KEYPAD_RELEASE_KEY = 1
 };
 
 struct keypad_iomem
@@ -65,12 +71,12 @@ struct keypad_iomem
             uint32_t irq_enable : 1;
             uint32_t irq_cond : 1;
         };
-        uint16_t key_int_ctrl;
+        uint16_t key_ctrl;
     };
 };
 
 void keypad_init(void);
 void keypad_exit(void);
-void keypad_loop(void);
+void keypad_trigger_key(uint32_t key, bool type);
 
 #endif /* _SOC_KEYPAD_H_ */

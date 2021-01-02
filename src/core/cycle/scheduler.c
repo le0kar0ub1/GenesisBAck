@@ -87,10 +87,10 @@ bool schedule_opcode_condition(uint32_t cond)
             return (!cpsr.zero && (cpsr.negative == cpsr.overflow));
         case CONDITION_LE:
             return (cpsr.zero || (cpsr.negative != cpsr.overflow));
-        case CONDITION_AL: // unusable normaly
+        case CONDITION_AL: // always exec
             return (true);
-        case 1111: // obsolete never
+        case 1111: // obsolete never exec
         default:
-            panic("Invalid opcode condition %u", cond);
+            panic("Invalid opcode condition %#x", cond);
     }
 }
