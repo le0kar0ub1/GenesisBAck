@@ -15,8 +15,10 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						exithooks.o				\
 						inithooks.o				\
 						handlercalls.o			\
+						infocalls.o				\
 						resetcalls.o			\
 						initialized.o			\
+						request.o				\
 					)
 
 sinclude $(local)/hooks/Makefile

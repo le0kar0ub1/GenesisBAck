@@ -62,6 +62,10 @@ void module_reset_runhook(enum MODULE_HOOKS hook);
 
 void module_handler_runmod(char const *name);
 
+void module_info_runmod(char const *name);
+
 bool module_is_initialized_runmod(char const *name);
+
+struct module *module_request_mod(char const *name);
 
 #endif /* !_DEF_MODULE_H_ */

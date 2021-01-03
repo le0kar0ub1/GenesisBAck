@@ -75,11 +75,11 @@ void keypad_trigger_key(uint32_t key, bool type)
         }
         if (io->irq_enable) {
             if (
-                // OR -> one key triggered => IRQ
+                // OR -> one key is triggered => IRQ
                 (!(io->irq_cond)) 
                 ||
                 (io->irq_cond && (bitfield_readx(io->key_ctrl, 0, 10) & bitfield_readx(io->key_ctrl, 0, 10)) == 0x0)
-                // AND -> all enabled keys pressed => IRQ
+                // AND -> all enabled keys are pressed => IRQ
             ) {
                 interrupt_raise_irq(IRQ_KEYPAD);
             }
@@ -108,10 +108,13 @@ static void keypad_info(void)
     }
 }
 
+/**
+ * Initialized all keys to released
+ */
 static void keypad_init(void)
 {
     io = (struct keypad_iomem *)mmu_load_addr(KEYPAD_IOMEM_BASE);
-    memset(&(io->key_status), KEYPAD_RELEASE_KEY, 10);
+    io->key_status |= ((1 << 10) - 1);
 }
 
 static void keypad_exit(void)
