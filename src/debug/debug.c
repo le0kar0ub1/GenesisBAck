@@ -223,7 +223,7 @@ static void debug_reset(void) {}
 
 REGISTER_MODULE(
     debug,
-    "A GDB like debugger to help during developpment step",
+    "A GDB like debugger which schedule the DEBUG execution, using the core",
     MODULE_HOOK_CORE,
     debug_init,
     debug_exit,

@@ -48,7 +48,7 @@ debug mode: run the given rom in a gdb-like debugger
 
 ## About
 
-The project is divided into 4 modules.
+The project is divided into 4 fat modules.
 
 | `Core`                               | `Debug`                  | `MMU`                   | `SoC`                                          |
 |--------------------------------------|--------------------------|-------------------------|------------------------------------------------|

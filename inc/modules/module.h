@@ -22,7 +22,7 @@ enum MODULE_HOOKS {
 
 struct module
 {
-    char name[16];
+    char name[32];
     char desc[128];
     enum MODULE_HOOKS hook;
     bool initialized;
@@ -34,7 +34,7 @@ struct module
 };
 
 # define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xhandler, xinfo)    \
-    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodule")))         \
+    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))        \
     static struct module xname = {                                                      \
         .name    = #xname,                                                              \
         .desc    = xdesc,                                                               \
@@ -57,5 +57,7 @@ void module_reset_runmod(char const *name);
 void module_reset_runhook(enum MODULE_HOOKS hook);
 
 void module_handler_runmod(char const *name);
+
+bool module_is_initialized_runmod(char const *name);
 
 #endif /* !_DEF_MODULE_H_ */

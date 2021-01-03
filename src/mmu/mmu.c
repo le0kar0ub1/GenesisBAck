@@ -13,7 +13,7 @@
 # include "modules/module.h"
 # include "mmu/mmu.h"
 
-struct memory *mem;
+static struct memory *mem;
 
 /**
  * Load the EMULATOR address shifted

@@ -82,7 +82,7 @@ static void core_exit(void) {}
 
 REGISTER_MODULE(
     core,
-    "The core of the emulator which schedule the execution",
+    "The core of the emulator which schedule the RELEASE execution",
     MODULE_HOOK_CORE,
     core_init,
     core_exit,

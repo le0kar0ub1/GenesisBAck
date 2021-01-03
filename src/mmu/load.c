@@ -7,12 +7,11 @@
 **
 \******************************************************************************/
 
+# include "modules/module.h"
 # include "mmu/mmu.h"
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
-
-extern struct memory *mem;
 
 /**
  * Load the given rom in the good memory area
@@ -31,14 +30,14 @@ bool mmu_load_rom(char const *path)
         LOG_ERR("Invalid rom path");
         return (false);
     }
-    if (!mem) {
-        LOG_ERR("Memory uninitilalized");
+    if (!module_is_initialized_runmod("mmu")) {
+        LOG_ERR("Memory uninitialized");
         return (false);
     }
-    read(fd, &(mem->external_rom_0), 0x2000000);
-    // lseek(fd, 0, SEEK_SET);
-    // read(fd, &(mem->external_rom_1), 0x2000000);
-    // lseek(fd, 0, SEEK_SET);
-    // read(fd, &(mem->external_rom_2), 0x2000000);
+    read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM0), MMU_AREA_SIZE_ROM0);
+    lseek(fd, 0, SEEK_SET);
+    read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM1), MMU_AREA_SIZE_ROM1);
+    lseek(fd, 0, SEEK_SET);
+    read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM2), MMU_AREA_SIZE_ROM2);
     return (true);
 }

@@ -16,6 +16,7 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						inithooks.o				\
 						handlercalls.o			\
 						resetcalls.o			\
+						initialized.o			\
 					)
 
 sinclude $(local)/hooks/Makefile
