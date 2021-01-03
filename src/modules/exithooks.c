@@ -20,10 +20,6 @@ extern exithook_t __start_exithook3[];
     hook = &(*__get_exithook_level(__start_exithook, x));   \
     (*hook)();
 
-#ifndef CONFIG_INITLEVEL
-    # define CONFIG_INITLEVEL MODULE_HOOK_MAX
-#endif
-
 /*
 ** Run all exithooks until CONFIG_INITLEVEL
 */

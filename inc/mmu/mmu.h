@@ -91,7 +91,7 @@ uint32_t mmu_read32(uint32_t addr);
 void mmu_write8(uint32_t addr, uint8_t val);
 void mmu_write16(uint32_t addr, uint16_t val);
 void mmu_write32(uint32_t addr, uint32_t val);
-uintptr_t mmu_load_addr(uint32_t shift);
+void *mmu_load_addr(uint32_t shift);
 
 bool mmu_load_rom(char const *path);
 

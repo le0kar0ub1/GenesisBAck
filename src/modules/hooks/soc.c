@@ -13,12 +13,14 @@
 
 static void inithook_soc(void)
 {
+    module_init_runhook(MODULE_HOOK_SOC);
 }
 
 REGISTER_SOC_INITHOOK(inithook_soc);
 
 static void exithook_soc(void)
 {
+    module_exit_runhook(MODULE_HOOK_SOC);
 }
 
 REGISTER_SOC_EXITHOOK(exithook_soc);

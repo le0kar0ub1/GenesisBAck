@@ -12,5 +12,5 @@
 uint32_t core_fetch_arm(void)
 {
     uint32_t addr = register_read32(PC);
-    FETCH_RETURN (mmu_read32(addr), addr);
+    return (mmu_read32(addr));
 }

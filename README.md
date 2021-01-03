@@ -32,10 +32,6 @@ The file `inc/cfg.h` have some preprocessors configuration.
   * Debug mode: Dissassemble each executed instruction
   * Release mode: nothing
 
-`VERBOSE_RUN`:
-  * Debug mode: nothing
-  * Release mode: Log for each cpu cycle
-
 ## Run
 
 release mode: run the given rom normaly

@@ -20,10 +20,6 @@ extern inithook_t __start_inithook3[];
     hook = &(*__get_inithook_level(__start_inithook, x));   \
     (*hook)();
 
-#ifndef CONFIG_INITLEVEL
-    # define CONFIG_INITLEVEL MODULE_HOOK_MAX
-#endif
-
 /*
 ** Run all inithooks until CONFIG_INITLEVEL
 */

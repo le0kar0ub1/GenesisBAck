@@ -19,6 +19,4 @@
 void *core_route_thumb(uint16_t op);
 void *core_route_arm(uint32_t op);
 
-# define ROUTE_RETURN(x) LOG_VERBOSE("Routing %s()", #x); return (x);
-
 #endif /* _CORE_CYCLE_ROUTE_H_ */

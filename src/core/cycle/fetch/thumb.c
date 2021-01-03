@@ -12,6 +12,6 @@
 uint16_t core_fetch_thumb(void)
 {
     uint32_t addr = register_read32(PC);
-    FETCH_RETURN (mmu_read16(addr), addr);
+    return (mmu_read16(addr));
 }
 

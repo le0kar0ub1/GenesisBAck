@@ -20,6 +20,4 @@
 uint32_t core_fetch_arm(void);
 uint16_t core_fetch_thumb(void);
 
-# define FETCH_RETURN(x, addr) LOG_VERBOSE("Fetching %#08X at %#08x", x, addr); return (x);
-
 #endif /* _CORE_CYCLE_FECTH_H_ */

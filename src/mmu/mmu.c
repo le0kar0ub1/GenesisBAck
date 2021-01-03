@@ -18,9 +18,9 @@ static struct memory *mem;
 /**
  * Load the EMULATOR address shifted
  */
-uintptr_t mmu_load_addr(uint32_t shift)
+void *mmu_load_addr(uint32_t shift)
 {
-    return ((uintptr_t)(mem->raw + shift));
+    return (((void *)(mem->raw + shift)));
 }
 
 /** 

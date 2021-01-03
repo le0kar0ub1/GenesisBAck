@@ -43,7 +43,6 @@ void module_init_runhook(enum MODULE_HOOKS hook)
         if (mod->hook == hook && mod->init) {
             mod->init();
             mod->initialized = true;
-            break;
         }
         mod++;
     }

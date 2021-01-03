@@ -7,6 +7,7 @@
 **
 \******************************************************************************/
 
+# include "genesisback.h" 
 # include "modules/module.h"
 # include <string.h>
 
@@ -23,7 +24,11 @@ void module_handler_runmod(char const *name)
     mod = (struct module *)__start_genesisbackmodules;
     while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
         if (!strcmp(mod->name, name) && mod->handler) {
-            mod->handler();
+            if (mod->initialized) {
+                mod->handler();
+            } else {
+                panic("Try to run [%s] uninitialized module", mod->name);
+            }
             break;
         }
         mod++;

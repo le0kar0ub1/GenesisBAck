@@ -43,7 +43,6 @@ void module_exit_runhook(enum MODULE_HOOKS hook)
         if (mod->hook == hook && mod->exit) {
             mod->exit();
             mod->initialized = false;
-            break;
         }
         mod++;
     }

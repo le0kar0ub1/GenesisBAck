@@ -20,6 +20,10 @@ enum MODULE_HOOKS {
     MODULE_HOOK_MAX = 3
 };
 
+#ifndef CONFIG_INITLEVEL
+    # define CONFIG_INITLEVEL 3
+#endif
+
 struct module
 {
     char name[32];

@@ -13,12 +13,14 @@
 
 static void inithook_last(void)
 {
+    module_init_runhook(MODULE_HOOK_LAST);
 }
 
 REGISTER_LAST_INITHOOK(inithook_last);
 
 static void exithook_last(void)
 {
+    module_exit_runhook(MODULE_HOOK_LAST);
 }
 
 REGISTER_LAST_EXITHOOK(exithook_last);

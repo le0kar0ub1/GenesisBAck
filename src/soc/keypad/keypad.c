@@ -92,14 +92,16 @@ static void keypad_info(void)
     if (io) {
         printf("IRQ %s\n", io->irq_enable ? "enabled" : "disabled");
         printf("IRQ condition: %s\n", io->irq_cond ? "Release" : "Press");
-        printf("                              A  B  Select  Start  Right  Left  Up  Down  R  L\n");
+        printf("                              | A  | B  | Select | Start | Right | Left | Up | Down | R | L\n");
+        printf("----------------------------------------------------------------------------------------------\n");
         printf(
-            "Control(0: Ignore, 1:select)  %d %d %d      %d     %d     %d    %d  %d    %d %d\n",
+               "Control (0: Ignore, 1:select) | %d  | %d  | %d      | %d     | %d     | %d    | %d  | %d    | %d | %d\n",
             io->ctrl_a, io->ctrl_b, io->ctrl_select, io->ctrl_start, io->ctrl_right,
             io->ctrl_left, io->ctrl_up, io->ctrl_down, io->ctrl_r, io->ctrl_l
         );
+        printf("----------------------------------------------------------------------------------------------\n");
         printf(
-            "Status(0: press, 1: release)  %d %d %d      %d     %d     %d    %d  %d    %d %d\n",
+               "Status (0: press, 1: release) | %d  | %d  | %d      | %d     | %d     | %d    | %d  | %d    | %d | %d\n",
             io->stat_a, io->stat_b, io->stat_select, io->stat_start, io->stat_right,
             io->stat_left, io->stat_up, io->stat_down, io->stat_r, io->stat_l
         );

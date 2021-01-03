@@ -7,6 +7,7 @@
 **
 \******************************************************************************/
 
+# include "genesisback.h"
 # include "modules/module.h"
 # include <string.h>
 
@@ -21,8 +22,11 @@ newhook:
     mod = (struct module *)__start_genesisbackmodules;
     while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
         if (mod->hook == hook && mod->reset) {
-            mod->reset();
-            break;
+            if (mod->initialized) {
+                mod->reset();
+            } else {
+                panic("Try to reset [%s] uninitialized module", mod->name);
+            }
         }
         mod++;
     }

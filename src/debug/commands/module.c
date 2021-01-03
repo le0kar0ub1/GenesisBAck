@@ -21,7 +21,7 @@ void debug_cmd_module(int ac, char const **av)
     if (ac == 2) {
         mod = (struct module *)__start_genesisbackmodules;
         while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
-            if (!strcmp(mod->name, av[1])) {
+            if (!strcmp(mod->name, av[1]) && mod->info) {
                 mod->info();
                 break;
             }

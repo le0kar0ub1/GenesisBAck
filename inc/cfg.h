@@ -14,6 +14,4 @@
 
 # define VERBOSE_RUN false
 
-# define CONFIG_INITLEVEL 4
-
 #endif /* _CFG_H_ */
