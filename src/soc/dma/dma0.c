@@ -14,7 +14,7 @@ static struct dma_iomem *io = NULL;
 
 void dma0_init(void)
 {
-    io = (struct dma_iomem *)(DMA_IOMEM_BASE + (DMA_IOMEM_ENGINE_SIZE * 0));
+    io = (struct dma_iomem *)mmu_load_addr(DMA_IOMEM_BASE + (DMA_IOMEM_ENGINE_SIZE * 0));
 }
 
 void dma0_exit(void)
@@ -28,7 +28,7 @@ static void dma0_transfer(void)
     uint32_t dad  = io->dma_dad   & ((1 << 27) - 1);
     uint32_t unit = io->dma_count & ((1 << 14) - 1);
 
-    if (io->dma_ctrl.dma_trns_type) { // word
+    if (io->dma_ctrl.trns_type) { // word
         unit *= 2;
     } else {
         // all comes good
@@ -69,15 +69,15 @@ static void dma0_transfer(void)
     /**
      * If the DMA repeat is enabled then don't disable after transfer and loop
      */
-    if (!(io->dma_ctrl.dma_repeat))
-        io->dma_ctrl.dma_enable = 0;
+    if (!(io->dma_ctrl.repeat))
+        io->dma_ctrl.enable = 0;
 }
 
 void dma0_start(void)
 {
     while (io)
     {
-        if (io->dma_ctrl.dma_enable)
+        if (io->dma_ctrl.enable)
             dma0_transfer();
     }
 }

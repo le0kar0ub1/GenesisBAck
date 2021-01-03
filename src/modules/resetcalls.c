@@ -49,7 +49,7 @@ void module_reset_runmod(char const *name)
         if (!strcmp(mod->name, name) && mod->reset) {
             mod->reset();
             if (mod->hook < MODULE_HOOK_MAX)
-                module_reset_fromhook((mod->hook)++);
+                module_reset_fromhook(mod->hook + 1);
             break;
         }
         mod++;

@@ -11,5 +11,4 @@ local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						dma.o					\
-						dma0.o					\
 					)

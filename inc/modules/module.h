@@ -26,20 +26,20 @@ enum MODULE_HOOKS {
 
 struct module
 {
-    char name[32];
-    char desc[128];
-    enum MODULE_HOOKS hook;
+    char const name[32];
+    char const desc[128];
+    enum MODULE_HOOKS const hook;
     bool initialized;
-    void (*init)(void);
-    void (*exit)(void);
-    void (*reset)(void);
-    void (*handler)(void);
-    void (*info)(void);
+    void (* const init)(void);
+    void (* const exit)(void);
+    void (* const reset)(void);
+    void (* const handler)(void);
+    void (* const info)(void);
 };
 
 # define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xhandler, xinfo)    \
     __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))        \
-    static struct module xname = {                                                      \
+    static const struct module xname = {                                                      \
         .name    = #xname,                                                              \
         .desc    = xdesc,                                                               \
         .hook    = xhook,                                                               \

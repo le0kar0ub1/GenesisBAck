@@ -13,7 +13,7 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 					)
 
 sinclude $(local)/dma/Makefile			\
-		 $(local)/control/Makefile		\
+		 $(local)/system/Makefile		\
 		 $(local)/keypad/Makefile		\
 		 $(local)/sound/Makefile		\
 		 $(local)/timer/Makefile		\

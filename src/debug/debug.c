@@ -111,8 +111,8 @@ const struct command commands[] =
         .minimal = "mod",
         .minargs = 1,
         .maxargs = 1,
-        .help = "module NAME",
-        .description = "Display information about the given module",
+        .help = "module [NAME|list]",
+        .description = "Display information about the given module or *list* them",
         .handler = debug_cmd_module
     },
     {
