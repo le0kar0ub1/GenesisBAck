@@ -37,13 +37,13 @@ struct dma_ctrl
 
 static_assert(sizeof(struct dma_ctrl) == sizeof(uint16_t));
 
-// struct dma_iomem
-// {
-//     uint32_t        dma_sad;   /* DMA 0 Source Address */
-//     uint32_t        dma_dad;   /* DMA 0 Destination Address */
-//     uint16_t        dma_count; /* DMA 0 Word Count */
-//     struct dma_ctrl dma_ctrl;  /* DMA 0 Control */
-// };
+struct dmax_iomem
+{
+    uint32_t        dma_sad;   /* DMA 0 Source Address */
+    uint32_t        dma_dad;   /* DMA 0 Destination Address */
+    uint16_t        dma_count; /* DMA 0 Word Count */
+    struct dma_ctrl dma_ctrl;  /* DMA 0 Control */
+};
 
 struct dma_iomem
 {

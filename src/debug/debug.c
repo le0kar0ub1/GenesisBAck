@@ -75,7 +75,7 @@ const struct command commands[] =
         .minimal = "b",
         .minargs = 0,
         .maxargs = 2,
-        .help = "burst [[N]|[N ADDR]]",
+        .help = "burst [{(N)|(N ADDR)]",
         .description = "Disassemble N instructions at the given address, defaulting to PC",
         .handler = debug_cmd_burst
     },

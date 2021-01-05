@@ -99,7 +99,7 @@ void interrupt_loop(void)
 {
     /**
      * TODO: Clear the irq bits when they are wrotten by program
-     * PANIC: IDK how be signaled when a bit is set without fcking the mmu perfs
+     * PANIC: IDK how to be triggered when a bit is set without fcking the mmu perfs
      */
     while (io) {
 

@@ -76,11 +76,11 @@ mkdir -p $PREFIX || exit 1
 # cd ..
 
 # ### Build Binutils #############################################################
-download "$GNU_MIRROR/binutils/binutils-$BIN_VERSION.tar.xz"
+# download "$GNU_MIRROR/binutils/binutils-$BIN_VERSION.tar.xz"
 
-run "Extract binutils-$BIN_VERSION.tar.xz" tar xf binutils-$BIN_VERSION.tar.xz
+# run "Extract binutils-$BIN_VERSION.tar.xz" tar xf binutils-$BIN_VERSION.tar.xz
 
-mkdir -p binutils-build || exit 1
+# mkdir -p binutils-build || exit 1
 
 # cd binutils-build
 
@@ -137,15 +137,15 @@ mkdir -p binutils-build || exit 1
 # cd ..
 
 ### Build ARM utils ###############################################################
-cd binutils-build
+# cd binutils-build
 
 # make -C ../binutils-build distclean
 
-run "Configure binutils-$BIN_VERSION-armv7"  ../binutils-$BIN_VERSION/configure --target=arm-tdmi-eabi --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+# run "Configure binutils-$BIN_VERSION-armv7"  ../binutils-$BIN_VERSION/configure --target=arm-tdmi-eabi --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
 
-run "Build binutils-$BIN_VERSION-armv7" "make && make install || exit 1"
+# run "Build binutils-$BIN_VERSION-armv7" "make && make install || exit 1"
 
-cd ..
+# cd ..
 
 ### Build capstone ##################################################################
 run "Download capstone" git clone https://github.com/aquynh/capstone.git $PREFIX/capstone

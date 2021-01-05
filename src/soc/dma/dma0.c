@@ -10,11 +10,11 @@
 # include "mmu/mmu.h"
 # include "soc/dma.h"
 
-static struct dma_iomem *io = NULL;
+static struct dmax_iomem *io = NULL;
 
 void dma0_init(void)
 {
-    io = (struct dma_iomem *)mmu_load_addr(DMA_IOMEM_BASE + (DMA_IOMEM_ENGINE_SIZE * 0));
+    io = (struct dmax_iomem *)mmu_load_addr(DMA_IOMEM_BASE + (DMA_IOMEM_ENGINE_SIZE * 0));
 }
 
 void dma0_exit(void)

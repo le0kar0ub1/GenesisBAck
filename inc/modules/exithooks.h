@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _INIT_EXITHOOKS_H_
-# define _INIT_EXITHOOKS_H_
+#ifndef _MODULES_EXITHOOKS_H_
+# define _MODULES_EXITHOOKS_H_
 
 # include "modules/module.h"
 
@@ -26,4 +26,4 @@ typedef void (*exithook_t)(void);
 void exithooks_run_allhooks(void);
 void exithooks_run_hook(enum MODULE_HOOKS hook);
 
-#endif /* !_INIT_EXITHOOKS_H_ */
+#endif /* !_MODULES_EXITHOOKS_H_ */

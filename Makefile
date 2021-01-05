@@ -18,8 +18,8 @@ all: toolchain
 .PHONY: toolchain
 toolchain:
 	$(call EvalFatToolChainExistence)
-	$(call EvalBinaryToolChainExistence,gcc)
-	$(call EvalBinaryToolChainExistence,ld)
+	$(call EvalBinaryExistence,gcc)
+	$(call EvalBinaryExistence,ld)
 
 .PHONY: clean
 clean:

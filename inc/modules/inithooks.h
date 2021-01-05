@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _INIT_INITHOOKS_H_
-# define _INIT_INITHOOKS_H_
+#ifndef _MODULES_INITHOOKS_H_
+# define _MODULES_INITHOOKS_H_
 
 # include "modules/module.h"
 
@@ -26,4 +26,4 @@ typedef void (*inithook_t)(void);
 void inithooks_run_allhooks(void);
 void inithooks_run_hook(enum MODULE_HOOKS hook);
 
-#endif /* !_INIT_INITHOOKS_H_ */
+#endif /* !_MODULES_INITHOOKS_H_ */
