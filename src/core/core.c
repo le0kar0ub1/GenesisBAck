@@ -8,6 +8,7 @@
 
 # include "core/core.h"
 # include "mmu/mmu.h"
+# include "mmu/cartridge.h"
 # include "modules/module.h"
 
 uint32_t core_read_state(void)
@@ -59,7 +60,7 @@ static void core_reset(void)
     register_reset();
     core_switch_opmode(OPERATION_MODE_SYSTEM);
     core_switch_state(STATE_ARM);
-    register_write32(PC, 0x8000000);
+    register_write32(PC, cartridge_get_entry_point());
     register_write32(SP, 0x3007F00);
     core_flush_pipeline();
 }

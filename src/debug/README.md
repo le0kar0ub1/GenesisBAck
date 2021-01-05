@@ -19,7 +19,7 @@ load          |       | load [SIZE] ADDR       | Print SIZE of the given address
 module        | mod   | module {NAME|list}     | Display information about the given module or list them
 
 Legend:
-    * UPPERCASE => dynamic expression (variable)
-    * lowercase => static expression
-    * [] => optionnal
-    * {} => multiple option
+  * UPPERCASE => dynamic expression (variable)
+  * lowercase => static expression
+  * [] => optionnal
+  * {} => multiple option

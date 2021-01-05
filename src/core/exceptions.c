@@ -7,6 +7,7 @@
 **
 \******************************************************************************/
 
+# include "mmu/cartridge.h" 
 # include "core/exceptions.h"
 
 struct exception_vector_trait
@@ -148,7 +149,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
         new_cpsr.fiq_disable = true;
     register_write_cpsr(new_cpsr.raw);
     /* Set PC to vector address */
-    register_write32(PC, 0x8000000 + vec.address);
+    register_write32(PC, cartridge_get_entry_point() + vec.address);
     core_flush_pipeline();
 }
 

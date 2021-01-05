@@ -9,6 +9,7 @@
 
 # include "modules/module.h"
 # include "mmu/mmu.h"
+# include "mmu/cartridge.h"
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -39,5 +40,9 @@ bool mmu_load_rom(char const *path)
     read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM1), MMU_AREA_SIZE_ROM1);
     lseek(fd, 0, SEEK_SET);
     read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM2), MMU_AREA_SIZE_ROM2);
+    if (!cartridge_check_header()) {
+        LOG_ERR("GBA cartridge header check failed");
+        return (false);
+    }
     return (true);
 }
