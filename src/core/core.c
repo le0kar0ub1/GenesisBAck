@@ -8,7 +8,7 @@
 
 # include "core/core.h"
 # include "mmu/mmu.h"
-# include "mmu/cartridge.h"
+# include "gba/cartridge.h"
 # include "modules/module.h"
 
 uint32_t core_read_state(void)

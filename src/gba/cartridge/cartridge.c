@@ -8,7 +8,7 @@
 \******************************************************************************/
 
 # include "mmu/mmu.h"
-# include "mmu/cartridge.h"
+# include "gba/cartridge.h"
 
 static uint8_t cartridge_nintendo_logo_bitmap[156] = {
                         0x24, 0xff, 0xae, 0x51, 0x69, 0x9a, 0xa2, 0x21, 0x3d, 0x84, 0x82, 0x0a,
@@ -62,7 +62,7 @@ uint32_t cartridge_get_entry_point(void)
     } else if (hdr->boot_mode == 0x0){ // basic entry
         return (CARTRIDGE_HEADER_ROM_ENTRY);
     } else {
-        panic("Invalid boot mode");
+        panic("Invalid boot mode %u", hdr->boot_mode);
     }
 }
 

@@ -12,6 +12,6 @@ local = $(CALLED_LOCAL_DIRECTORY)
 TARGET_OBJECTS	+= $(addprefix $(local),		\
 						bootstrap.o				\
 						core.o					\
-						soc.o					\
+						gba.o					\
 						last.o					\
 					)

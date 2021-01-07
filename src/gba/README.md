@@ -1,4 +1,4 @@
-# SoC module - Under heavy dev, nothing is working
+# GBA module - Under heavy dev, nothing is working
 
 The most aboundant part which contain all the components of the GBA which are not 'essentials'. All Of them are registered as a module and a lot of them will run on threads.
 

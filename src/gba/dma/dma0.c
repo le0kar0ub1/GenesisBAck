@@ -8,7 +8,7 @@
 \******************************************************************************/
 
 # include "mmu/mmu.h"
-# include "soc/dma.h"
+# include "gba/dma.h"
 
 static struct dmax_iomem *io = NULL;
 

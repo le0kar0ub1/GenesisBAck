@@ -9,7 +9,7 @@
 
 # include "modules/module.h"
 # include "mmu/mmu.h"
-# include "soc/interrupt.h"
+# include "gba/interrupt.h"
 # include "core/core.h"
 # include "core/exceptions.h"
 
@@ -147,7 +147,7 @@ static void interrupt_reset(void)
 REGISTER_MODULE(
     interrupt,
     "The interrupt controller of the GBA",
-    MODULE_HOOK_SOC,
+    MODULE_HOOK_GBA,
     interrupt_init,
     interrupt_exit,
     interrupt_reset,

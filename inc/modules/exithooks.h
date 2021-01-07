@@ -20,7 +20,7 @@ typedef void (*exithook_t)(void);
 
 # define REGISTER_BOOTSTRAP_EXITHOOK(fn)  __define_exithook("0", fn, 0)
 # define REGISTER_CORE_EXITHOOK(fn)       __define_exithook("1", fn, 1)
-# define REGISTER_SOC_EXITHOOK(fn)        __define_exithook("2", fn, 2)
+# define REGISTER_GBA_EXITHOOK(fn)        __define_exithook("2", fn, 2)
 # define REGISTER_LAST_EXITHOOK(fn)       __define_exithook("3", fn, 3)
 
 void exithooks_run_allhooks(void);

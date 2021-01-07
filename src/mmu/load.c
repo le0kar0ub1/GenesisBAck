@@ -9,14 +9,14 @@
 
 # include "modules/module.h"
 # include "mmu/mmu.h"
-# include "mmu/cartridge.h"
+# include "gba/cartridge.h"
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
 
 /**
  * Load the given rom in the good memory area
- * Currently make a copy in all slots 
+ * Currently not using waitstate, but a copy is put in all roms 
  */
 bool mmu_load_rom(char const *path)
 {
@@ -27,7 +27,7 @@ bool mmu_load_rom(char const *path)
         return (false);
     }
     fd = open(path, O_RDONLY);
-    if (!fd) {
+    if (fd == -1) {
         LOG_ERR("Invalid rom path");
         return (false);
     }

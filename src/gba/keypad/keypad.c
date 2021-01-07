@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "soc/keypad.h"
-# include "soc/interrupt.h"
+# include "gba/keypad.h"
+# include "gba/interrupt.h"
 # include "modules/module.h"
 # include "mmu/mmu.h"
 # include <string.h>
@@ -130,7 +130,7 @@ static void keypad_reset(void)
 REGISTER_MODULE(
     keypad,
     "The keypad of the GBA",
-    MODULE_HOOK_SOC,
+    MODULE_HOOK_GBA,
     keypad_init,
     keypad_exit,
     keypad_reset,

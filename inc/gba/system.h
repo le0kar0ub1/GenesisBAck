@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_SYSTEM_H_
-# define _SOC_SYSTEM_H_
+#ifndef _GBA_SYSTEM_H_
+# define _GBA_SYSTEM_H_
 
 # include "genesisback.h"
 
@@ -28,4 +28,4 @@ struct system_iomem
     uint32_t  _reserved7;       /* Undocumented - Internal Memory Control (R/W) */
 };
 
-#endif /* _SOC_SYSTEM_H_ */
+#endif /* _GBA_SYSTEM_H_ */

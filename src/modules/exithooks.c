@@ -54,7 +54,7 @@ void exithooks_run_hook(enum MODULE_HOOKS hk)
         case MODULE_HOOK_CORE:
             EXITHOOK_LEVEL(1)
             break;
-        case MODULE_HOOK_SOC:
+        case MODULE_HOOK_GBA:
             EXITHOOK_LEVEL(2)
             break;
         case MODULE_HOOK_LAST:

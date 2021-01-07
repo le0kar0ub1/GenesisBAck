@@ -20,3 +20,4 @@ sinclude $(local)/dma/Makefile			\
 		 $(local)/video/Makefile		\
 		 $(local)/serial/Makefile		\
 		 $(local)/interrupt/Makefile	\
+		 $(local)/cartridge/Makefile	\

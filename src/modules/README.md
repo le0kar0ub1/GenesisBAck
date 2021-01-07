@@ -26,7 +26,7 @@ This is working same for the program exit (but starting for the highest hook).
 enum MODULE_HOOKS {
     MODULE_HOOK_BOOTSTRAP = 0,
     MODULE_HOOK_CORE = 1,
-    MODULE_HOOK_SOC = 2,
+    MODULE_HOOK_GBA = 2,
     MODULE_HOOK_LAST = 3,
     MODULE_HOOK_MAX = 3
 };

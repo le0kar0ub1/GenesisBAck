@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "soc/system.h"
+# include "gba/system.h"
 # include "modules/module.h"
 # include "mmu/mmu.h"
 
@@ -31,7 +31,7 @@ static void system_reset(void)
 REGISTER_MODULE(
     system,
     "The system control regs of the GBA",
-    MODULE_HOOK_SOC,
+    MODULE_HOOK_GBA,
     system_init,
     system_exit,
     system_reset,

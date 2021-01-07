@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_INTERRUPT_H_
-# define _SOC_INTERRUPT_H_
+#ifndef _GBA_INTERRUPT_H_
+# define _GBA_INTERRUPT_H_
 
 # include "genesisback.h"
 
@@ -37,4 +37,4 @@ void interrupt_raise_irq(uint32_t irq);
 bool interrupt_are_enabled(void);
 bool interrupt_is_irq_enabled(uint32_t irq);
 
-#endif /* _SOC_INTERRUPT_H_ */
+#endif /* _GBA_INTERRUPT_H_ */

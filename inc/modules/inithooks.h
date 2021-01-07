@@ -20,7 +20,7 @@ typedef void (*inithook_t)(void);
 
 # define REGISTER_BOOTSTRAP_INITHOOK(fn)  __define_inithook("0", fn, 0)
 # define REGISTER_CORE_INITHOOK(fn)       __define_inithook("1", fn, 1)
-# define REGISTER_SOC_INITHOOK(fn)        __define_inithook("2", fn, 2)
+# define REGISTER_GBA_INITHOOK(fn)        __define_inithook("2", fn, 2)
 # define REGISTER_LAST_INITHOOK(fn)       __define_inithook("3", fn, 3)
 
 void inithooks_run_allhooks(void);

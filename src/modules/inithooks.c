@@ -54,7 +54,7 @@ void inithooks_run_hook(enum MODULE_HOOKS hk)
         case MODULE_HOOK_CORE:
             INITHOOK_LEVEL(1);
             break;
-        case MODULE_HOOK_SOC:
+        case MODULE_HOOK_GBA:
             INITHOOK_LEVEL(2);
             break;
         case MODULE_HOOK_LAST:

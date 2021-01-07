@@ -26,7 +26,7 @@ sinclude $(PROJECT_PATH)/src/core/Makefile
 sinclude $(PROJECT_PATH)/src/debug/Makefile
 sinclude $(PROJECT_PATH)/src/modules/Makefile
 sinclude $(PROJECT_PATH)/src/mmu/Makefile
-sinclude $(PROJECT_PATH)/src/soc/Makefile
+sinclude $(PROJECT_PATH)/src/gba/Makefile
 else
 ifeq ($(shell test -e $(PROJECT_PATH)/src/$(tgt)/main.c && echo -n found),found)
 sinclude $(PROJECT_PATH)/src/$(tgt)/Makefile

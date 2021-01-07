@@ -44,7 +44,7 @@ The project is divided into 4 fat parts.
  Core    | The processor soul & functionalities           | [src/core](src/core/README.md)         
  Debug   | The gdb-like debugger                          | [src/debug](src/debug/README.md)       
  MMU     | I/O memory interaction                         | [src/mmu](src/mmu/README.md)           
- SoC     | All the components which are not the processor | [src/soc](src/soc/README.md)           
+ GBA     | All the components which are not the processor | [src/gba](src/gba/README.md)           
 
 ## Epilogue
 

@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_SOUND_H_
-# define _SOC_SOUND_H_
+#ifndef _GBA_SOUND_H_
+# define _GBA_SOUND_H_
 
 # include "genesisback.h"
 
@@ -43,4 +43,4 @@ struct sound_iomem
     uint32_t  FIFO_B; /*   Channel B FIFO, Data 0-3 */
 };
 
-#endif /* _SOC_SOUND_H_ */
+#endif /* _GBA_SOUND_H_ */

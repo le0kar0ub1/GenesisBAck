@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_SERIAL_H_
-# define _SOC_SERIAL_H_
+#ifndef _GBA_SERIAL_H_
+# define _GBA_SERIAL_H_
 
 # include "genesisback.h"
 
@@ -39,4 +39,4 @@ struct serial2_iomem
     uint16_t joy_stat;   /* SIO JOY Bus Receive Status */
 };
 
-#endif /* _SOC_SERIAL_H_ */
+#endif /* _GBA_SERIAL_H_ */

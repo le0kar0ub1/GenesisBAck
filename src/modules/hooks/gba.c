@@ -11,16 +11,16 @@
 # include "modules/exithooks.h"
 # include "modules/module.h"
 
-static void inithook_soc(void)
+static void inithook_gba(void)
 {
-    module_init_runhook(MODULE_HOOK_SOC);
+    module_init_runhook(MODULE_HOOK_GBA);
 }
 
-REGISTER_SOC_INITHOOK(inithook_soc);
+REGISTER_GBA_INITHOOK(inithook_gba);
 
-static void exithook_soc(void)
+static void exithook_gba(void)
 {
-    module_exit_runhook(MODULE_HOOK_SOC);
+    module_exit_runhook(MODULE_HOOK_GBA);
 }
 
-REGISTER_SOC_EXITHOOK(exithook_soc);
+REGISTER_GBA_EXITHOOK(exithook_gba);

@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_VIDEO_H_
-# define _SOC_VIDEO_H_
+#ifndef _GBA_VIDEO_H_
+# define _GBA_VIDEO_H_
 
 # define VIDEO_IOMEM_BASE 0x4000000
 
@@ -55,4 +55,4 @@ struct video_iomem
     uint16_t bldy;       /* Brightness (Fade-In/Out) Coefficient */
 };
 
-#endif /* _SOC_VIDEO_H_ */
+#endif /* _GBA_VIDEO_H_ */

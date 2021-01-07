@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_KEYPAD_H_
-# define _SOC_KEYPAD_H_
+#ifndef _GBA_KEYPAD_H_
+# define _GBA_KEYPAD_H_
 
 # include "genesisback.h"
 
@@ -35,4 +35,4 @@ enum {
 
 void keypad_trigger_key(uint32_t key, bool type);
 
-#endif /* _SOC_KEYPAD_H_ */
+#endif /* _GBA_KEYPAD_H_ */

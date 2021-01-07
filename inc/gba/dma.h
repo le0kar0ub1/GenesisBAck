@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_DMA_H_
-# define _SOC_DMA_H_
+#ifndef _GBA_DMA_H_
+# define _GBA_DMA_H_
 
 # include "genesisback.h"
 
@@ -80,4 +80,4 @@ void dma1_start(void);
 void dma2_start(void);
 void dma3_start(void);
 
-#endif /* _SOC_DMA_H_ */
+#endif /* _GBA_DMA_H_ */

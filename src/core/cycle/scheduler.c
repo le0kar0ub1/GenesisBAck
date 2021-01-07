@@ -45,9 +45,6 @@ static void schedule_thumb(void)
 
 void core_scheduler(void)
 {
-    static size_t ct;
-
-    // printf("%d\n", ct++);
     if (core_read_state() == STATE_ARM)
         schedule_arm();
     else

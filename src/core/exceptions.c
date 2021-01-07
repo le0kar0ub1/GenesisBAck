@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "mmu/cartridge.h" 
+# include "gba/cartridge.h" 
 # include "core/exceptions.h"
 
 struct exception_vector_trait

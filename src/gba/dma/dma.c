@@ -9,7 +9,7 @@
 
 # include "modules/module.h"
 # include "mmu/mmu.h"
-# include "soc/dma.h"
+# include "gba/dma.h"
 
 static struct dma_iomem *io = NULL;
 
@@ -78,7 +78,7 @@ static void dma_info(void)
 REGISTER_MODULE(
     dma,
     "The DMA engine of the GBA",
-    MODULE_HOOK_SOC,
+    MODULE_HOOK_GBA,
     dma_init,
     dma_exit,
     dma_reset,

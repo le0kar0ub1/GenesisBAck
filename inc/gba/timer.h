@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _SOC_TIMER_H_
-# define _SOC_TIMER_H_
+#ifndef _GBA_TIMER_H_
+# define _GBA_TIMER_H_
 
 # include "genesisback.h"
 
@@ -26,4 +26,4 @@ struct timer_iomem
     uint16_t tm3_ctrl; /* Timer 3 Control */
 };
 
-#endif /* _SOC_TIMER_H_ */
+#endif /* _GBA_TIMER_H_ */
