@@ -23,14 +23,14 @@ struct cartridge_header
     uint8_t nintendo_logo[156]; /* (compressed bitmap, required!) */
     char game_title[12]; /* (uppercase ascii, max 12 characters) */
     char game_code[4]; /* (uppercase ascii, 4 characters) */
-    char maker_code[2];     /* (uppercase ascii, 2 characters) */
-    uint8_t vx96; /* (must be 96h, required!) */
-    uint8_t main_unit_code;  /* (00h for current GBA models) */
+    char maker_code[2]; /* (uppercase ascii, 2 characters) */
+    uint8_t v96h; /* (must be 96h, required!) */
+    uint8_t main_unit_code; /* (00h for current GBA models) */
     uint8_t dev_type; /* (usually 00h) (bit7=DACS/debug related) */
-    uint8_t _reserved1[7];   /* (should be zero filled) */
+    uint8_t _reserved1[7]; /* (should be zero filled) */
     uint8_t software_version; /* (usually 00h) */
     int8_t checksum; /* (header checksum, required!) */
-    uint8_t _reserved2[2];  /* (should be zero filled) */
+    uint8_t _reserved2[2]; /* (should be zero filled) */
     uint32_t ram_entry; /* (32bit ARM branch opcode, eg. "B ram_start") */
     uint8_t boot_mode; /* (init as 00h - BIOS overwrites this value!) */
     uint8_t slave_id; /* (init as 00h - BIOS overwrites this value!) */
@@ -40,5 +40,6 @@ struct cartridge_header
 
 bool cartridge_check_header(void);
 uint32_t cartridge_get_entry_point(void);
+char const *cartridge_get_game_title(void);
 
 #endif /* !_MMU_CARTRIDGE_H_ */
