@@ -2,7 +2,7 @@
 
 The module of the modules which handle the modules.
 
-A module is (staticaly) registered in a special section "genesisbackmodules" that the others functions will be able to access in runtime.
+A module is (staticaly) registered in a built-in section "genesisbackmodules" that the others functions will be able to access in runtime.
 
 ```c
 struct module
@@ -20,7 +20,7 @@ struct module
 ```
 
 This part also handle the program init/exit using 4 hooks. Each module is assigned to a hook and initilized when executing the init function of this hook.
-This is working same for the program exit (but starting for the highest hook).
+This is working same for the program exit (but starting from the highest hook).
 
 ```c
 enum MODULE_HOOKS {
@@ -32,7 +32,7 @@ enum MODULE_HOOKS {
 };
 ```
 
-The highest initialized hook can be set using the macro `CONFIG_INITLEVEL`, defaulting to MAX. The emulation is working from the CORE HOOK, just the CORE and the MMU are running.
+The highest initialized hook can be set using the macro `CONFIG_INITLEVEL`, defaulting to MAX. The emulation is working from the CORE HOOK, just the CORE (or the debug if in debug routine) and the MMU are running.
 
 This is how a module is registered, a set of function is provided to search a module, execute a reset call (which reset all the higher hooks), call a handler, etc...
 

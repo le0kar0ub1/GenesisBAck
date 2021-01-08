@@ -49,29 +49,29 @@ static inline char const *dma_info_addr_manip(uint32_t ctrl)
 static void dma_info(void)
 {
     printf("     | Source   | Destination | Count | Enabled | IRQ | SrcCtrl | DestCtrl | Repeat | Type\n");
-    printf("---------------------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
     printf("DMA0 | %08x | %08x    | %04x  | %u       | %u   | %s     | %s      | %u      | %s\n",
         io->dma0_sad, io->dma0_dad, io->dma0_count, io->dma0_ctrl.enable, io->dma0_ctrl.irq,
         dma_info_addr_manip(io->dma0_ctrl.src_ctrl), dma_info_addr_manip(io->dma0_ctrl.dst_ctrl),
-        io->dma0_ctrl.repeat, io->dma0_ctrl.trns_type ? "4B" : "2B"
+        io->dma0_ctrl.repeat, io->dma0_ctrl.trns_type ? "WORD (4B)" : "HALF-WORD (2B)"
     );
-    printf("---------------------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
     printf("DMA1 | %08x | %08x    | %04x  | %u       | %u   | %s     | %s      | %u      | %s\n",
         io->dma1_sad, io->dma1_dad, io->dma1_count, io->dma1_ctrl.enable, io->dma1_ctrl.irq,
         dma_info_addr_manip(io->dma1_ctrl.src_ctrl), dma_info_addr_manip(io->dma1_ctrl.dst_ctrl),
-        io->dma1_ctrl.repeat, io->dma1_ctrl.trns_type ? "4B" : "2B"
+        io->dma1_ctrl.repeat, io->dma1_ctrl.trns_type ? "WORD (4B)" : "HALF-WORD (2B)"
     );
-    printf("---------------------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
     printf("DMA2 | %08x | %08x    | %04x  | %u       | %u   | %s     | %s      | %u      | %s\n",
         io->dma2_sad, io->dma2_dad, io->dma2_count, io->dma2_ctrl.enable, io->dma2_ctrl.irq,
         dma_info_addr_manip(io->dma2_ctrl.src_ctrl), dma_info_addr_manip(io->dma2_ctrl.dst_ctrl),
-        io->dma2_ctrl.repeat, io->dma2_ctrl.trns_type ? "4B" : "2B"
+        io->dma2_ctrl.repeat, io->dma2_ctrl.trns_type ? "WORD (4B)" : "HALF-WORD (2B)"
     );
-    printf("---------------------------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------------\n");
     printf("DMA3 | %08x | %08x    | %04x  | %u       | %u   | %s     | %s      | %u      | %s\n",
         io->dma3_sad, io->dma3_dad, io->dma3_count, io->dma3_ctrl.enable, io->dma3_ctrl.irq,
         dma_info_addr_manip(io->dma3_ctrl.src_ctrl), dma_info_addr_manip(io->dma3_ctrl.dst_ctrl),
-        io->dma3_ctrl.repeat, io->dma3_ctrl.trns_type ? "4B" : "2B"
+        io->dma3_ctrl.repeat, io->dma3_ctrl.trns_type ? "WORD (4B)" : "HALF-WORD (2B)"
     );
 }
 

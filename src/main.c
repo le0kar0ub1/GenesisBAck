@@ -45,5 +45,5 @@ int main(int argc, char **argv)
 	 * Run all the modules exit calls by levels from latest
 	 */
 	exithooks_run_allhooks();
-	return (0);
+	return (EXIT_SUCCESS);
 }

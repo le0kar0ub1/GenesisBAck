@@ -37,6 +37,7 @@ require curl
 require tar
 require flex
 require bison
+require readline.so # hope it's a standard
 # require rsync
 
 ### Exit Handler ###############################################################

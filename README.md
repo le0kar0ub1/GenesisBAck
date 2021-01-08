@@ -10,6 +10,8 @@ A cross-plateform GBA emulator.
 
 ## Install
 
+All the dependencies installed are local and located in `mktoolchain/toolchain`.
+
 GenesisBAck use his own cross-compiler with frozen version, build it by executing the following command-line. -> currently unusable, using host compiler.
 
 Install the dependencies.
@@ -35,8 +37,6 @@ debug mode: run the given rom in a gdb-like debugger
 >   ./target/debug/GenesisBack-$version.bin <path_to_tom>
 
 ## About
-
-The project is divided into 4 fat parts.
 
 `Module` | `Description`                                  | `Link`                                 
 ---------|------------------------------------------------|----------------------------------------

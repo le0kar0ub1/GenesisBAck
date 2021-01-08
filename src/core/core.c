@@ -10,6 +10,7 @@
 # include "mmu/mmu.h"
 # include "gba/cartridge.h"
 # include "modules/module.h"
+# include "debug/debug.h"
 
 uint32_t core_read_state(void)
 {
@@ -63,6 +64,7 @@ static void core_reset(void)
     register_write32(PC, cartridge_get_entry_point());
     register_write32(SP, 0x3007F00);
     core_flush_pipeline();
+    core_cpu_restart_exec();
 }
 
 /**
@@ -81,6 +83,11 @@ static void core_init(void)
 
 static void core_exit(void) {}
 
+static void core_info(void)
+{
+    debug_cmd_regs(1, NULL);
+}
+
 REGISTER_MODULE(
     core,
     "The core of the emulator which schedule the RELEASE execution",
@@ -89,5 +96,5 @@ REGISTER_MODULE(
     core_exit,
     core_reset,
     core_start,
-    NULL
+    core_info
 );

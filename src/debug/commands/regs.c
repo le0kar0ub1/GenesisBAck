@@ -48,13 +48,6 @@ static inline char const *get_state(uint32_t state)
 
 static inline void display_psr_regs(struct register_psr psr)
 {
-    // printf("    opmode: %s\n", get_opmode(psr.opmode));
-    // printf("     state: %s\n", get_state(psr.state));
-    // printf("   fiq/irq: %u/%u\n", psr.fiq_disable, psr.irq_disable);
-    // printf("  overflow: %u\n", psr.overflow);
-    // printf("     carry: %u\n", psr.carry);
-    // printf("      zero: %u\n", psr.zero);
-    // printf("  negative: %u\n", psr.negative);
     printf("  fiq: %u | overflow: %u |     zero: %u | opmode: %s\n", psr.fiq_disable, psr.overflow, psr.zero, get_opmode(psr.opmode));
     printf("  irq: %u |    carry: %u | negative: %u |  state: %s\n", psr.irq_disable, psr.carry, psr.negative, get_state(psr.state));
 }
@@ -66,12 +59,23 @@ void debug_cmd_regs(int ac, char const **av)
     if (ac == 2) {
 
     } else if (ac == 1) {
-        printf(" r0: %08x |  r1: %08x |  r2: %08x |  r3: %08x\n", *(regs->raw[0]), *(regs->raw[1]), *(regs->raw[2]), *(regs->raw[3]));
-        printf(" r4: %08x |  r5: %08x |  r6: %08x |  r7: %08x\n", *(regs->raw[4]), *(regs->raw[5]), *(regs->raw[6]), *(regs->raw[7]));
-        printf(" r8: %08x |  r9: %08x | r10: %08x | r11: %08x\n", *(regs->raw[8]), *(regs->raw[9]), *(regs->raw[10]), *(regs->raw[11]));
-        printf("r12: %08x | r13: %08x | r14: %08x | r15: %08x\n", *(regs->raw[12]), *(regs->raw[13]), *(regs->raw[14]), *(regs->raw[15]));
-        printf("\n");
-        display_psr_regs(*(regs->cpsr));
+        printf(" State: %-10s | Overflow: %u         r0: %08x |  r1: %08x |  r2: %08x |  r3: %08x\n",
+            get_state(regs->cpsr->state), regs->cpsr->overflow,
+             *(regs->raw[0]), *(regs->raw[1]), *(regs->raw[2]), *(regs->raw[3])
+        );
+        printf("Opmode: %-10s | Carry:    %u         r4: %08x |  r5: %08x |  r6: %08x |  r7: %08x\n",
+            get_opmode(regs->cpsr->opmode), regs->cpsr->carry,
+            *(regs->raw[4]), *(regs->raw[5]), *(regs->raw[6]), *(regs->raw[7])
+        );
+        printf("   IRQ: %-10s | Negative: %u         r8: %08x |  r9: %08x | r10: %08x | r11: %08x\n",
+            regs->cpsr->irq_disable ? "disabled" : "enabled", regs->cpsr->negative,
+            *(regs->raw[8]), *(regs->raw[9]), *(regs->raw[10]), *(regs->raw[11])
+        );
+        printf("   FIQ: %-10s | Zero:     %u        r12: %08x | r13: %08x | r14: %08x | r15: %08x\n",
+            regs->cpsr->fiq_disable ? "disabled" : "enabled", regs->cpsr->zero,
+            *(regs->raw[12]), *(regs->raw[13]), *(regs->raw[14]), *(regs->raw[15])
+        );
+        // display_psr_regs(*(regs->cpsr));
         // if (regs->spsr) {
         //     printf("spsr:\n");
         //     display_psr_reg(*(regs->spsr));
