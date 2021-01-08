@@ -7,32 +7,87 @@
 **
 \******************************************************************************/
 
+# include <pthread.h>
+# include <signal.h>
 # include "modules/module.h"
+# include "core/core.h"
 # include "mmu/mmu.h"
 # include "gba/dma.h"
 
+static pthread_t thread;
+static bool kill_thread = false;
 static struct dma_iomem *io = NULL;
+
+struct dmax_iomem *dma_get_engine_io(enum DMA_ENGINE engine)
+{
+    return (
+        (struct dmax_iomem *)ADD_PTR(io, DMA_IOMEM_ENGINE_SHIFT(engine))
+    );
+} 
 
 static void dma_init(void)
 {
     io = (struct dma_iomem *)mmu_load_addr(DMA_IOMEM_BASE);
-    // dma0_init();
-    // dma1_init();
-    // dma2_init();
-    // dma3_init();
+
+}
+
+static void dma_stop(void)
+{
+    kill_thread = true;
+    pthread_join(thread, NULL);
 }
 
 static void dma_exit(void)
 {
-    // dma0_exit();
-    // dma1_exit();
-    // dma2_exit();
-    // dma3_exit();
+    if (module_is_running_runmod("dma"))
+        dma_stop();
+    io = NULL;
+}
+
+static void *dma_thread(void *arg __unused)
+{
+    /**
+     * Keep the priority order
+     * Only one total transfer is effectuate for a transfer call
+     * if the repeat bit is enabled then it will be relauched from here
+     */
+    while (io) {
+        if (kill_thread) {
+            pthread_exit(NULL);
+        }
+
+        if (io->dma0_ctrl.enable) {
+            core_cpu_stop_exec();
+            dma0_transfer();
+            core_cpu_restart_exec();
+        } else if (io->dma1_ctrl.enable) {
+            core_cpu_stop_exec();
+            dma1_transfer();
+            core_cpu_restart_exec();
+        } else if (io->dma2_ctrl.enable) {
+            core_cpu_stop_exec();
+            dma2_transfer();
+            core_cpu_restart_exec();
+        } else if (io->dma3_ctrl.enable) {
+            core_cpu_stop_exec();
+            dma3_transfer();
+            core_cpu_restart_exec();
+        }
+    }
+    return (NULL);
+}
+
+static void dma_start(void)
+{
+    if (pthread_create(&thread, NULL, dma_thread, NULL) != 0)
+        panic("Thread creation failed");
 }
 
 static void dma_reset(void)
 {
+    dma_stop();
     dma_init();
+    dma_start();
 }
 
 static inline char const *dma_info_addr_manip(uint32_t ctrl)
@@ -77,11 +132,12 @@ static void dma_info(void)
 
 REGISTER_MODULE(
     dma,
-    "The DMA engine of the GBA",
+    "The DMA engines of the GBA",
     MODULE_HOOK_GBA,
     dma_init,
     dma_exit,
     dma_reset,
-    NULL,
+    dma_start,
+    dma_stop,
     dma_info
 );

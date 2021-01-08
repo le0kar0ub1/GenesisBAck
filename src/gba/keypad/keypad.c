@@ -135,5 +135,6 @@ REGISTER_MODULE(
     keypad_exit,
     keypad_reset,
     NULL,
+    NULL,
     keypad_info
 );

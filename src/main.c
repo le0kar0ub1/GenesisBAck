@@ -7,7 +7,6 @@
 \*****************************************************************************/
 
 # include <stdlib.h>
-
 # include "genesisback.h"
 # include "mmu/mmu.h"
 # include "core/core.h"
@@ -35,9 +34,9 @@ int main(int argc, char **argv)
 	inithooks_run_allhooks();
 
 #if ROUTINE == ROUTINE_RELEASE
-	module_handler_runmod("core");
+	module_start_runmod("core");
 #elif ROUTINE == ROUTINE_DEBUG
-	module_handler_runmod("debug");
+	module_start_runmod("debug");
 #else
 	#error
 #endif
@@ -45,5 +44,6 @@ int main(int argc, char **argv)
 	 * Run all the modules exit calls by levels from latest
 	 */
 	exithooks_run_allhooks();
+
 	return (EXIT_SUCCESS);
 }

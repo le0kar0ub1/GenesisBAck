@@ -10,12 +10,12 @@
 # include "mmu/mmu.h"
 # include "gba/dma.h"
 
-void dma0_transfer(void)
+void dma3_transfer(void)
 {
-    struct dmax_iomem *io = dma_get_engine_io(0);
+    struct dmax_iomem *io = dma_get_engine_io(3);
     uint32_t sad  = io->dma_sad   & ((1 << 27) - 1);
     uint32_t dad  = io->dma_dad   & ((1 << 27) - 1);
-    uint32_t unit = io->dma_count ? io->dma_count & ((1 << 14) - 1) : (1 << 14);
+    uint32_t unit = io->dma_count ? io->dma_count & ((1 << 16) - 1) : (1 << 16);
 
     if (io->dma_ctrl.trns_type) { // word
         unit *= 2;

@@ -14,12 +14,14 @@
 static void inithook_gba(void)
 {
     module_init_runhook(MODULE_HOOK_GBA);
+    module_start_runhook(MODULE_HOOK_GBA);
 }
 
 REGISTER_GBA_INITHOOK(inithook_gba);
 
 static void exithook_gba(void)
 {
+    module_stop_runhook(MODULE_HOOK_GBA);
     module_exit_runhook(MODULE_HOOK_GBA);
 }
 

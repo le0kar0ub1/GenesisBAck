@@ -30,25 +30,33 @@ struct module
     char const desc[128];
     enum MODULE_HOOKS const hook;
     bool initialized;
+    bool running;
     void (* const init)(void);
     void (* const exit)(void);
     void (* const reset)(void);
-    void (* const handler)(void);
+    void (* const start)(void);
+    void (* const stop)(void);
     void (* const info)(void);
 };
 
-# define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xhandler, xinfo)    \
-    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))        \
-    static const struct module xname = {                                                \
-        .name    = #xname,                                                              \
-        .desc    = xdesc,                                                               \
-        .hook    = xhook,                                                               \
-        .initialized = false,                                                           \
-        .init    = xinit,                                                               \
-        .exit    = xexit,                                                               \
-        .reset   = xreset,                                                              \
-        .handler = xhandler,                                                            \
-        .info    = xinfo                                                                \
+/**
+ * Assuming that except for the CORE and the DEBUG module which are own by CORE hook
+ * If you register a start & stop function, the module is threaded
+ */
+# define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xstart, xstop, xinfo)  \
+    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))           \
+    static const struct module xname = {                                                   \
+        .name    = #xname,                                                                 \
+        .desc    = xdesc,                                                                  \
+        .hook    = xhook,                                                                  \
+        .initialized = false,                                                              \
+        .running     = false,                                                              \
+        .init    = xinit,                                                                  \
+        .exit    = xexit,                                                                  \
+        .reset   = xreset,                                                                 \
+        .start   = xstart,                                                                 \
+        .stop    = xstop,                                                                  \
+        .info    = xinfo                                                                   \
     };
 
 void module_init_runmod(char const *name);
@@ -60,11 +68,16 @@ void module_exit_runhook(enum MODULE_HOOKS hook);
 void module_reset_runmod(char const *name);
 void module_reset_runhook(enum MODULE_HOOKS hook);
 
-void module_handler_runmod(char const *name);
+void module_start_runmod(char const *name);
+void module_start_runhook(enum MODULE_HOOKS hook);
+
+void module_stop_runmod(char const *name);
+void module_stop_runhook(enum MODULE_HOOKS hook);
 
 void module_info_runmod(char const *name);
 
 bool module_is_initialized_runmod(char const *name);
+bool module_is_running_runmod(char const *name);
 
 struct module *module_request_mod(char const *name);
 

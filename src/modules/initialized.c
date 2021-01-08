@@ -14,7 +14,7 @@ extern struct module __start_genesisbackmodules[];
 extern struct module __stop_genesisbackmodules[];
 
 /**
- * Run the handlercall's of the module's name
+ * Get the initialization state of the module's name
  */
 bool module_is_initialized_runmod(char const *name)
 {

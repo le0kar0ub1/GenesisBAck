@@ -15,3 +15,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						gba.o					\
 						last.o					\
 					)
+
+sinclude $(local)/control/Makefile

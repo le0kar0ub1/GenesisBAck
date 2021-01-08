@@ -10,14 +10,14 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						initcalls.o				\
-						exitcalls.o				\
-						exithooks.o				\
-						inithooks.o				\
-						handlercalls.o			\
-						infocalls.o				\
-						resetcalls.o			\
+						init.o					\
+						exit.o					\
+						start.o					\
+						stop.o					\
+						info.o					\
+						reset.o					\
 						initialized.o			\
+						running.o				\
 						request.o				\
 					)
 

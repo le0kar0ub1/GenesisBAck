@@ -229,5 +229,6 @@ REGISTER_MODULE(
     debug_exit,
     debug_reset,
     debug_start,
+    NULL,
     NULL
 );

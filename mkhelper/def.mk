@@ -81,7 +81,7 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 export LDFLAGS	:=	$(STATIC_LIBS) 					 	\
 					$(addprefix -l, $(DYNAMIC_LIBS)) 	\
 					-l readline							\
-					-l curses
+					-l pthread
 
 # Output color
 export Red			:= \e[0;31m

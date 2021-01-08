@@ -152,5 +152,6 @@ REGISTER_MODULE(
     interrupt_exit,
     interrupt_reset,
     NULL,
+    NULL,
     interrupt_info
 );

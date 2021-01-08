@@ -12,8 +12,15 @@
 
 # include "genesisback.h"
 
-# define DMA_IOMEM_BASE         0x40000B0
-# define DMA_IOMEM_ENGINE_SIZE  0xC
+enum DMA_ENGINE {
+    DMA_ENGINE0 = 0,
+    DMA_ENGINE1 = 1,
+    DMA_ENGINE2 = 2,
+    DMA_ENGINE3 = 3
+};
+
+# define DMA_IOMEM_BASE            0x40000B0
+# define DMA_IOMEM_ENGINE_SHIFT(x) (x * 0xC)
 
 struct dma_ctrl
 {
@@ -65,19 +72,11 @@ struct dma_iomem
     struct dma_ctrl dma3_ctrl;  /* DMA 3 Control */
 };
 
-void dma0_init(void);
-void dma1_init(void);
-void dma2_init(void);
-void dma3_init(void);
+struct dmax_iomem *dma_get_engine_io(enum DMA_ENGINE engine);
 
-void dma0_exit(void);
-void dma1_exit(void);
-void dma2_exit(void);
-void dma3_exit(void);
-
-void dma0_start(void);
-void dma1_start(void);
-void dma2_start(void);
-void dma3_start(void);
+void dma0_transfer(void);
+void dma1_transfer(void);
+void dma2_transfer(void);
+void dma3_transfer(void);
 
 #endif /* _GBA_DMA_H_ */

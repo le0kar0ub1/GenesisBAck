@@ -72,8 +72,9 @@ static void core_reset(void)
  */
 static void core_start(void)
 {
-    while (1)
+    while (1) {
         core_scheduler();
+    }
 }
 
 static void core_init(void)
@@ -96,5 +97,6 @@ REGISTER_MODULE(
     core_exit,
     core_reset,
     core_start,
+    NULL,
     core_info
 );

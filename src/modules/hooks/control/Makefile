@@ -10,9 +10,6 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),		\
-						dma.o					\
-						dma0.o					\
-						dma1.o					\
-						dma2.o					\
-						dma3.o					\
+						inithooks.o				\
+						exithooks.o				\
 					)

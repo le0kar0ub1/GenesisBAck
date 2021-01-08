@@ -148,5 +148,6 @@ REGISTER_MODULE(
     mmu_exit,
     mmu_reset,
     NULL,
+    NULL,
     NULL
 );

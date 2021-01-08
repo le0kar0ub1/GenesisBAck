@@ -36,5 +36,6 @@ REGISTER_MODULE(
     system_exit,
     system_reset,
     NULL,
+    NULL,
     NULL
 );
