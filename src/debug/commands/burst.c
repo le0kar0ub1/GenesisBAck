@@ -59,14 +59,32 @@ retry:
     }
 
     if (cnt) {
-        for (size_t i = 0; i < cnt; i++)
-            printf("%#08lx:\t%s\t%s\n", burst[i].address, burst[i].mnemonic, burst[i].op_str);
+        for (size_t i = 0; i < cnt; i++) {
+            if (state == STATE_THUMB) {
+                printf(
+                    "%#08lx: [%02x%02x]\t%s\t%s\n",
+                    burst[i].address,
+                    burst[i].bytes[1], burst[i].bytes[0],
+                    burst[i].mnemonic, burst[i].op_str
+                );
+            } else {
+                printf(
+                    "%#08lx: [%02x%02x%02x%02x]\t%s\t%s\n",
+                    burst[i].address,
+                    burst[i].bytes[3], burst[i].bytes[2], burst[i].bytes[1], burst[i].bytes[0],
+                    burst[i].mnemonic, burst[i].op_str
+                );
+            }
+        }
         cs_free(burst, cnt);
     } else if (state == STATE_THUMB && thumbshit == false) {
-        thumbshit = true;
-        size += 1;
-        // addr -= 2;
-        goto retry;
+        if (!(bitfield_readx(mmu_read16(addr - 2), 12, 16) == 0b1111)) {
+            size += 1;
+            thumbshit = true;
+            goto retry;
+        } else {
+            printf("%#08x: [%02x%02x]\tbl (step2 ignore)\n", addr, mmu_read8(addr + 1), mmu_read8(addr));
+        }
     } else {
         printf("Dissassembling failed address %#08x\n", addr);
     }

@@ -12,107 +12,59 @@
 
 struct exception_vector_trait
 {
+    char const *name;
     uint32_t address;    // vector address
     uint32_t priority;   // priority compared to others ones
     uint32_t opmode;     // operation mode while taking the given exception
     bool is_irq_disable; // 1 if the flag irq_disable must be set, no action else 
     bool is_fiq_disable; // 1 if the flag fiq_disable must be set, no action else 
+    bool emulator_panic;
 };
 
-static struct exception_vector_trait reset_vector = {
-    .address  = EXCEPTION_RESET,
-    .priority = 1,
-    .opmode = OPERATION_MODE_SUPERVISOR,
-    .is_irq_disable = true,
-    .is_fiq_disable = true
+# define register_vector(xname, xaddress, xpriority, xopmode, xirq, xfiq, xpanic)  \
+    [xname] = {                                                                    \
+        .name = #xaddress,                                                         \
+        .address  = xaddress,                                                      \
+        .priority = xpriority,                                                     \
+        .opmode = xopmode,                                                         \
+        .is_irq_disable = xirq,                                                    \
+        .is_fiq_disable = xfiq,                                                    \
+        .emulator_panic = xpanic                                                   \
+    }
+
+static struct exception_vector_trait vectors[] = {
+    register_vector(
+        EXCEPTION_RESET / 4, EXCEPTION_RESET, 1, OPERATION_MODE_SUPERVISOR, true, true, true
+    ),
+    register_vector(
+        EXCEPTION_UND_INSTR / 4, EXCEPTION_UND_INSTR, 7, OPERATION_MODE_UNDEFINED, true, false, true
+    ),
+    register_vector(
+        EXCEPTION_SWI / 4, EXCEPTION_SWI, 6, OPERATION_MODE_SUPERVISOR, true, false, false
+    ),
+    register_vector(
+        EXCEPTION_PREFETCH_ABT / 4, EXCEPTION_PREFETCH_ABT, 5, OPERATION_MODE_ABORT, true, false, true
+    ),
+    register_vector(
+        EXCEPTION_DATA_ABT / 4, EXCEPTION_DATA_ABT, 2, OPERATION_MODE_ABORT, true, false, true
+    ),
+    register_vector(
+        EXCEPTION_ADDR_EXCEED / 4, EXCEPTION_ADDR_EXCEED, 1, OPERATION_MODE_SUPERVISOR, true, false, true
+    ),
+    register_vector(
+        EXCEPTION_IRQ / 4, EXCEPTION_IRQ, 4, OPERATION_MODE_IRQ, true, false, true
+    ),
+    register_vector(
+        EXCEPTION_FIQ / 4, EXCEPTION_FIQ, 3, OPERATION_MODE_FIQ, true, true, true
+    )
 };
 
-static struct exception_vector_trait und_instr_vector = {
-    .address  = EXCEPTION_UND_INSTR,
-    .priority = 7,
-    .opmode = OPERATION_MODE_UNDEFINED,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait swi_vector = {
-    .address  = EXCEPTION_SWI,
-    .priority = 6,
-    .opmode = OPERATION_MODE_SUPERVISOR,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait prefetch_abt_vector = {
-    .address  = EXCEPTION_PREFETCH_ABT,
-    .priority = 5,
-    .opmode = OPERATION_MODE_ABORT,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait data_abt_vector = {
-    .address  = EXCEPTION_DATA_ABT,
-    .priority = 2,
-    .opmode = OPERATION_MODE_ABORT,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait addr_exceed_vector = {
-    .address  = EXCEPTION_ADDR_EXCEED,
-    .priority = -1,
-    .opmode = OPERATION_MODE_SUPERVISOR,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait irq_vector = {
-    .address  = EXCEPTION_IRQ,
-    .priority = 4,
-    .opmode = OPERATION_MODE_IRQ,
-    .is_irq_disable = true,
-    .is_fiq_disable = false
-};
-
-static struct exception_vector_trait fiq_vector = {
-    .address  = EXCEPTION_FIQ,
-    .priority = 3,
-    .opmode = OPERATION_MODE_FIQ,
-    .is_irq_disable = true,
-    .is_fiq_disable = true
-};
-
-static inline struct exception_vector_trait exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
+static inline struct exception_vector_trait *exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
 {
-    switch (vector)
-    {
-        case EXCEPTION_RESET:
-            return (reset_vector);
-            break;
-        case EXCEPTION_UND_INSTR:
-            return (und_instr_vector);
-            break;
-        case EXCEPTION_SWI:
-            return (swi_vector);
-            break;
-        case EXCEPTION_PREFETCH_ABT:
-            return (prefetch_abt_vector);
-            break;
-        case EXCEPTION_DATA_ABT:
-            return (data_abt_vector);
-            break;
-        case EXCEPTION_ADDR_EXCEED:
-            return (addr_exceed_vector);
-            break;
-        case EXCEPTION_IRQ:
-            return (irq_vector);
-            break;
-        case EXCEPTION_FIQ:
-            return (fiq_vector);
-            break;
-        default:
-            return (reset_vector);
+    if (vector < sizeof(vectors)) {
+        return (&vectors[vector / 4]);
+    } else {
+        panic("Invalid exception vector");
     }
 }
 
@@ -133,10 +85,10 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     uint32_t pc = (uint32_t)register_read32(PC);
     struct register_psr old_cpsr = register_read_cpsr();
     struct register_psr new_cpsr = old_cpsr;
-    struct exception_vector_trait vec = exception_fetch_vector_trait(vector);
+    struct exception_vector_trait *vec = exception_fetch_vector_trait(vector);
 
     /* New opmode  */
-    new_cpsr.opmode = vec.opmode;
+    new_cpsr.opmode = vec->opmode;
     register_write_cpsr(new_cpsr.raw);
     /* Save old cpsr */
     register_write_spsr(old_cpsr.raw);
@@ -145,11 +97,11 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     /* update CPSR */
     new_cpsr.state = STATE_ARM;
     new_cpsr.irq_disable = true;
-    if (vec.is_fiq_disable == true)
+    if (vec->is_fiq_disable == true)
         new_cpsr.fiq_disable = true;
     register_write_cpsr(new_cpsr.raw);
     /* Set PC to vector address */
-    register_write32(PC, cartridge_get_entry_point() + vec.address);
+    register_write32(PC, cartridge_get_entry_point() + vec->address);
     core_flush_pipeline();
 }
 
@@ -158,6 +110,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
  */
 void exception_raise(enum EXCEPTION_VECTOR vector, uint32_t hdl)
 {
-    LOG_VERBOSE("Raising exception %d", vector);
+    if (exception_fetch_vector_trait(vector)->emulator_panic)
+        panic("Exception %s make panicked", exception_fetch_vector_trait(vector)->name);
     exception_perform_entry(vector);
 }

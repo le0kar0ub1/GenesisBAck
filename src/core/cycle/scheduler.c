@@ -45,6 +45,8 @@ static void schedule_thumb(void)
 
 void core_scheduler(void)
 {
+    if (core_read_opmode() == OPERATION_MODE_UNDEFINED)
+        panic("ndefined");
     while (!core_cpu_read_exec_state());
     if (core_read_state() == STATE_ARM)
         schedule_arm();

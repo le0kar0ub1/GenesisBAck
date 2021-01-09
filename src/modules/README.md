@@ -11,11 +11,12 @@ struct module
     char const desc[128];
     enum MODULE_HOOKS const hook;
     bool initialized;
-    bool threaded;
+    bool running;
     void (* const init)(void);
     void (* const exit)(void);
     void (* const reset)(void);
-    void (* const run)(void);
+    void (* const start)(void);
+    void (* const stop)(void);
     void (* const info)(void);
 };
 ```
@@ -38,18 +39,20 @@ The highest initialized hook can be set using the macro `CONFIG_INITLEVEL`, defa
 This is how a module is registered, a set of function is provided to search a module, execute a reset call (which reset all the higher hooks), call a handler, etc...
 
 ```c
-# define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xrun, xinfo)  \
-    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))  \
-    static const struct module xname = {                                          \
-        .name    = #xname,                                                        \
-        .desc    = xdesc,                                                         \
-        .hook    = xhook,                                                         \
-        .initialized = false,                                                     \
-        .init    = xinit,                                                         \
-        .exit    = xexit,                                                         \
-        .reset   = xreset,                                                        \
-        .run     = xrun,                                                          \
-        .info    = xinfo                                                          \
+# define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xstart, xstop, xinfo)  \
+    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))           \
+    static const struct module xname = {                                                   \
+        .name    = #xname,                                                                 \
+        .desc    = xdesc,                                                                  \
+        .hook    = xhook,                                                                  \
+        .initialized = false,                                                              \
+        .running     = false,                                                              \
+        .init    = xinit,                                                                  \
+        .exit    = xexit,                                                                  \
+        .reset   = xreset,                                                                 \
+        .start   = xstart,                                                                 \
+        .stop    = xstop,                                                                  \
+        .info    = xinfo                                                                   \
     };
 ```
 

@@ -109,12 +109,21 @@ static inline int __mmu_cond_unlock__(void)
     return (0);
 }
 
-# define mmu_safe_check(expr)   \
-    !__mmu_cond_lock__() &&     \
-    expr &&                     \
-    !__mmu_cond_unlock__()
+/**
+ * Use a safe memory expression in conditionnal ex
+ */
+# define mmu_safe_check(expr)                  \
+    !__mmu_cond_lock__() &&                    \
+    (                                          \
+        (expr && !__mmu_cond_unlock__())       \
+        ||                                     \
+        (!expr && __mmu_cond_unlock__() != 0)  \
+    )
 
-# define mmu_safe_expr(exp)     \
+/**
+ * Use a safe memory expression
+ */
+# define mmu_safe_expr(expr)    \
     mmu_lock();                 \
     expr;                       \
     mmu_unlock();

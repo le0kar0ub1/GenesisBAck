@@ -19,17 +19,21 @@ void core_thumb_reg_op(uint16_t op)
     uint32_t rs = bitfield_readx(op, 3, 6) + (h2 * 8);
     uint32_t op1, op2;
 
-    if (h1 == 0 && h2 == 0)
-        exception_raise(EXCEPTION_UND_INSTR, 0x0);
-
     switch (bitfield_readx(op, 8, 10))
     {
         case 0b00: // ADD
+            if (h1 == 0 && h2 == 0) {
+                goto err_undefined;
+            }
             *(regs->raw[rd]) += *(regs->raw[rs]);
-            if (rd == R15)
+            if (rd == R15) {
                 core_flush_pipeline();
+            }
             break;
         case 0b01: // CMP
+            if (h1 == 0 && h2 == 0) {
+                goto err_undefined;
+            }
             op1 = *(regs->raw[rd]);
             op2 = *(regs->raw[rs]);
             regs->cpsr->zero = !(op1 - op2);
@@ -38,9 +42,13 @@ void core_thumb_reg_op(uint16_t op)
             regs->cpsr->overflow = isub32_overflow(op1, op2);
             break;
         case 0b10: // MOV
+            if (h1 == 0 && h2 == 0) {
+                goto err_undefined;
+            }
             *(regs->raw[rd]) = *(regs->raw[rs]);
-            if (rd == R15)
+            if (rd == R15) {
                 core_flush_pipeline();
+            }
             break;
         case 0b11: // BX AKA branch &| switch state
             if (!h1) {
@@ -53,4 +61,7 @@ void core_thumb_reg_op(uint16_t op)
             }
             break;
     }
+    return;
+err_undefined:
+    exception_raise(EXCEPTION_UND_INSTR, 0x0);
 }

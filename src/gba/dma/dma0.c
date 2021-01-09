@@ -13,9 +13,17 @@
 void dma0_transfer(void)
 {
     struct dmax_iomem *io = dma_get_engine_io(0);
-    uint32_t sad  = io->dma_sad   & ((1 << 27) - 1);
-    uint32_t dad  = io->dma_dad   & ((1 << 27) - 1);
-    uint32_t unit = io->dma_count ? io->dma_count & ((1 << 14) - 1) : (1 << 14);
+    uint32_t sad;
+    uint32_t dad;
+    uint32_t unit;
+
+    mmu_safe_expr(sad = io->dma_sad);
+    mmu_safe_expr(dad = io->dma_dad);
+    mmu_safe_expr(unit = io->dma_count);
+    
+    sad &= ((1 << 27) - 1);
+    dad &= ((1 << 27) - 1);
+    unit = unit ? unit & ((1 << 14) - 1) : (1 << 14);
 
     if (io->dma_ctrl.trns_type) { // word
         unit *= 2;

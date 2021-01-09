@@ -40,8 +40,8 @@ struct module
 };
 
 /**
- * Assuming that except for the CORE and the DEBUG module which are own by CORE hook
- * If you register a start & stop function, the module is threaded
+ * Except for the CORE and the DEBUG module which are owned by CORE hook
+ * Assuming that if you register a start & stop function, the module is threaded
  */
 # define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xstart, xstop, xinfo)  \
     __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))           \
