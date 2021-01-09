@@ -58,8 +58,8 @@ void core_thumb_sdt_imm(uint16_t op)
     uint32_t rd = bitfield_readx(op, 0, 3);
     uint32_t rb = bitfield_readx(op, 3, 6);
     uint32_t off = bitfield_readx(op, 6, 11);
-    bool bw = bitfield_read1(op, 10);
     bool ls = bitfield_read1(op, 11);
+    bool bw = bitfield_read1(op, 12);
     uint32_t addr = *(regs->raw[rb]);
     
     if (bw) {

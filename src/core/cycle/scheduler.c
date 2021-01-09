@@ -19,7 +19,6 @@ static void schedule_arm(void)
     void *(*handler)(uint32_t);
     
     op = core_read_prefetch();
-    LOG_VERBOSE("Running instruction %#x", op);
     core_write_prefetch(core_fetch_arm());
     register_uadd32(PC, 4);
 
@@ -35,7 +34,6 @@ static void schedule_thumb(void)
     void *(*handler)(uint16_t);
     
     op = (uint16_t)core_read_prefetch();
-    LOG_VERBOSE("Running instruction %#x", op);
     core_write_prefetch((uint32_t)core_fetch_thumb());
     register_uadd32(PC, 2);
 
@@ -45,8 +43,6 @@ static void schedule_thumb(void)
 
 void core_scheduler(void)
 {
-    if (core_read_opmode() == OPERATION_MODE_UNDEFINED)
-        panic("ndefined");
     while (!core_cpu_read_exec_state());
     if (core_read_state() == STATE_ARM)
         schedule_arm();

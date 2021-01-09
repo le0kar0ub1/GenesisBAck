@@ -10,16 +10,16 @@
 # include "debug/debug.h"
 # include "string.h"
 
-static uint32_t breakpoint = 0x0;
+static int32_t breakpoint = -1;
 
 void debug_cmd_breakpoint(int ac, char const **av)
 {
-    breakpoint = strtoul(av[1], NULL, get_base(av[1]));
+    breakpoint = strtol(av[1], NULL, get_base(av[1]));
 }
 
-uint32_t breakpoint_get_and_remove(void)
+int32_t breakpoint_get_and_remove(void)
 {
-    uint32_t brk = breakpoint;
-    breakpoint = 0x0;
+    int32_t brk = breakpoint;
+    breakpoint = -1;
     return (brk);
 }

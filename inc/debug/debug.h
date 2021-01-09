@@ -27,7 +27,7 @@ struct command
 
 int get_command_descriptor_index(char const *name);
 
-uint32_t breakpoint_get_and_remove(void);
+int32_t breakpoint_get_and_remove(void);
 
 void debug_cmd_quit(int ac, char const **av);
 void debug_cmd_help(int ac, char const **av);

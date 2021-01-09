@@ -21,47 +21,49 @@ struct exception_vector_trait
     bool emulator_panic;
 };
 
-# define register_vector(xname, xaddress, xpriority, xopmode, xirq, xfiq, xpanic)  \
-    [xname] = {                                                                    \
-        .name = #xaddress,                                                         \
-        .address  = xaddress,                                                      \
-        .priority = xpriority,                                                     \
-        .opmode = xopmode,                                                         \
-        .is_irq_disable = xirq,                                                    \
-        .is_fiq_disable = xfiq,                                                    \
-        .emulator_panic = xpanic                                                   \
+# define REGISTER_VECTOR(xdef, xpriority, xopmode, xirq, xfiq, xpanic)   \
+    [xdef / 4] = {                                                       \
+        .name = #xdef,                                                   \
+        .address  = xdef,                                                \
+        .priority = xpriority,                                           \
+        .opmode = xopmode,                                               \
+        .is_irq_disable = xirq,                                          \
+        .is_fiq_disable = xfiq,                                          \
+        .emulator_panic = xpanic                                         \
     }
 
 static struct exception_vector_trait vectors[] = {
-    register_vector(
-        EXCEPTION_RESET / 4, EXCEPTION_RESET, 1, OPERATION_MODE_SUPERVISOR, true, true, true
+    REGISTER_VECTOR(
+        EXCEPTION_RESET, 1, OPERATION_MODE_SUPERVISOR, true, true, true
     ),
-    register_vector(
-        EXCEPTION_UND_INSTR / 4, EXCEPTION_UND_INSTR, 7, OPERATION_MODE_UNDEFINED, true, false, true
+    REGISTER_VECTOR(
+        EXCEPTION_UND_INSTR, 7, OPERATION_MODE_UNDEFINED, true, false, true
     ),
-    register_vector(
-        EXCEPTION_SWI / 4, EXCEPTION_SWI, 6, OPERATION_MODE_SUPERVISOR, true, false, false
+    REGISTER_VECTOR(
+        EXCEPTION_SWI, 6, OPERATION_MODE_SUPERVISOR, true, false, false
     ),
-    register_vector(
-        EXCEPTION_PREFETCH_ABT / 4, EXCEPTION_PREFETCH_ABT, 5, OPERATION_MODE_ABORT, true, false, true
+    REGISTER_VECTOR(
+        EXCEPTION_PREFETCH_ABT, 5, OPERATION_MODE_ABORT, true, false, true
     ),
-    register_vector(
-        EXCEPTION_DATA_ABT / 4, EXCEPTION_DATA_ABT, 2, OPERATION_MODE_ABORT, true, false, true
+    REGISTER_VECTOR(
+        EXCEPTION_DATA_ABT, 2, OPERATION_MODE_ABORT, true, false, true
     ),
-    register_vector(
-        EXCEPTION_ADDR_EXCEED / 4, EXCEPTION_ADDR_EXCEED, 1, OPERATION_MODE_SUPERVISOR, true, false, true
+    REGISTER_VECTOR(
+        EXCEPTION_ADDR_EXCEED, 1, OPERATION_MODE_SUPERVISOR, true, false, true
     ),
-    register_vector(
-        EXCEPTION_IRQ / 4, EXCEPTION_IRQ, 4, OPERATION_MODE_IRQ, true, false, true
+    REGISTER_VECTOR(
+        EXCEPTION_IRQ, 4, OPERATION_MODE_IRQ, true, false, true
     ),
-    register_vector(
-        EXCEPTION_FIQ / 4, EXCEPTION_FIQ, 3, OPERATION_MODE_FIQ, true, true, true
+    REGISTER_VECTOR(
+        EXCEPTION_FIQ, 3, OPERATION_MODE_FIQ, true, true, true
     )
 };
 
+#undef REGISTER_VECTOR
+
 static inline struct exception_vector_trait *exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
 {
-    if (vector < sizeof(vectors)) {
+    if (vector / 4 < (sizeof(vectors) / sizeof(struct exception_vector_trait))) {
         return (&vectors[vector / 4]);
     } else {
         panic("Invalid exception vector");

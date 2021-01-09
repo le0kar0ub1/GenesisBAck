@@ -12,9 +12,11 @@
 
 void debug_cmd_continue(int ac, char const **av)
 {
-    uint32_t brk = breakpoint_get_and_remove() + 4;
+    int32_t brk = breakpoint_get_and_remove() + 4;
 
-    while (register_read32(PC) != brk) {
+    while (1) {
+        if (brk != -1 && register_read32(PC) == (uint32_t)brk)
+            break;
     #if DEBUG_STATE_MASTER
         debug_cmd_burst(1, NULL);
     #endif
