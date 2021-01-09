@@ -107,6 +107,15 @@ const struct command commands[] =
         .handler = debug_cmd_load
     },
     {
+        .name = "store",
+        .minimal = NULL,
+        .minargs = 2,
+        .maxargs = 3,
+        .help = "store [SIZE] EXR ADDR",
+        .description = "Store EXPR sizeof SIZE at the given ADDR, defaulting to 4",
+        .handler = debug_cmd_store
+    },
+    {
         .name = "module",
         .minimal = "mod",
         .minargs = 1,

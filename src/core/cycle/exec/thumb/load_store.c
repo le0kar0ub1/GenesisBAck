@@ -84,7 +84,7 @@ void core_thumb_sdt_hw(uint16_t op)
     struct opmode_regs *regs = core_get_context_regs();
     uint32_t rd = bitfield_readx(op, 0, 3);
     uint32_t rb = bitfield_readx(op, 3, 6);
-    uint32_t off = bitfield_readx(op, 6, 11);
+    uint32_t off = bitfield_readx(op, 6, 11) << 1;
     bool ls = bitfield_read1(op, 11);
     uint32_t addr = *(regs->raw[rb]) + off;
 

@@ -55,20 +55,19 @@ static void *dma_thread(void *arg __unused)
         if (kill_thread) {
             pthread_exit(NULL);
         }
-
-        if (io->dma0_ctrl.enable) {
+        if (mmu_safe_check(io->dma0_ctrl.enable)) {
             core_cpu_stop_exec();
             dma0_transfer();
             core_cpu_restart_exec();
-        } else if (io->dma1_ctrl.enable) {
+        } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
             core_cpu_stop_exec();
             dma1_transfer();
             core_cpu_restart_exec();
-        } else if (io->dma2_ctrl.enable) {
+        } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
             core_cpu_stop_exec();
             dma2_transfer();
             core_cpu_restart_exec();
-        } else if (io->dma3_ctrl.enable) {
+        } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
             core_cpu_stop_exec();
             dma3_transfer();
             core_cpu_restart_exec();

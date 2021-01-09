@@ -20,5 +20,6 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						breakpoint.o		\
 						wreg.o				\
 						load.o				\
+						store.o				\
 						module.o			\
 					)

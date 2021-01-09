@@ -92,7 +92,31 @@ void mmu_write8(uint32_t addr, uint8_t val);
 void mmu_write16(uint32_t addr, uint16_t val);
 void mmu_write32(uint32_t addr, uint32_t val);
 void *mmu_load_addr(uint32_t shift);
+void mmu_lock(void);
+void mmu_unlock(void);
 
 bool mmu_load_rom(char const *path);
+
+static inline int __mmu_cond_lock__(void)
+{
+    mmu_lock();
+    return (0);
+}
+
+static inline int __mmu_cond_unlock__(void)
+{
+    mmu_unlock();
+    return (0);
+}
+
+# define mmu_safe_check(expr)   \
+    !__mmu_cond_lock__() &&     \
+    expr &&                     \
+    !__mmu_cond_unlock__()
+
+# define mmu_safe_expr(exp)     \
+    mmu_lock();                 \
+    expr;                       \
+    mmu_unlock();
 
 #endif /* _MMU_MMU_H_ */

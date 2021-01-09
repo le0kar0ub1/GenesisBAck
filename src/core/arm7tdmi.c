@@ -7,7 +7,11 @@
 \*****************************************************************************/
 
 # include "core/core.h"
+# include <pthread.h>
 # include <string.h>
+
+static pthread_mutex_t mutex;
+bool running;
 
 /**
  * All processor registers over operation modes
@@ -72,7 +76,6 @@ struct arm7tdmi
     struct register_psr spsr_und;
 
     uint32_t prefetch;
-    bool     running;
 };
 
 /**
@@ -520,7 +523,7 @@ void core_write_prefetch(uint32_t prefetch)
  */
 void core_cpu_stop_exec(void)
 {
-    arm7tdmi.running = false;
+    running = false;
 }
 
 /**
@@ -528,7 +531,7 @@ void core_cpu_stop_exec(void)
  */
 void core_cpu_restart_exec(void)
 {
-    arm7tdmi.running = true;
+    running = true;
 }
 
 /**
@@ -536,5 +539,5 @@ void core_cpu_restart_exec(void)
  */
 bool core_cpu_read_exec_state(void)
 {
-    return (arm7tdmi.running);
+    return (running);
 }
