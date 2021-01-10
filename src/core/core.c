@@ -58,11 +58,22 @@ void core_flush_pipeline(void)
 
 static void core_reset(void)
 {
+    struct opmode_regs *usr = core_get_opmode_regs(OPERATION_MODE_USER);
+    struct opmode_regs *sys = core_get_opmode_regs(OPERATION_MODE_SYSTEM);
+    struct opmode_regs *irq = core_get_opmode_regs(OPERATION_MODE_IRQ);
+    struct opmode_regs *svc = core_get_opmode_regs(OPERATION_MODE_SUPERVISOR);
+
     register_reset();
+
+    *(usr->r13) = 0x3007F00;
+    *(sys->r13) = 0x3007F00;
+    *(irq->r13) = 0x3007FA0;
+    *(svc->r13) = 0x3007FE0;
+
+    *(sys->r15) = cartridge_get_entry_point();
     core_switch_opmode(OPERATION_MODE_SYSTEM);
     core_switch_state(STATE_ARM);
-    register_write32(PC, cartridge_get_entry_point());
-    register_write32(SP, 0x3007F00);
+
     core_flush_pipeline();
     core_cpu_restart_exec();
 }

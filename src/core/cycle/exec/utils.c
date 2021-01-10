@@ -24,7 +24,7 @@ uint32_t core_exec_interpret_shift(uint32_t val, uint32_t shift, bool carry_mod)
     if (bitfield_read1(shift, 0) == 0) { // immediate value
         base = (shift >> 3) & 0x1F;
     } else { // register
-        base = register_read32((shift >> 4) & 0xF) & 0x1F;
+        base = register_read32((shift >> 4) & 0xF) & 0xFF;
     }
 
     // when base is 0, there are particular handling

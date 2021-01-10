@@ -88,7 +88,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     struct opmode_regs *cur = core_get_context_regs();
     struct opmode_regs *new = core_get_opmode_regs(vec->opmode);
 
-    *(new->r14) = *(cur->r15);
+    *(new->r14) = *(cur->r15) - (new->cpsr->state == STATE_ARM ? 4 : 2);
     *(new->spsr) = *(cur->cpsr);
 
     new->cpsr->state = STATE_ARM;
@@ -107,7 +107,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
  */
 void exception_raise(enum EXCEPTION_VECTOR vector, uint32_t hdl)
 {
-    // if (exception_fetch_vector_trait(vector)->emulator_panic)
+    if (exception_fetch_vector_trait(vector)->emulator_panic)
         panic("Exception %s make me panicked", exception_fetch_vector_trait(vector)->name);
     exception_perform_entry(vector);
 }

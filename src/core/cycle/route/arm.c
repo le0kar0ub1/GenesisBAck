@@ -37,7 +37,7 @@ void *core_route_arm(uint32_t op)
                 return (core_arm_reg_hwdt);
             else if (bitfield_read1(op, 4) == 0b1 && bitfield_read1(op, 7) == 0b1 && bitfield_read1(op, 22) == 0b1 && bitfield_read1(op, 25) == 0b0)
                 return (core_arm_imm_hwdt);
-            else if (bitfield_read1(op, 4) == 0b0 || bitfield_read1(op, 7) == 0b0)
+            else
                 return (core_arm_alu);
             goto err;
         case 0b01:
