@@ -10,7 +10,7 @@
 # include "gba/cartridge.h" 
 # include "core/exceptions.h"
 
-struct exception_vector_trait
+struct vector_trait
 {
     char const *name;
     uint32_t address;    // vector address
@@ -32,7 +32,7 @@ struct exception_vector_trait
         .emulator_panic = xpanic                                         \
     }
 
-static struct exception_vector_trait vectors[] = {
+static struct vector_trait vectors[] = {
     REGISTER_VECTOR(
         EXCEPTION_RESET, 1, OPERATION_MODE_SUPERVISOR, true, true, true
     ),
@@ -61,9 +61,9 @@ static struct exception_vector_trait vectors[] = {
 
 #undef REGISTER_VECTOR
 
-static inline struct exception_vector_trait *exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
+static inline struct vector_trait *exception_fetch_vector_trait(enum EXCEPTION_VECTOR vector)
 {
-    if (vector / 4 < (sizeof(vectors) / sizeof(struct exception_vector_trait))) {
+    if (vector / 4 < (sizeof(vectors) / sizeof(struct vector_trait))) {
         return (&vectors[vector / 4]);
     } else {
         panic("Invalid exception vector");
@@ -84,26 +84,21 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     - CPSR new F bit         ;FIQs disabled (F=1), done by Reset and FIQ only
     - PC=exception_vector    ;see table above
     */
-    uint32_t pc = (uint32_t)register_read32(PC);
-    struct register_psr old_cpsr = register_read_cpsr();
-    struct register_psr new_cpsr = old_cpsr;
-    struct exception_vector_trait *vec = exception_fetch_vector_trait(vector);
+    struct vector_trait *vec = exception_fetch_vector_trait(vector);
+    struct opmode_regs *cur = core_get_context_regs();
+    struct opmode_regs *new = core_get_opmode_regs(vec->opmode);
 
-    /* New opmode  */
-    new_cpsr.opmode = vec->opmode;
-    register_write_cpsr(new_cpsr.raw);
-    /* Save old cpsr */
-    register_write_spsr(old_cpsr.raw);
-    /* Link register to current address */
-    register_write32(LR, pc);
-    /* update CPSR */
-    new_cpsr.state = STATE_ARM;
-    new_cpsr.irq_disable = true;
-    if (vec->is_fiq_disable == true)
-        new_cpsr.fiq_disable = true;
-    register_write_cpsr(new_cpsr.raw);
-    /* Set PC to vector address */
-    register_write32(PC, cartridge_get_entry_point() + vec->address);
+    *(new->r14) = *(cur->r15);
+    *(new->spsr) = *(cur->cpsr);
+
+    new->cpsr->state = STATE_ARM;
+    new->cpsr->opmode = vec->opmode;
+    if (vec->is_fiq_disable)
+        new->cpsr->fiq_disable = true;
+    if (vec->is_irq_disable)
+        new->cpsr->irq_disable = true;
+    *(new->r15) = vec->address;
+
     core_flush_pipeline();
 }
 
@@ -112,7 +107,7 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
  */
 void exception_raise(enum EXCEPTION_VECTOR vector, uint32_t hdl)
 {
-    if (exception_fetch_vector_trait(vector)->emulator_panic)
-        panic("Exception %s make panicked", exception_fetch_vector_trait(vector)->name);
+    // if (exception_fetch_vector_trait(vector)->emulator_panic)
+        panic("Exception %s make me panicked", exception_fetch_vector_trait(vector)->name);
     exception_perform_entry(vector);
 }

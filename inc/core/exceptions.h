@@ -30,6 +30,6 @@ enum EXCEPTION_VECTOR
 
 #undef EXCEPTION_VECTOR_BASE
 
-void exception_raise(enum EXCEPTION_VECTOR, uint32_t hdl);
+void exception_raise(enum EXCEPTION_VECTOR vector, uint32_t hdl);
 
 #endif /* _CORE_EXCEPTIONS_H_ */

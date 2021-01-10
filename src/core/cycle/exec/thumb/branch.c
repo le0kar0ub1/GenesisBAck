@@ -29,8 +29,6 @@ void core_thumb_branch(uint16_t op)
     core_flush_pipeline();
 }
 
-#pragma message "Try to understand why followinf the documentation fucked up the execution (bit 0 of lr set)"
-
 void core_thumb_branch_link(uint16_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
@@ -40,7 +38,7 @@ void core_thumb_branch_link(uint16_t op)
 
     if (h) {
         lr = *(regs->r14) + (off << 1);
-        *(regs->r14) = (*(regs->r15) - 2) | 0b1; // why set this fcking bit ?
+        *(regs->r14) = (*(regs->r15) - 2) | 0b1;
         *(regs->r15) = lr;
         core_flush_pipeline();
     } else {

@@ -25,5 +25,5 @@ void __noreturn _panic(char const *anywhere, char const *fmt, ...)
     va_start(ap, fmt);
     vprintf(fmt, ap);
     va_end(ap);
-    exit(0);
+    exit(1);
 }
