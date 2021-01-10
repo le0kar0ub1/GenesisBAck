@@ -30,6 +30,7 @@ void core_arm_single_dt(uint32_t op)
     } else {
         off = core_exec_interpret_shift(*(regs->raw[off & 0xF]), (off >> 4) & 0xFF, false);
     }
+
     if (!updown) {
         wbaddr = base - off;
     } else {

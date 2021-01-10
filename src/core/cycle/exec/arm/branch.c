@@ -22,11 +22,11 @@ void core_arm_branch_exchange(uint32_t op)
 void core_arm_branch(uint32_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
-    int32_t off = sign_extend24_to_i32(op & 0xFFFFFF) << 2;
+    int32_t off = sign_extend_to_i32(op & 0xFFFFFF, 24) << 2;
 
     if (bitfield_read1(op, 24) == 0b1)
-        *(regs->r14) = *(regs->r15) - 4; // the current instruction
+        *(regs->r14) = *(regs->r15) - 4; // the next instruction
 
-    *(regs->r15) += off;
+    *(regs->r15) = ((int32_t)*(regs->r15)) + off;
     core_flush_pipeline();   
 }

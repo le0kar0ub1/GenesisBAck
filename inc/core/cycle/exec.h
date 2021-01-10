@@ -62,7 +62,7 @@ static inline bool uadd32_carry(uint32_t x, uint32_t y)
 
 static inline bool iadd32_overflow(int32_t x, int32_t y)
 {
-    return ((!((x ^ y) >> 31)) && ((x ^ ((uint32_t)x + (uint32_t)y) >> 31)));
+    return ((!((x ^ y) >> 31)) && (((x ^ ((uint32_t)x + (uint32_t)y)) >> 31)));
 }
 
 static inline bool usub32_carry(uint32_t x, uint32_t y)
@@ -72,7 +72,7 @@ static inline bool usub32_carry(uint32_t x, uint32_t y)
 
 static inline bool isub32_overflow(int32_t x, int32_t y)
 {
-    return ((x ^ y) >> 31) && ((x ^ ((uint32_t)x - (uint32_t)y) >> 31));
+    return ((x ^ y) >> 31) && (((x ^ ((uint32_t)x - (uint32_t)y)) >> 31));
 }
 
 #endif /* _CORE_CYCLE_EXEC_H_ */

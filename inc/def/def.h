@@ -116,7 +116,7 @@ static inline int32_t sign_extend_to_i32(uint32_t val, uint32_t extend)
     if ((val & (1 << (extend - 1))) == 0)
         return ((int32_t)val);
     else
-        return ((int32_t)(val | (((1 << (32 - extend)) - 1) << 11)));
+        return ((int32_t)(val | (((1 << (32 - extend)) - 1) << extend)));
 }
 
 # define sign_extend11_to_i32(val) sign_extend_to_i32(val, 11)

@@ -23,7 +23,7 @@ void core_thumb_cond_branch(uint16_t op)
 void core_thumb_branch(uint16_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
-    int32_t off = sign_extend_to_i32(bitfield_readx(op, 0, 11) << 1, 11);
+    int32_t off = sign_extend11_to_i32(bitfield_readx(op, 0, 11) << 1);
     
     *(regs->r15) += off;
     core_flush_pipeline();
@@ -42,6 +42,6 @@ void core_thumb_branch_link(uint16_t op)
         *(regs->r15) = lr;
         core_flush_pipeline();
     } else {
-        *(regs->r14) = *(regs->r15) + (sign_extend_to_i32(off, 11) << 12);
+        *(regs->r14) = *(regs->r15) + (sign_extend11_to_i32(off) << 12);
     }
 }
