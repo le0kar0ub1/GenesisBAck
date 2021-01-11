@@ -57,7 +57,7 @@ uint32_t core_exec_imm8_rotate4(uint32_t imm, uint32_t rotate);
 
 static inline bool uadd32_carry(uint32_t x, uint32_t y)
 {
-    return ((x >> 31) && (y >> 31));
+    return (((x >> 31) + (y >> 31)) > ((x + y) >> 31));
 }
 
 static inline bool iadd32_overflow(int32_t x, int32_t y)

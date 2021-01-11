@@ -48,7 +48,6 @@ typedef uint64_t        u64_t;
 
 typedef void *          hostaddr_t;
 typedef uintptr_t       virtaddr_t;
-# define PHYSNULL ((physaddr_t)0x0)
 
 typedef uintptr         archv_t;
 typedef uintptr *       archp_t;
@@ -104,7 +103,6 @@ typedef uintptr *       archp_t;
 # define SUB_PTR(x, y) ((typeof(x))((uintptr_t)x - (uintptr_t)y))
 
 # define bitfield_read1(val, bit)  ((bool)(val & (1 << bit)))
-# define bitfield_write1(val, bit) (val |= (1 << bit))
 // inclusive from, exclusive to
 # define bitfield_readx(val, from, to) ((typeof(val))(((typeof(val))((val) << (sizeof(val) * 8 - (to)))) >> (sizeof(val) * 8 - (to) + (from)))) 
 

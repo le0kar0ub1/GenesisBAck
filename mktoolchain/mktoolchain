@@ -50,7 +50,7 @@ cleanup() {
 
 set -e
 
-# trap cleanup EXIT
+trap cleanup EXIT
 
 ### Directories ################################################################
 WORKSPACE=$(mktemp -td build-toolchain.XXXXXXXXX || exit 1)

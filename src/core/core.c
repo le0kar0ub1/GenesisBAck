@@ -97,7 +97,9 @@ static void core_exit(void) {}
 
 static void core_info(void)
 {
+#if ROUTINE == ROUTINE_DEBUG
     debug_cmd_regs(1, NULL);
+#endif
 }
 
 REGISTER_MODULE(

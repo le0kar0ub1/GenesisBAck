@@ -22,16 +22,20 @@ endif
 TARGET_OBJECTS 	:=	$(PROJECT_PATH)/src/main.o
 
 ifeq ($(tgt),all)
-sinclude $(PROJECT_PATH)/src/core/Makefile
-sinclude $(PROJECT_PATH)/src/debug/Makefile
-sinclude $(PROJECT_PATH)/src/modules/Makefile
-sinclude $(PROJECT_PATH)/src/mmu/Makefile
-sinclude $(PROJECT_PATH)/src/gba/Makefile
+	ifeq ($(BUILD_MODE),release)
+		sinclude $(PROJECT_PATH)/src/core/Makefile
+	else
+		sinclude $(PROJECT_PATH)/src/core/Makefile
+		sinclude $(PROJECT_PATH)/src/debug/Makefile
+	endif
+	sinclude $(PROJECT_PATH)/src/modules/Makefile
+	sinclude $(PROJECT_PATH)/src/mmu/Makefile
+	sinclude $(PROJECT_PATH)/src/gba/Makefile
 else
-ifeq ($(shell test -e $(PROJECT_PATH)/src/$(tgt)/main.c && echo -n found),found)
-sinclude $(PROJECT_PATH)/src/$(tgt)/Makefile
-TARGET_OBJECTS += $(PROJECT_PATH)/src/$(tgt)/main.o
-endif
+	ifeq ($(shell test -e $(PROJECT_PATH)/src/$(tgt)/main.c && echo -n found),found)
+		sinclude $(PROJECT_PATH)/src/$(tgt)/Makefile
+		TARGET_OBJECTS += $(PROJECT_PATH)/src/$(tgt)/main.o
+	endif
 endif
 
 TARGET_OBJECTS	:=	$(patsubst $(PROJECT_PATH)%, $(TARGET_PATH)%, $(TARGET_OBJECTS))
