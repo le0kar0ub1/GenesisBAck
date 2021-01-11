@@ -28,7 +28,6 @@ struct dmax_iomem *dma_get_engine_io(enum DMA_ENGINE engine)
 static void dma_init(void)
 {
     io = (struct dma_iomem *)mmu_load_addr(DMA_IOMEM_BASE);
-
 }
 
 static void dma_stop(void)

@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 	} else {
 		rom = argv[1];
 	}
+
 	/**
 	 * Run all the modules init calls by levels from start
 	 */
@@ -40,6 +41,7 @@ int main(int argc, char **argv)
 #else
 	#error
 #endif
+
 	/**
 	 * Run all the modules exit calls by levels from latest
 	 */

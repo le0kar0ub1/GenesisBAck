@@ -181,7 +181,6 @@ struct opmode_regs
 };
 
 void register_reset(void);
-uint32_t *register_read_ptr(uint32_t id);
 uint8_t register_read8(uint32_t id);
 uint16_t register_read16(uint32_t id);
 uint32_t register_read32(uint32_t id);

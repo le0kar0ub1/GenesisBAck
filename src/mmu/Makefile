@@ -13,4 +13,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),		\
 						mmu.o					\
 						load.o					\
 						bios.o					\
+						trigger.o				\
 					)

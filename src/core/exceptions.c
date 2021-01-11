@@ -16,8 +16,8 @@ struct vector_trait
     uint32_t address;    // vector address
     uint32_t priority;   // priority compared to others ones
     uint32_t opmode;     // operation mode while taking the given exception
-    bool is_irq_disable; // 1 if the flag irq_disable must be set, no action else 
-    bool is_fiq_disable; // 1 if the flag fiq_disable must be set, no action else 
+    bool are_irq_disable; // 1 if the flag irq_disable must be set, no action else 
+    bool are_fiq_disable; // 1 if the flag fiq_disable must be set, no action else 
     bool emulator_panic;
 };
 
@@ -27,8 +27,8 @@ struct vector_trait
         .address  = xdef,                                                \
         .priority = xpriority,                                           \
         .opmode = xopmode,                                               \
-        .is_irq_disable = xirq,                                          \
-        .is_fiq_disable = xfiq,                                          \
+        .are_irq_disable = xirq,                                         \
+        .are_fiq_disable = xfiq,                                         \
         .emulator_panic = xpanic                                         \
     }
 
@@ -88,14 +88,14 @@ static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
     struct opmode_regs *cur = core_get_context_regs();
     struct opmode_regs *new = core_get_opmode_regs(vec->opmode);
 
-    *(new->r14) = *(cur->r15) - (new->cpsr->state == STATE_ARM ? 4 : 2);
+    *(new->r14) = *(cur->r15) - (cur->cpsr->state == STATE_ARM ? 4 : 2);
     *(new->spsr) = *(cur->cpsr);
 
     new->cpsr->state = STATE_ARM;
     new->cpsr->opmode = vec->opmode;
-    if (vec->is_fiq_disable)
+    if (vec->are_fiq_disable)
         new->cpsr->fiq_disable = true;
-    if (vec->is_irq_disable)
+    if (vec->are_irq_disable)
         new->cpsr->irq_disable = true;
     *(new->r15) = vec->address;
 
