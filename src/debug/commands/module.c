@@ -7,8 +7,8 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
-# include "modules/module.h"
+# include <debug/debug.h>
+# include <modules/module.h>
 # include <string.h>
 
 extern struct module __start_genesisbackmodules[];

@@ -7,12 +7,12 @@
 \*****************************************************************************/
 
 # include <stdlib.h>
-# include "genesisback.h"
-# include "mmu/mmu.h"
-# include "core/core.h"
-# include "debug/debug.h"
-# include "modules/inithooks.h"
-# include "modules/exithooks.h"
+# include <genesisback.h>
+# include <mmu/mmu.h>
+# include <core/core.h>
+# include <debug/debug.h>
+# include <modules/inithooks.h>
+# include <modules/exithooks.h>
 
 char const *rom = NULL; 
 

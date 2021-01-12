@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
-# include "core/exceptions.h"
+# include <core/cycle/exec.h>
+# include <core/exceptions.h>
 
 void core_thumb_reg_op(uint16_t op)
 {

@@ -7,10 +7,10 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
-# include "core/core.h"
-# include "mmu/mmu.h"
-# include "capstone/capstone.h"
+# include <debug/debug.h>
+# include <core/core.h>
+# include <mmu/mmu.h>
+# include <capstone/capstone.h>
 
 void debug_cmd_burst(int ac, char const **av)
 {

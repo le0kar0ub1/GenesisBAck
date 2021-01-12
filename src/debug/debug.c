@@ -11,8 +11,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
-# include "debug/debug.h"
-# include "modules/module.h"
+# include <debug/debug.h>
+# include <modules/module.h>
 
 const struct command commands[] =
 {

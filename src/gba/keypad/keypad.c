@@ -7,10 +7,10 @@
 **
 \******************************************************************************/
 
-# include "gba/keypad.h"
-# include "gba/interrupt.h"
-# include "modules/module.h"
-# include "mmu/mmu.h"
+# include <gba/keypad.h>
+# include <gba/interrupt.h>
+# include <modules/module.h>
+# include <mmu/mmu.h>
 # include <string.h>
 
 struct keypad_iomem

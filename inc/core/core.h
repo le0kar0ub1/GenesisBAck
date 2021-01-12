@@ -10,7 +10,7 @@
 #ifndef _CORE_CORE_H_
 # define _CORE_CORE_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 # include <endian.h>
 
 /**

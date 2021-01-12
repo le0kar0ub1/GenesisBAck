@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/route.h"
-# include "core/cycle/exec.h"
+# include <core/cycle/route.h>
+# include <core/cycle/exec.h>
 
 /**
  * https://pdf.dzsc.com/ARM/ARM7TDMI.pdf

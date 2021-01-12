@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "modules/exithooks.h"
+# include <modules/exithooks.h>
 
 extern exithook_t __start_exithook0[];
 extern exithook_t __start_exithook1[];

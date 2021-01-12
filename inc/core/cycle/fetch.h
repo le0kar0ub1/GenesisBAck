@@ -10,8 +10,8 @@
 #ifndef _CORE_CYCLE_FECTH_H_
 # define _CORE_CYCLE_FECTH_H_
 
-# include "core/core.h"
-# include "mmu/mmu.h"
+# include <core/core.h>
+# include <mmu/mmu.h>
 
 /**
  * The public set of function, used to fetch an instruction

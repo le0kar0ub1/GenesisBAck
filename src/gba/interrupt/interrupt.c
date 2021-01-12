@@ -7,11 +7,11 @@
 **
 \******************************************************************************/
 
-# include "modules/module.h"
-# include "mmu/mmu.h"
-# include "gba/interrupt.h"
-# include "core/core.h"
-# include "core/exceptions.h"
+# include <modules/module.h>
+# include <mmu/mmu.h>
+# include <gba/interrupt.h>
+# include <core/core.h>
+# include <core/exceptions.h>
 
 struct int_master_enable
 {

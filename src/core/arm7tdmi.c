@@ -6,7 +6,7 @@
 **
 \*****************************************************************************/
 
-# include "core/core.h"
+# include <core/core.h>
 # include <pthread.h>
 # include <string.h>
 

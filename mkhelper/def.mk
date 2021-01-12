@@ -39,36 +39,36 @@ export TARGET_BASE_PATH	:=	$(PROJECT_PATH)/target
 export TARGET	:=	$(PROJECT)-$(VERSION).$(EXTENSION_BIN)
 
 # Cleaner as possible
-export CCFLAGS	=	-I $(PROJECT_PATH)/inc						\
-					$(addprefix -I, $(TOOLCHAIN_INCLUDES))		\
-					-Wall										\
-					-MD											\
-					-Wcast-align					    		\
-					-Wextra				 						\
-					-Wnested-externs							\
-					-Winline									\
-					-Wpragmas									\
-					-std=gnu11									\
-					-Wuninitialized								\
-					-Wno-missing-braces							\
-					-Wcast-align								\
-					-Wwrite-strings								\
-					-Wparentheses								\
-					-Wunreachable-code							\
-					-Wno-unused									\
-					-Wmissing-field-initializers				\
-					-Wswitch-enum								\
-					-Wshadow				 					\
-					-Wuninitialized				 				\
-					-Wmissing-declarations						\
-					-Wmissing-prototypes						\
-					-Wstrict-prototypes							\
-					-Wpointer-arith								\
-					-fms-extensions 							\
-					-fno-tree-loop-vectorize 					\
-					-fno-tree-slp-vectorize						\
-					-Wno-override-init							\
-					-imacros $(PROJECT_PATH)/inc/cfg.h			\
+export CCFLAGS	=	-isystem $(PROJECT_PATH)/inc						\
+					$(addprefix -isystem, $(TOOLCHAIN_INCLUDES))		\
+					-Wall												\
+					-MD													\
+					-Wcast-align					    				\
+					-Wextra				 								\
+					-Wnested-externs									\
+					-Winline											\
+					-Wpragmas											\
+					-std=gnu11											\
+					-Wuninitialized										\
+					-Wno-missing-braces									\
+					-Wcast-align										\
+					-Wwrite-strings										\
+					-Wparentheses										\
+					-Wunreachable-code									\
+					-Wno-unused											\
+					-Wmissing-field-initializers						\
+					-Wswitch-enum										\
+					-Wshadow				 							\
+					-Wuninitialized				 						\
+					-Wmissing-declarations								\
+					-Wmissing-prototypes								\
+					-Wstrict-prototypes									\
+					-Wpointer-arith										\
+					-fms-extensions 									\
+					-fno-tree-loop-vectorize 							\
+					-fno-tree-slp-vectorize								\
+					-Wno-override-init									\
+					-imacros $(PROJECT_PATH)/inc/cfg.h					\
 
 # Some macros
 export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\

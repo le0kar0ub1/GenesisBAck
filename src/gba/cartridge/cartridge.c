@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "mmu/mmu.h"
-# include "gba/cartridge.h"
+# include <mmu/mmu.h>
+# include <gba/cartridge.h>
 
 static uint8_t cartridge_nintendo_logo_bitmap[156] = {
                         0x24, 0xff, 0xae, 0x51, 0x69, 0x9a, 0xa2, 0x21, 0x3d, 0x84, 0x82, 0x0a,

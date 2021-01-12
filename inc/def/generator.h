@@ -10,7 +10,7 @@
 #ifndef _DEF_GENERATOR_H_
 # define _DEF_GENERATOR_H_
 
-# include "def/def.h"
+# include <def/def.h>
 
 # define _CONCAT(a, b)  a##b
 # define CONCAT(a, b)   _CONCAT(a, b)

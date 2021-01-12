@@ -10,7 +10,7 @@
 #ifndef _DEF_KSYMTAB_H_
 # define _DEF_KSYMTAB_H_
 
-# include "def/def.h"
+# include <def/def.h>
 
 struct symbol_t
 {

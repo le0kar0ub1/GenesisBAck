@@ -10,7 +10,7 @@
 #ifndef _MMU_MMU_H_
 # define _MMU_MMU_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 enum {
     MMU_AREA_BASE_BIOS_ROM = 0x00000000,

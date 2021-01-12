@@ -7,9 +7,9 @@
 **
 \******************************************************************************/
 
-# include "modules/inithooks.h"
-# include "modules/exithooks.h"
-# include "modules/module.h"
+# include <modules/inithooks.h>
+# include <modules/exithooks.h>
+# include <modules/module.h>
 
 static void inithook_gba(void)
 {

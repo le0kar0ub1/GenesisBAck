@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
-# include "core/exceptions.h"
+# include <core/cycle/exec.h>
+# include <core/exceptions.h>
 
 void core_arm_mrs(uint32_t op)
 {

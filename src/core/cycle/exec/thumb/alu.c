@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
+# include <core/cycle/exec.h>
 
 void core_thumb_alu(uint16_t op)
 {

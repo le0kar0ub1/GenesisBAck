@@ -7,8 +7,8 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
-# include "mmu/mmu.h"
+# include <debug/debug.h>
+# include <mmu/mmu.h>
 # include <stdlib.h>
 # include <string.h>
 

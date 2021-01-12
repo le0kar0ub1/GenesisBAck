@@ -9,10 +9,10 @@
 
 # include <pthread.h>
 # include <signal.h>
-# include "modules/module.h"
-# include "core/core.h"
-# include "mmu/mmu.h"
-# include "gba/dma.h"
+# include <modules/module.h>
+# include <core/core.h>
+# include <mmu/mmu.h>
+# include <gba/dma.h>
 
 static pthread_t thread;
 static bool kill_thread = false;

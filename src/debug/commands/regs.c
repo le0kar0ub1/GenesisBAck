@@ -7,8 +7,8 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
-# include "core/core.h"
+# include <debug/debug.h>
+# include <core/core.h>
 
 static inline char const *get_opmode(uint32_t opmode)
 {

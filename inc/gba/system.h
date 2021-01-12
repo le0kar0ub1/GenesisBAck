@@ -10,7 +10,7 @@
 #ifndef _GBA_SYSTEM_H_
 # define _GBA_SYSTEM_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 # define SYSTEM_IOMEM_BASE 0x4000204
 

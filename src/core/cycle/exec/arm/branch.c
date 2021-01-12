@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
+# include <core/cycle/exec.h>
 
 void core_arm_branch_exchange(uint32_t op)
 {

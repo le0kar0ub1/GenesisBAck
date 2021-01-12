@@ -6,10 +6,10 @@
 **
 \*****************************************************************************/
 
-# include "core/core.h"
-# include "core/cycle/fetch.h"
-# include "core/cycle/route.h"
-# include "core/cycle/exec.h"
+# include <core/core.h>
+# include <core/cycle/fetch.h>
+# include <core/cycle/route.h>
+# include <core/cycle/exec.h>
 
 # define OPCODE_CONDITION_MASK(x) (x >> 28)
 

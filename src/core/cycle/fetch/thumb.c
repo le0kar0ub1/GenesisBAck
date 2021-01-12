@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/fetch.h"
+# include <core/cycle/fetch.h>
 
 uint16_t core_fetch_thumb(void)
 {

@@ -10,8 +10,8 @@
 #ifndef _CORE_CYCLE_ROUTE_H_
 # define _CORE_CYCLE_ROUTE_H_
 
-# include "core/core.h"
-# include "mmu/mmu.h"
+# include <core/core.h>
+# include <mmu/mmu.h>
 
 /**
  * Return the exec cycle handler

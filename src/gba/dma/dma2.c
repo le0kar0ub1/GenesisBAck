@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "mmu/mmu.h"
-# include "gba/dma.h"
+# include <mmu/mmu.h>
+# include <gba/dma.h>
 
 void dma2_transfer(void)
 {

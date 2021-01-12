@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "modules/inithooks.h"
+# include <modules/inithooks.h>
 
 extern inithook_t __start_inithook0[];
 extern inithook_t __start_inithook1[];

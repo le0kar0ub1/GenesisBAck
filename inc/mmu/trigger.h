@@ -11,7 +11,7 @@
 # define _MMU_TRIGGER_H_
 
 # include <pthread.h>
-# include "mmu/mmu.h"
+# include <mmu/mmu.h>
 
 /**
  * Register a range of address

@@ -7,9 +7,9 @@
 **
 \******************************************************************************/
 
-# include "gba/system.h"
-# include "modules/module.h"
-# include "mmu/mmu.h"
+# include <gba/system.h>
+# include <modules/module.h>
+# include <mmu/mmu.h>
 
 struct system_iomem *io = NULL;
 

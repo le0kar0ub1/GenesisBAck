@@ -10,7 +10,7 @@
 #ifndef _MODULES_EXITHOOKS_H_
 # define _MODULES_EXITHOOKS_H_
 
-# include "modules/module.h"
+# include <modules/module.h>
 
 typedef void (*exithook_t)(void);
 

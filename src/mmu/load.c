@@ -7,9 +7,9 @@
 **
 \******************************************************************************/
 
-# include "modules/module.h"
-# include "mmu/mmu.h"
-# include "gba/cartridge.h"
+# include <modules/module.h>
+# include <mmu/mmu.h>
+# include <gba/cartridge.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>

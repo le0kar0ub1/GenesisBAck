@@ -6,11 +6,11 @@
 **
 \*****************************************************************************/
 
-# include "core/core.h"
-# include "mmu/mmu.h"
-# include "gba/cartridge.h"
-# include "modules/module.h"
-# include "debug/debug.h"
+# include <core/core.h>
+# include <mmu/mmu.h>
+# include <gba/cartridge.h>
+# include <modules/module.h>
+# include <debug/debug.h>
 
 uint32_t core_read_state(void)
 {

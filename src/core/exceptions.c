@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "gba/cartridge.h" 
-# include "core/exceptions.h"
+# include <gba/cartridge.h> 
+# include <core/exceptions.h>
 
 struct vector_trait
 {

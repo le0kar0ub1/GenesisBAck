@@ -10,7 +10,7 @@
 #ifndef _IO_LOG_H_
 # define _IO_LOG_H_
 
-# include "def/def.h"
+# include <def/def.h>
 # include <stdio.h>
 
 # define LOG(color, ...) printf("[%s%s\x1B[0m]: ", color, __func__); printf(__VA_ARGS__); printf("\n");

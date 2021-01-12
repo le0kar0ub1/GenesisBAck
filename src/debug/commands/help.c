@@ -7,7 +7,7 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
+# include <debug/debug.h>
 
 extern const struct command commands[];
 

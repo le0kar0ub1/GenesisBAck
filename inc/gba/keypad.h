@@ -10,7 +10,7 @@
 #ifndef _GBA_KEYPAD_H_
 # define _GBA_KEYPAD_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 # define KEYPAD_IOMEM_BASE 0x4000130
 

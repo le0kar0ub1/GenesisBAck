@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
-# include "mmu/mmu.h"
+# include <core/cycle/exec.h>
+# include <mmu/mmu.h>
 
 void core_arm_reg_hwdt(uint32_t op)
 {

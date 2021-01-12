@@ -10,8 +10,8 @@
 #ifndef _MMU_CARTRIDGE_H_
 # define _MMU_CARTRIDGE_H_
 
-# include "genesisback.h"
-# include "mmu/mmu.h"
+# include <genesisback.h>
+# include <mmu/mmu.h>
 
 # define CARTRIDGE_HEADER_ROM_ENTRY (MMU_AREA_BASE_ROM0 + 0x00)
 # define CARTRIDGE_HEADER_RAM_ENTRY (MMU_AREA_BASE_ROM0 + 0xC0)

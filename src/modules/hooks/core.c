@@ -7,10 +7,10 @@
 **
 \******************************************************************************/
 
-# include "modules/inithooks.h"
-# include "modules/exithooks.h"
-# include "modules/module.h"
-# include "core/core.h"
+# include <modules/inithooks.h>
+# include <modules/exithooks.h>
+# include <modules/module.h>
+# include <core/core.h>
 
 static void inithook_core(void)
 {

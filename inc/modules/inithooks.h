@@ -10,7 +10,7 @@
 #ifndef _MODULES_INITHOOKS_H_
 # define _MODULES_INITHOOKS_H_
 
-# include "modules/module.h"
+# include <modules/module.h>
 
 typedef void (*inithook_t)(void);
 

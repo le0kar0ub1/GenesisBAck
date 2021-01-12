@@ -10,7 +10,7 @@
 #ifndef _GBA_INTERRUPT_H_
 # define _GBA_INTERRUPT_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 # define INTERRUPT_IOMEM_BASE 0x4000200
 

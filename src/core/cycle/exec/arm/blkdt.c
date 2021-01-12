@@ -7,9 +7,9 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
-# include "core/exceptions.h"
-# include "mmu/mmu.h"
+# include <core/cycle/exec.h>
+# include <core/exceptions.h>
+# include <mmu/mmu.h>
 
 static inline uint32_t count_register(uint16_t list)
 {

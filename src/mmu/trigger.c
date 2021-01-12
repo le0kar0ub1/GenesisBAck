@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "mmu/trigger.h"
+# include <mmu/trigger.h>
 # include <pthread.h>
 
 /*

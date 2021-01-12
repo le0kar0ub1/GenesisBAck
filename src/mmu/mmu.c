@@ -11,8 +11,8 @@
 # include <endian.h>
 # include <stdlib.h>
 # include <string.h>
-# include "modules/module.h"
-# include "mmu/mmu.h"
+# include <modules/module.h>
+# include <mmu/mmu.h>
 
 static struct memory *mem;
 static pthread_mutex_t mutex;

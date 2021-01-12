@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/core.h"
-# include "core/cycle/exec.h"
+# include <core/core.h>
+# include <core/cycle/exec.h>
 
 /**
  * The ALU job

@@ -10,7 +10,7 @@
 #ifndef _DEF_MODULE_H_
 # define _DEF_MODULE_H_
 
-# include "def/def.h"
+# include <def/def.h>
 
 enum MODULE_HOOKS {
     MODULE_HOOK_BOOTSTRAP = 0,

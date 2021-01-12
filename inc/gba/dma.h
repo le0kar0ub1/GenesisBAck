@@ -10,7 +10,7 @@
 #ifndef _GBA_DMA_H_
 # define _GBA_DMA_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 enum DMA_ENGINE {
     DMA_ENGINE0 = 0,

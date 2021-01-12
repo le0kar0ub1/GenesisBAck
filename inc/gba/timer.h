@@ -10,7 +10,7 @@
 #ifndef _GBA_TIMER_H_
 # define _GBA_TIMER_H_
 
-# include "genesisback.h"
+# include <genesisback.h>
 
 # define TIMER_IOMEM_BASE 0x4000100
 

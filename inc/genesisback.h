@@ -10,12 +10,12 @@
 #ifndef _GENESISBACK_H_
 # define _GENESISBACK_H_
 
-# include "def/def.h"
-# include "def/access.h"
-# include "def/status.h"
-# include "def/generator.h"
-# include "def/assert.h"
-# include "io/log.h"
+# include <def/def.h>
+# include <def/access.h>
+# include <def/status.h>
+# include <def/generator.h>
+# include <def/assert.h>
+# include <io/log.h>
 
 void __noreturn _panic(char const *anywhere, char const *fmt, ...);
 # define panic(...) _panic(__func__, __VA_ARGS__)

@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/exec.h"
-# include "mmu/mmu.h"
+# include <core/cycle/exec.h>
+# include <mmu/mmu.h>
 
 void core_thumb_sdt_reg(uint16_t op)
 {

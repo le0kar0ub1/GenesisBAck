@@ -7,7 +7,7 @@
 **
 \*****************************************************************************/
 
-# include "debug/debug.h"
-# include "core/core.h"
+# include <debug/debug.h>
+# include <core/core.h>
 
 void debug_cmd_quit(int ac, char const **av) {}

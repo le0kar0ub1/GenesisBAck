@@ -10,8 +10,8 @@
 #ifndef _CORE_CYCLE_EXEC_H_
 # define _CORE_CYCLE_EXEC_H_
 
-# include "core/core.h"
-# include "mmu/mmu.h"
+# include <core/core.h>
+# include <mmu/mmu.h>
 
 void core_arm_mrs(uint32_t op);
 void core_arm_msr(uint32_t op);

@@ -7,11 +7,11 @@
 **
 \******************************************************************************/
 
-# include "modules/inithooks.h"
-# include "modules/exithooks.h"
-# include "modules/module.h"
-# include "mmu/mmu.h"
-# include "core/core.h"
+# include <modules/inithooks.h>
+# include <modules/exithooks.h>
+# include <modules/module.h>
+# include <mmu/mmu.h>
+# include <core/core.h>
 
 extern char const *rom;
 

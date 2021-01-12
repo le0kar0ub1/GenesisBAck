@@ -7,7 +7,7 @@
 **
 \******************************************************************************/
 
-# include "core/cycle/fetch.h"
+# include <core/cycle/fetch.h>
 
 uint32_t core_fetch_arm(void)
 {
