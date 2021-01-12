@@ -57,7 +57,9 @@ void debug_cmd_regs(int ac, char const **av)
     struct opmode_regs *regs = core_get_context_regs();
 
     if (ac == 2) {
-
+        int32_t rx = get_reg(av[1]);
+        if (rx != -1)
+            printf("%08x\n", *(regs->raw[rx]));
     } else if (ac == 1) {
         printf(" State: %-10s | Overflow: %u         r0: %08x |  r1: %08x |  r2: %08x |  r3: %08x\n",
             get_state(regs->cpsr->state), regs->cpsr->overflow,
@@ -75,13 +77,6 @@ void debug_cmd_regs(int ac, char const **av)
             regs->cpsr->fiq_disable ? "disabled" : "enabled", regs->cpsr->zero,
             *(regs->raw[12]), *(regs->raw[13]), *(regs->raw[14]), *(regs->raw[15])
         );
-        // display_psr_regs(*(regs->cpsr));
-        // if (regs->spsr) {
-        //     printf("spsr:\n");
-        //     display_psr_reg(*(regs->spsr));
-        // } else {
-        //     printf("spsr: None\n");
-        // }
         // printf("prefetch: %08x\n", core_read_prefetch());
     }
 }

@@ -17,7 +17,6 @@ all: toolchain
 
 .PHONY: toolchain
 toolchain:
-	$(call EvalFatToolChainExistence)
 	$(call EvalBinaryExistence,gcc)
 	$(call EvalBinaryExistence,ld)
 
@@ -33,6 +32,7 @@ run: all
 	@$(TARGET_BASE_PATH)/debug/$(TARGET)
 
 disassemble:
+	$(call EvalBinaryToolChainExistence,objdump)
 	@$(TOOLCHAIN_PATH)/bin/arm-tdmi-eabi-objdump --target=binary --architecture=armv4 -D res/Dragonball.gba
 
 # Allow subdir targeted build - dev only

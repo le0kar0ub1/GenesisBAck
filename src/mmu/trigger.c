@@ -10,6 +10,8 @@
 # include "mmu/trigger.h"
 # include <pthread.h>
 
+/*
+
 extern struct mmu_trigger __start_mmutriggers[];
 extern struct mmu_trigger __stop_mmutriggers[];
 
@@ -43,10 +45,12 @@ void *mmu_trigger_handle(void *arg)
 }
 
 REGISTER_MMU_TRIGGER(
-    blabla,
+    anything,
     0x0,
     0x0,
     NULL,
     NULL,
     NULL
 );
+
+*/

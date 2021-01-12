@@ -57,10 +57,13 @@ static inline int get_base(char const *inp)
 
 static inline int32_t get_reg(char const *s)
 {
+    int32_t ret;
+
     if (strlen(s) < 2)
         return (-1);
-    int ret = atoi(s++);
-    if (ret > 15)
+    s++;
+    ret = atoi(s);
+    if ((ret == 0 && s[0] != '0') || ret < 0 || ret > 15)
         return (-1);
     return (ret);
 }

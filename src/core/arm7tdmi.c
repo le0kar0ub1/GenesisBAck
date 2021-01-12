@@ -83,6 +83,8 @@ struct arm7tdmi
  */
 static struct arm7tdmi arm7tdmi;
 
+# define OPMODE_MASK(x) (x & 0b01111)
+
 static struct opmode_regs regs[] = {
     [0x0 ... 0x10] = {
         .r0   = NULL,
@@ -104,7 +106,7 @@ static struct opmode_regs regs[] = {
         .cpsr = NULL,
         .spsr = NULL
     },
-    [OPERATION_MODE_USER & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_USER)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -124,7 +126,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = NULL
     },
-    [OPERATION_MODE_FIQ & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_FIQ)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -144,7 +146,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = &arm7tdmi.spsr_fiq
     },
-    [OPERATION_MODE_IRQ & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_IRQ)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -164,7 +166,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = &arm7tdmi.spsr_irq
     },
-    [OPERATION_MODE_SUPERVISOR & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_SUPERVISOR)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -184,7 +186,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = &arm7tdmi.spsr_svc
     },
-    [OPERATION_MODE_ABORT & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_ABORT)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -204,7 +206,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = &arm7tdmi.spsr_abt
     },
-    [OPERATION_MODE_UNDEFINED & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_UNDEFINED)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -224,7 +226,7 @@ static struct opmode_regs regs[] = {
         .cpsr = &arm7tdmi.cpsr,
         .spsr = NULL
     },
-    [OPERATION_MODE_SYSTEM & 0b01111] = {
+    [OPMODE_MASK(OPERATION_MODE_SYSTEM)] = {
         .r0   = &arm7tdmi.r0,
         .r1   = &arm7tdmi.r1,
         .r2   = &arm7tdmi.r2,
@@ -246,20 +248,22 @@ static struct opmode_regs regs[] = {
     }
 };
 
+struct opmode_regs *core_get_opmode_regs(uint32_t mode)
+{
+    if (!regs[OPMODE_MASK(mode)].r0)
+        panic("Invalid operation mode");
+    else
+        return (&regs[OPMODE_MASK(mode)]);
+}
+
+#undef OPMODE_MASK
+
 /**
  * When reset the machine, reset the registers
  */
 void register_reset(void)
 {
     memset(&arm7tdmi, 0x0, sizeof(struct arm7tdmi));
-}
-
-struct opmode_regs *core_get_opmode_regs(uint32_t mode)
-{
-    if (mode < 16 && !regs[mode & 0b01111].r0)
-        panic("Invalid operation mode");
-    else
-        return (&regs[mode & 0b01111]);
 }
 
 /**
@@ -272,7 +276,7 @@ struct opmode_regs *core_get_context_regs(void)
 }
 
 /**
- * There are no rights consideration, the capcity to R/W must be decided before this function call.
+ * There are no rights consideration, the capacity to R/W must be decided before this function call.
  */
 static uint32_t *register_read_ptr(uint32_t id)
 {

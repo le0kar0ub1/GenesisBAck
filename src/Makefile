@@ -42,7 +42,13 @@ TARGET_OBJECTS	:=	$(patsubst $(PROJECT_PATH)%, $(TARGET_PATH)%, $(TARGET_OBJECTS
 TARGET_DEPS		:= 	$(TARGET_OBJECTS:.o=.d)
 
 .PHONY: all
-all: $(TARGET_OBJECTS) $(TARGET)
+all: toolchaindebug $(TARGET_OBJECTS) $(TARGET)
+
+toolchaindebug:
+ifeq ($(BUILD_MODE),release)
+else
+	$(call EvalFatToolChainExistence)
+endif
 
 $(TARGET):	$(TARGET_OBJECTS)
 	$(CC) $(TARGET_OBJECTS) $(LDFLAGS) -o $(TARGET_PATH)/$(TARGET)
