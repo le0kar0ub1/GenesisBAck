@@ -10,14 +10,14 @@
 export PROJECT		:= GenesisBack
 export PROJECT_PATH	:= $(realpath .)
 
-sinclude $(PROJECT_PATH)/mkhelper/toolchain.mk
-
 # Target architecture
 export ARCH ?= $(shell $(CC) -dumpmachine | cut -d '-' -f 1)
 
 # Build config
 cfg ?= debug
 export BUILD_MODE = $(cfg)
+
+sinclude $(PROJECT_PATH)/mkhelper/toolchain.mk
 
 # Make verbosity
 export MAKEFLAGS += --no-print-directory --silent

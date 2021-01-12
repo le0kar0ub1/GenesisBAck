@@ -24,12 +24,12 @@ endef
 
 # Is the toolchain built ?
 define EvalFatToolChainExistence
-	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain, $(wildcard $(PROJECT_PATH)/mktoolchain/*)), $(call LOG, GNU toolchain found at $(BoldMagenta)mktoolchain/toolchain$(Blank)), $(call RAISE, GNU toolchain not built -- $(BoldRed)./mktoolchain/mktoolchain$(Blank)))
+	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain, $(wildcard $(PROJECT_PATH)/mktoolchain/*)), $(call LOG, toolchain found at $(BoldMagenta)mktoolchain/toolchain$(Blank)), $(call RAISE, toolchain not built -- $(BoldRed)./mktoolchain/mktoolchain$(Blank)))
 endef
 
 # Is the tool in the toolchain ?
 define EvalBinaryToolChainExistence
-	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain/bin/x86_64-elf-$(1), $(call RAISE, GNU tool not found $(BoldRed)$(1)$(Blank))), $(call LOG, GNU tool found $(BoldMagenta)$(1)$(Blank)), $(wildcard $(PROJECT_PATH)/mktoolchain/toolchain/bin/*))
+	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain/bin/x86_64-elf-$(1), $(call RAISE, tool not found $(BoldRed)$(1)$(Blank))), $(call LOG, tool found $(BoldMagenta)$(1)$(Blank)), $(wildcard $(PROJECT_PATH)/mktoolchain/toolchain/bin/*))
 endef
 
 # Is the binary present on the system ?
