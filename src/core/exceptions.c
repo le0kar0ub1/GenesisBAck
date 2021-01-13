@@ -72,7 +72,7 @@ static inline struct vector_trait *exception_fetch_vector_trait(enum EXCEPTION_V
 
 /**
  * Perform an exception entry: sequence of save
- * No priority handling,
+ * No priority handling, currently all the exceptions which come from errors make the emulator panicked
  */
 static void exception_perform_entry(enum EXCEPTION_VECTOR vector)
 {

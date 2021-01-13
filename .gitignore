@@ -4,6 +4,7 @@ res
 target
 mktoolchain/toolchain
 doc/doxygen
+*.vscode
 
 # Object files
 *.o

@@ -12,11 +12,19 @@
 # include <gba/interrupt.h>
 # include <core/core.h>
 # include <core/exceptions.h>
+# include <pthread.h>
 
 struct int_master_enable
 {
-    uint16_t enabled   : 1;
-    uint16_t _reserved : 15;
+    union
+    {
+        struct
+        {
+            uint16_t enabled   : 1;
+            uint16_t _reserved : 15;
+        };
+        uint16_t raw;
+    };
 };
 
 struct irq_flags
@@ -56,7 +64,20 @@ struct interrupt_iomem
     struct int_master_enable int_master_enable; /* Interrupt Master Enable Register */
 };
 
-static struct interrupt_iomem *io = NULL;
+# define INTERRUPT_IOMEM_BASE 0x4000200
+
+enum {
+    IRQ_ENABLE_ADDR        = INTERRUPT_IOMEM_BASE + 0x0,
+    IRQ_INTERFACE_ADDR     = INTERRUPT_IOMEM_BASE + 0x2,
+    INT_MASTER_ENABLE_ADDR = INTERRUPT_IOMEM_BASE + 0x8
+};
+
+# define read_int_master_enable() (mmu_read16(INT_MASTER_ENABLE_ADDR) & 0b1)
+# define read_irq_enable(irq)     (mmu_read16(IRQ_ENABLE_ADDR) & (1 << irq))
+# define read_irq_interface(irq)  (mmu_read16(IRQ_INTERFACE_ADDR) & (1 << irq))
+
+static pthread_t thread;
+static bool kill_thread = false;
 
 /**
  * Are interrupts enabled
@@ -64,7 +85,7 @@ static struct interrupt_iomem *io = NULL;
  */
 bool interrupt_are_enabled(void)
 {
-    if (io->int_master_enable.enabled && register_read_cpsr().irq_disable == false)
+    if (read_int_master_enable() && register_read_cpsr().irq_disable == false)
         return (true);
     return (false);
 }
@@ -74,7 +95,7 @@ bool interrupt_are_enabled(void)
  */
 bool interrupt_is_irq_enabled(uint32_t irq)
 {
-    if (interrupt_are_enabled() && bitfield_read1(io->irq_enable.raw, irq))
+    if (interrupt_are_enabled() && read_irq_enable(irq))
         return (true);
     return (false);
 }
@@ -88,59 +109,75 @@ void interrupt_raise_irq(uint32_t irq)
     if (irq > IRQ_MAX)
         panic("Invalid IRQ triggered %u", irq);
     if (interrupt_is_irq_enabled(irq)) {
-        if (!bitfield_read1(io->irq_interface.raw, irq)) { // has been ack at previous trigger ?
-            io->irq_interface.raw |= (1 << irq);
+        if (!read_irq_interface(irq)) { // has been ack at previous trigger ?
+            uint16_t val = mmu_read16(IRQ_INTERFACE_ADDR);
+            val |= (1 << irq);
+            mmu_write16(IRQ_INTERFACE_ADDR, val);
             exception_raise(EXCEPTION_IRQ, irq);
         }
     }
 }
 
-void interrupt_loop(void)
+static void *interrupt_thread(void *arg __unused)
 {
     /**
      * TODO: Clear the irq bits when they are wrotten by program
      */
-    while (io) {
-
+    while (!kill_thread) {
+        
+        // pthread_cond_wait();
     }
+    return (NULL);
+}
+
+static void interrupt_start(void)
+{
+    if (pthread_create(&thread, NULL, interrupt_thread, NULL) != 0)
+        panic("Thread creation failed");
+}
+
+static void interrupt_init(void) {}
+
+static void interrupt_stop(void)
+{
+    kill_thread = true;
+    pthread_join(thread, NULL);
+}
+
+static void interrupt_exit(void)
+{
+    if (module_is_running_runmod("interrupt"))
+        interrupt_stop();
+}
+
+static void interrupt_reset(void)
+{
+    interrupt_stop();
+    interrupt_init();
+    interrupt_start();
 }
 
 static void interrupt_info(void)
 {
-    if (io) {
-        printf("IRQ ioreg master %s\n", io->int_master_enable.enabled ? "enabled" : "disabled");
+    if (module_is_initialized_runmod("interrupt")) {
+        printf("IRQ ioreg master %s\n", read_int_master_enable() ? "enabled" : "disabled");
         printf("IRQ cpu master %s\n\n", !(register_read_cpsr().irq_disable) ? "enabled" : "disabled");
         printf("        | LCD V BLANK | LCD H BLANK | LCD V COUNTER | TIMER0 | TIMER1 | TIMER2 | TIMER3 | SERIAL | DMA0 | DMA1 | DMA2 | DMA3 | KEYPAD | GAMEPAK\n");
         printf("-----------------------------------------------------------------------------------------------------------------------------------------------\n");
         printf(
                "Enabled | %u           | %u           | %u             | %u      | %u      | %u      | %u      | %u      | %u    | %u    | %u    | %u    | %u      | %u\n",
-            io->irq_enable.lcd_v_blank, io->irq_enable.lcd_h_blank, io->irq_enable.lcd_v_counter, io->irq_enable.timer0_overflow, io->irq_enable.timer1_overflow,
-            io->irq_enable.timer2_overflow, io->irq_enable.timer3_overflow, io->irq_enable.serial_com, io->irq_enable.dma0, io->irq_enable.dma1, io->irq_enable.dma2,
-            io->irq_enable.dma3, io->irq_enable.keypad, io->irq_enable.gamepak
+            read_irq_enable(IRQ_LCD_V_BLANK), read_irq_enable(IRQ_LCD_H_BLANK), read_irq_enable(IRQ_LCD_V_COUNTER), read_irq_enable(IRQ_TIMER0_OVERFLOW), read_irq_enable(IRQ_TIMER1_OVERFLOW),
+            read_irq_enable(IRQ_TIMER2_OVERFLOW), read_irq_enable(IRQ_TIMER3_OVERFLOW), read_irq_enable(IRQ_SERIAL_COM), read_irq_enable(IRQ_DMA0), read_irq_enable(IRQ_DMA1), read_irq_enable(IRQ_DMA2),
+            read_irq_enable(IRQ_DMA3), read_irq_enable(IRQ_KEYPAD), read_irq_enable(IRQ_GAMEPAK)
         );
         printf("-----------------------------------------------------------------------------------------------------------------------------------------------\n");
         printf(
                "REQ/ACK | %u           | %u           | %u             | %u      | %u      | %u      | %u      | %u      | %u    | %u    | %u    | %u    | %u      | %u\n",
-            io->irq_interface.lcd_v_blank, io->irq_interface.lcd_h_blank, io->irq_interface.lcd_v_counter, io->irq_interface.timer0_overflow, io->irq_interface.timer1_overflow,
-            io->irq_interface.timer2_overflow, io->irq_interface.timer3_overflow, io->irq_interface.serial_com, io->irq_interface.dma0, io->irq_interface.dma1, io->irq_interface.dma2,
-            io->irq_interface.dma3, io->irq_interface.keypad, io->irq_interface.gamepak
+            read_irq_interface(IRQ_LCD_V_BLANK), read_irq_interface(IRQ_LCD_H_BLANK), read_irq_interface(IRQ_LCD_V_COUNTER), read_irq_interface(IRQ_TIMER0_OVERFLOW), read_irq_interface(IRQ_TIMER1_OVERFLOW),
+            read_irq_interface(IRQ_TIMER2_OVERFLOW), read_irq_interface(IRQ_TIMER3_OVERFLOW), read_irq_interface(IRQ_SERIAL_COM), read_irq_interface(IRQ_DMA0), read_irq_interface(IRQ_DMA1), read_irq_interface(IRQ_DMA2),
+            read_irq_interface(IRQ_DMA3), read_irq_interface(IRQ_KEYPAD), read_irq_interface(IRQ_GAMEPAK)
         );
     }
-}
-
-static void interrupt_init(void)
-{
-    io = (struct interrupt_iomem *)mmu_load_addr(INTERRUPT_IOMEM_BASE);
-}
-
-static void interrupt_exit(void)
-{
-    io = NULL;
-}
-
-static void interrupt_reset(void)
-{
-    interrupt_init();
 }
 
 REGISTER_MODULE(
@@ -150,7 +187,7 @@ REGISTER_MODULE(
     interrupt_init,
     interrupt_exit,
     interrupt_reset,
-    NULL,
-    NULL,
+    interrupt_start,
+    interrupt_stop,
     interrupt_info
 );

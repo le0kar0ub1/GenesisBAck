@@ -29,7 +29,7 @@ endef
 
 # Is the tool in the toolchain ?
 define EvalBinaryToolChainExistence
-	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain/bin/x86_64-elf-$(1), $(call RAISE, tool not found $(BoldRed)$(1)$(Blank))), $(call LOG, tool found $(BoldMagenta)$(1)$(Blank)), $(wildcard $(PROJECT_PATH)/mktoolchain/toolchain/bin/*))
+	$(if $(filter $(PROJECT_PATH)/mktoolchain/toolchain/bin/x86_64-elf-$(1), $(wildcard $(PROJECT_PATH)/mktoolchain/toolchain/bin/*)), $(call LOG, Toolchain tool found $(BoldMagenta)$(1)$(Blank)), $(call RAISE, Toolchain tool not found $(BoldRed)$(1)$(Blank)))
 endef
 
 # Is the binary present on the system ?

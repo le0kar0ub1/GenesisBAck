@@ -79,7 +79,7 @@ static void core_reset(void)
 }
 
 /**
- * Start the execution
+ * Start RELEASE routine the execution
  */
 static void core_start(void)
 {

@@ -12,6 +12,7 @@
 # include <modules/module.h>
 # include <core/core.h>
 # include <mmu/mmu.h>
+# include <mmu/trigger.h>
 # include <gba/dma.h>
 
 static pthread_t thread;
@@ -50,28 +51,33 @@ static void *dma_thread(void *arg __unused)
      * Only one total transfer is effectuate for a transfer call
      * if the repeat bit is enabled then it will be relauched from here
      */
-    while (io) {
-        if (kill_thread) {
-            pthread_exit(NULL);
+    while (!kill_thread) {
+        while (!kill_thread) {
+            if (mmu_safe_check(io->dma0_ctrl.enable)) {
+                core_cpu_stop_exec();
+                dma0_transfer();
+                core_cpu_restart_exec();
+            } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
+                core_cpu_stop_exec();
+                dma1_transfer();
+                core_cpu_restart_exec();
+            } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
+                core_cpu_stop_exec();
+                dma2_transfer();
+                core_cpu_restart_exec();
+            } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
+                core_cpu_stop_exec();
+                dma3_transfer();
+                core_cpu_restart_exec();
+            } else {
+                break;
+            }
         }
-        if (mmu_safe_check(io->dma0_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma0_transfer();
-            core_cpu_restart_exec();
-        } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma1_transfer();
-            core_cpu_restart_exec();
-        } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma2_transfer();
-            core_cpu_restart_exec();
-        } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma3_transfer();
-            core_cpu_restart_exec();
-        }
+        // if (!kill_thread) {
+        //     pthread_cond_wait();
+        // }
     }
+    // pthread_exit(NULL);
     return (NULL);
 }
 
@@ -138,4 +144,12 @@ REGISTER_MODULE(
     dma_start,
     dma_stop,
     dma_info
+);
+
+REGISTER_MMU_TRIGGER(
+    dma_trigger,
+    0x40000B0,
+    0x40000E0,
+    NULL,
+    NULL
 );

@@ -22,21 +22,22 @@ struct mmu_trigger
     const char name[16];
     const uint32_t start;
     const uint32_t end;
-    bool (* const shouldistart)(uint32_t addr, uint32_t size);
+    bool (* const shouldistart)(uint32_t addr, uint32_t size, uint32_t val);
     const pthread_mutex_t *mutex;
-    const pthread_cond_t  *threadup;
+    bool running;
 };
 
-# define REGISTER_MMU_TRIGGER(xname, xstart, xend, xshouldistart, xmutex, xthreadup)           \
-    __attribute__((__used__, __aligned__(8), __section__("mmutriggers")))                      \
-    static const struct mmu_trigger xname = {                                                  \
-        .name         = #xname,                                                                \
-        .start        = xstart,                                                                \
-        .end          = xend,                                                                  \
-        .shouldistart = xshouldistart,                                                         \
-        .mutex        = xmutex,                                                                \
-        .threadup     = xthreadup                                                              \
+# define REGISTER_MMU_TRIGGER(xname, xstart, xend, xshouldistart, xmutex)  \
+    __attribute__((__used__, __aligned__(8), __section__("mmutriggers")))  \
+    static const struct mmu_trigger xname = {                              \
+        .name         = #xname,                                            \
+        .start        = xstart,                                            \
+        .end          = xend,                                              \
+        .shouldistart = xshouldistart,                                     \
+        .mutex        = xmutex,                                            \
+        .running      = false                                              \
     };
 
+void mmu_trigger_handle_write(uint32_t addr, uint32_t size, uint32_t val);
 
 #endif /* _MMU_TRIGGER_H_ */

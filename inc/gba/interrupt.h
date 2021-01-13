@@ -12,8 +12,6 @@
 
 # include <genesisback.h>
 
-# define INTERRUPT_IOMEM_BASE 0x4000200
-
 enum {
     IRQ_LCD_V_BLANK = 0,
     IRQ_LCD_H_BLANK = 1,
