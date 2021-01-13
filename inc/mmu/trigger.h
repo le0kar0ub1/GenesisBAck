@@ -11,30 +11,50 @@
 # define _MMU_TRIGGER_H_
 
 # include <pthread.h>
+# include <modules/module.h>
 # include <mmu/mmu.h>
+
+struct mmhit
+{
+    union
+    {
+        struct
+        {
+            uint32_t val  : 32;
+            uint32_t addr : 28;
+            uint32_t size : 4;
+        };
+        uint64_t raw;
+    };
+} __packed;
+
+static_assert(sizeof(struct mmhit) == sizeof(uint64_t));
+
+struct mmu_trigger
+{
+    const struct module *module;
+    const uint32_t start;
+    const uint32_t end;
+    void (* const exec)(struct mmhit hit);
+    pthread_mutex_t mutex;
+    size_t count;
+    bool running;
+};
 
 /**
  * Register a range of address
  * If write in this range the given thread (condition) will be triggered
+ * The registering MUST be attached to a module
  */
-struct mmu_trigger
-{
-    const char name[16];
-    const uint32_t start;
-    const uint32_t end;
-    bool (* const shouldistart)(uint32_t addr, uint32_t size, uint32_t val);
-    const pthread_mutex_t *mutex;
-    bool running;
-};
-
-# define REGISTER_MMU_TRIGGER(xname, xstart, xend, xshouldistart, xmutex)  \
+# define REGISTER_MMU_TRIGGER(xmodule, xstart, xend, xexec)                \
     __attribute__((__used__, __aligned__(8), __section__("mmutriggers")))  \
     static const struct mmu_trigger xname = {                              \
-        .name         = #xname,                                            \
+        .module       = xmodule,                                           \
         .start        = xstart,                                            \
         .end          = xend,                                              \
-        .shouldistart = xshouldistart,                                     \
-        .mutex        = xmutex,                                            \
+        .exec         = xexec,                                             \
+        .mutex        = PTHREAD_MUTEX_DEFAULT,                             \
+        .count        = 0x0,                                               \
         .running      = false                                              \
     };
 

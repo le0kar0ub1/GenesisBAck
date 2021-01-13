@@ -13,6 +13,7 @@
 # include <string.h>
 # include <modules/module.h>
 # include <mmu/mmu.h>
+# include <mmu/trigger.h>
 
 static struct memory *mem;
 static pthread_mutex_t mutex;
@@ -112,6 +113,7 @@ void mmu_write8(uint32_t addr, uint8_t val)
         panic("Segmentation fault: Address %#08x", addr);
     pthread_mutex_lock(&mutex);
     mem->raw[addr] = val;
+    mmu_trigger_handle_write(addr, 8 / 8, val);
     pthread_mutex_unlock(&mutex);
 }
 
@@ -129,6 +131,7 @@ void mmu_write16(uint32_t addr, uint16_t val)
     #else
         *((uint16_t *)(mem->raw + addr)) = htole16(val);
     #endif
+    mmu_trigger_handle_write(addr, 16 / 8, val);
     pthread_mutex_unlock(&mutex);
 }
 
@@ -146,6 +149,7 @@ void mmu_write32(uint32_t addr, uint32_t val)
     #else
         *((uint32_t *)(mem->raw + addr)) = htole32(val);
     #endif
+    mmu_trigger_handle_write(addr, 32 / 8, val);
     pthread_mutex_unlock(&mutex);
 }
 

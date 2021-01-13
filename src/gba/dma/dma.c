@@ -15,8 +15,6 @@
 # include <mmu/trigger.h>
 # include <gba/dma.h>
 
-static pthread_t thread;
-static bool kill_thread = false;
 static struct dma_iomem *io = NULL;
 
 struct dmax_iomem *dma_get_engine_io(enum DMA_ENGINE engine)
@@ -31,67 +29,44 @@ static void dma_init(void)
     io = (struct dma_iomem *)mmu_load_addr(DMA_IOMEM_BASE);
 }
 
-static void dma_stop(void)
-{
-    kill_thread = true;
-    pthread_join(thread, NULL);
-}
-
 static void dma_exit(void)
 {
-    if (module_is_running_runmod("dma"))
-        dma_stop();
     io = NULL;
 }
 
-static void *dma_thread(void *arg __unused)
+static void dma_mmu_trigger(struct mmhit hit __unused)
 {
     /**
      * Keep the priority order
      * Only one total transfer is effectuate for a transfer call
      * if the repeat bit is enabled then it will be relauched from here
      */
-    while (!kill_thread) {
-        while (!kill_thread) {
-            if (mmu_safe_check(io->dma0_ctrl.enable)) {
-                core_cpu_stop_exec();
-                dma0_transfer();
-                core_cpu_restart_exec();
-            } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
-                core_cpu_stop_exec();
-                dma1_transfer();
-                core_cpu_restart_exec();
-            } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
-                core_cpu_stop_exec();
-                dma2_transfer();
-                core_cpu_restart_exec();
-            } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
-                core_cpu_stop_exec();
-                dma3_transfer();
-                core_cpu_restart_exec();
-            } else {
-                break;
-            }
+    while (io) {
+        if (mmu_safe_check(io->dma0_ctrl.enable)) {
+            core_cpu_stop_exec();
+            dma0_transfer();
+            core_cpu_restart_exec();
+        } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
+            core_cpu_stop_exec();
+            dma1_transfer();
+            core_cpu_restart_exec();
+        } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
+            core_cpu_stop_exec();
+            dma2_transfer();
+            core_cpu_restart_exec();
+        } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
+            core_cpu_stop_exec();
+            dma3_transfer();
+            core_cpu_restart_exec();
+        } else {
+            break;
         }
-        // if (!kill_thread) {
-        //     pthread_cond_wait();
-        // }
     }
-    // pthread_exit(NULL);
-    return (NULL);
-}
-
-static void dma_start(void)
-{
-    if (pthread_create(&thread, NULL, dma_thread, NULL) != 0)
-        panic("Thread creation failed");
 }
 
 static void dma_reset(void)
 {
-    dma_stop();
     dma_init();
-    dma_start();
 }
 
 static inline char const *dma_info_addr_manip(uint32_t ctrl)
@@ -141,15 +116,14 @@ REGISTER_MODULE(
     dma_init,
     dma_exit,
     dma_reset,
-    dma_start,
-    dma_stop,
+    NULL,
+    NULL,
     dma_info
 );
 
 REGISTER_MMU_TRIGGER(
-    dma_trigger,
+    &dma,
     0x40000B0,
     0x40000E0,
-    NULL,
-    NULL
+    dma_mmu_trigger
 );
