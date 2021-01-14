@@ -12,34 +12,67 @@
 # include <core/core.h>
 
 static struct dmax_iomem internal;
-static bool reload;
+static bool reload = true;
 
-static void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r)
+static void dma_flush_internal(void)
 {
-    r->sad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x0));
-    r->dad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4));
-    r->count    = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
-    r->ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(3, 0xA));
-    r->sad   &= ((1 << 28) - 1);
-    r->dad   &= ((1 << 28) - 1);
-    r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
+    internal.sad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x0));
+    internal.dad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4));
+    internal.count    = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
+    internal.ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(3, 0xA));
+    internal.sad   &= ((1 << 28) - 1);
+    internal.dad   &= ((1 << 28) - 1);
+    internal.count &= internal.count ? ((1 << 16) - 1) : (1 << 16);
 }
 
-static void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r)
+static void dma_flush_partial(void)
 {
-    r->count = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
-    r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
-    if (r->ctrl.dst_ctrl == 0b11) {
-        r->dad = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4)) & ((1 << 28) - 1);
+    internal.count = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
+    internal.count &= internal.count ? ((1 << 16) - 1) : (1 << 16);
+    if (internal.ctrl.dst_ctrl == 0b11) {
+        internal.dad = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4)) & ((1 << 28) - 1);
     }
+}
+
+static bool dma_timing_check(void)
+{
+    uint32_t vcount;
+
+    switch ((mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) >> 12) & 0b11)
+    {
+        case 0b00: // immediate
+            return (true);
+        case 0b01: // V-Blank
+            if (mmu_read16(0x4000004) & 0b1)
+                return (true);
+            return (false);
+        case 0b10: // H-Blank
+            if ((mmu_read16(0x4000004) >> 1) & 0b1)
+                return (true);
+            return (false);
+        case 0b11: // Special : Video Capture
+            if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) >> 10)) == false) { // repeat bit
+                panic("DMA 3 Special Video capture must have repeat bit set");
+            }
+            vcount = mmu_read16(0x4000006) & 0xFF;
+            if (vcount >= 2 && vcount < 162) {
+                return (true);
+            }
+            return (false);
+            break;
+    }
+    return (false);
 }
 
 void dma3_transfer(void)
 {
+    if (!dma_timing_check())
+        return;
+
     if (!reload && mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & (1 << 10)) {
-        dma_flush_partial(3, &internal);
+        dma_flush_partial();
     } else {
-        dma_flush_internal(3, &internal);
+        dma_flush_internal();
     }
 
     core_cpu_stop_exec();

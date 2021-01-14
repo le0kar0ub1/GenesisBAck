@@ -45,6 +45,18 @@ struct dma_ctrl
 
 static_assert(sizeof(struct dma_ctrl) == sizeof(uint16_t));
 
+enum {
+    DMA_ADDR_CTRL_INC = 0b00,
+    DMA_ADDR_CTRL_DEC = 0b01,
+    DMA_ADDR_CTRL_FIX = 0b10,
+    DMA_ADDR_CTRL_REL = 0b11
+};
+
+enum {
+    DMA_TRNSTYPE_CTRL_HALFWORD = 0,
+    DMA_TRNSTYPE_CTRL_WORD     = 1
+};
+
 struct dmax_iomem
 {
     uint32_t        sad;   /* DMA X Source Address */

@@ -30,45 +30,6 @@ static void dma_exit(void)
     io = NULL;
 }
 
-static bool dma_timing_check(enum DMA_ENGINE eng)
-{
-    uint32_t useme;
-
-    switch ((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 12) & 0b11)
-    {
-        case 0b00: // immediate
-            return (true);
-        case 0b01: // V-Blank
-            if (mmu_read16(0x4000004) & 0b1)
-                return (true);
-            return (false);
-        case 0b10: // H-Blank
-            if ((mmu_read16(0x4000004) >> 1) & 0b1)
-                return (true);
-            return (false);
-        case 0b11: // Special
-            if (eng == DMA_ENGINE0) { // prohibited
-                panic("DMA 0 hasn't special timing");
-            } else if (eng == DMA_ENGINE1 || eng == DMA_ENGINE2) { // Sound FIFO
-                useme = mmu_read32(DMA_IOMEM_GETADDR(eng, 0x4));
-                if (useme != 0x40000A0 && useme != 0x40000A4) {
-                }
-                panic("DMA %u has dest addr %#x in Sound FIFO", eng, useme);
-            } else { // Video Capture
-                if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 10)) == false) { // repeat bit
-                    panic("DMA 3 Special Video capture must have repeat bit set");
-                }
-                useme = mmu_read16(0x4000006) & 0xFF;
-                if (useme >= 2 && useme < 162) {
-                    return (true);
-                }
-                return (false);
-            }
-            break;
-    }
-    return (false);
-}
-
 static void dma_mmu_trigger_exec(struct mmhit hit __unused)
 {
     /**
@@ -78,21 +39,13 @@ static void dma_mmu_trigger_exec(struct mmhit hit __unused)
      */
     while (io) {
         if (mmu_safe_check(io->dma0_ctrl.enable)) {
-            if (dma_timing_check(0)) {
-                dma0_transfer();
-            }
+            dma0_transfer();
         } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
-            if (dma_timing_check(1)) {
-                dma1_transfer();
-            }
+            dma1_transfer();
         } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
-            if (dma_timing_check(2)) {
-                dma2_transfer();
-            }
+            dma2_transfer();
         } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
-            if (dma_timing_check(3)) {
-                dma3_transfer();
-            }
+            dma3_transfer();
         } else {
             break;
         }
