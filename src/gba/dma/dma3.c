@@ -51,17 +51,22 @@ static bool dma_timing_check(void)
                 return (true);
             return (false);
         case 0b11: // Special : Video Capture
+            return (false);
             if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) >> 10)) == false) { // repeat bit
                 panic("DMA 3 Special Video capture must have repeat bit set");
             }
             vcount = mmu_read16(0x4000006) & 0xFF;
-            if (vcount >= 2 && vcount < 162) {
+            if (vcount >= 2 && vcount <= 162) {
                 return (true);
             }
             return (false);
-            break;
     }
     return (false);
+}
+
+static void dma_handle_special_timing(void)
+{
+    
 }
 
 void dma3_transfer(void)
@@ -75,7 +80,10 @@ void dma3_transfer(void)
         dma_flush_internal();
     }
 
+    dma_handle_special_timing();
+
     core_cpu_stop_exec();
+
     while (internal.count > 0)
     {
         if (internal.ctrl.trns_type) {
@@ -114,6 +122,7 @@ void dma3_transfer(void)
         }
         internal.count--;
     }
+
     core_cpu_restart_exec();
 
     /**

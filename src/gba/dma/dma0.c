@@ -65,6 +65,7 @@ void dma0_transfer(void)
     }
 
     core_cpu_stop_exec();
+
     while (internal.count > 0)
     {
         if (internal.ctrl.trns_type) {
@@ -103,6 +104,7 @@ void dma0_transfer(void)
         }
         internal.count--;
     }
+
     core_cpu_restart_exec();
 
     /**

@@ -41,10 +41,13 @@ static void dma_mmu_trigger_exec(struct mmhit hit __unused)
         if (mmu_safe_check(io->dma0_ctrl.enable)) {
             dma0_transfer();
         } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
+            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 sound drivers 
             dma1_transfer();
         } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
+            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 sound drivers 
             dma2_transfer();
         } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
+            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 video drivers 
             dma3_transfer();
         } else {
             break;

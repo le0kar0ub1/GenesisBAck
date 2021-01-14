@@ -118,14 +118,12 @@ void interrupt_raise_irq(uint32_t irq)
     }
 }
 
-static void interrupt_thread(struct mmhit hit)
+static void interrupt_mmu_trigger(struct mmhit hit)
 {
     /**
      * Clear the irq bits when they are wrotten by program
      */        
     printf("addr %#x size %#x val %#x\n", hit.addr, hit.size, hit.val);
-    # include <stdlib.h>
-    exit(0);
     switch (hit.size)
     {
         case 1:
@@ -191,5 +189,5 @@ REGISTER_MMU_TRIGGER(
     0x4000202,
     0x4000204,
     NULL,
-    interrupt_thread
+    interrupt_mmu_trigger
 );

@@ -61,6 +61,14 @@ static bool dma_timing_check(void)
     return (false);
 }
 
+
+static void dma_handle_special_timing(void)
+{
+    internal.count = 0x4;
+    internal.ctrl.trns_type = DMA_TRNSTYPE_CTRL_WORD;
+    internal.ctrl.dst_ctrl = DMA_ADDR_CTRL_FIX;
+}
+
 void dma2_transfer(void)
 {
     if (!dma_timing_check())
@@ -72,7 +80,12 @@ void dma2_transfer(void)
         dma_flush_internal();
     }
 
+    if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {
+        dma_handle_special_timing();
+    }
+
     core_cpu_stop_exec();
+
     while (internal.count > 0)
     {
         if (internal.ctrl.trns_type) {
@@ -111,6 +124,7 @@ void dma2_transfer(void)
         }
         internal.count--;
     }
+
     core_cpu_restart_exec();
 
     /**

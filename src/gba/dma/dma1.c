@@ -79,9 +79,12 @@ void dma1_transfer(void)
         dma_flush_internal();
     }
 
-    dma_handle_special_timing();
+    if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {
+        dma_handle_special_timing();
+    }
 
     core_cpu_stop_exec();
+
     while (internal.count > 0)
     {
         if (internal.ctrl.trns_type) {
@@ -120,6 +123,7 @@ void dma1_transfer(void)
         }
         internal.count--;
     }
+
     core_cpu_restart_exec();
 
     /**
