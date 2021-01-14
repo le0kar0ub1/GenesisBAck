@@ -19,8 +19,9 @@ enum DMA_ENGINE {
     DMA_ENGINE3 = 3
 };
 
-# define DMA_IOMEM_BASE            0x40000B0
-# define DMA_IOMEM_ENGINE_SHIFT(x) (x * 0xC)
+# define DMA_IOMEM_BASE               0x40000B0
+# define DMA_IOMEM_ENGINE_SHIFT(x)    (x * 0xC)
+# define DMA_IOMEM_GETADDR(eng, addr) (DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(eng) + addr)
 
 struct dma_ctrl
 {
@@ -34,7 +35,7 @@ struct dma_ctrl
             uint16_t repeat        : 1;
             uint16_t trns_type     : 1;
             uint16_t dma3_gamepak  : 1;
-            uint16_t start_tim     : 2;
+            uint16_t timing        : 2;
             uint16_t irq           : 1;
             uint16_t enable        : 1;
         };
@@ -46,10 +47,10 @@ static_assert(sizeof(struct dma_ctrl) == sizeof(uint16_t));
 
 struct dmax_iomem
 {
-    uint32_t        dma_sad;   /* DMA 0 Source Address */
-    uint32_t        dma_dad;   /* DMA 0 Destination Address */
-    uint16_t        dma_count; /* DMA 0 Word Count */
-    struct dma_ctrl dma_ctrl;  /* DMA 0 Control */
+    uint32_t        sad;   /* DMA X Source Address */
+    uint32_t        dad;   /* DMA X Destination Address */
+    uint16_t        count; /* DMA X Word Count */
+    struct dma_ctrl ctrl;  /* DMA X Control */
 };
 
 struct dma_iomem
@@ -72,7 +73,8 @@ struct dma_iomem
     struct dma_ctrl dma3_ctrl;  /* DMA 3 Control */
 };
 
-struct dmax_iomem *dma_get_engine_io(enum DMA_ENGINE engine);
+void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r);
+void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r);
 
 void dma0_transfer(void);
 void dma1_transfer(void);

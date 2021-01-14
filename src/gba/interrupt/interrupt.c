@@ -9,6 +9,7 @@
 
 # include <modules/module.h>
 # include <mmu/mmu.h>
+# include <mmu/trigger.h>
 # include <gba/interrupt.h>
 # include <core/core.h>
 # include <core/exceptions.h>
@@ -76,7 +77,6 @@ enum {
 # define read_irq_enable(irq)     (mmu_read16(IRQ_ENABLE_ADDR) & (1 << irq))
 # define read_irq_interface(irq)  (mmu_read16(IRQ_INTERFACE_ADDR) & (1 << irq))
 
-static pthread_t thread;
 static bool kill_thread = false;
 
 /**
@@ -118,43 +118,24 @@ void interrupt_raise_irq(uint32_t irq)
     }
 }
 
-static void *interrupt_thread(void *arg __unused)
+static void interrupt_thread(struct mmhit hit)
 {
     /**
-     * TODO: Clear the irq bits when they are wrotten by program
-     */
-    while (!kill_thread) {
-        
-        // pthread_cond_wait();
+     * Clear the irq bits when they are wrotten by program
+     */        
+    printf("addr %#x size %#x val %#x\n", hit.addr, hit.size, hit.val);
+    # include <stdlib.h>
+    exit(0);
+    switch (hit.size)
+    {
+        case 1:
+            // mmu_raw_write(hit.addr, mmu_read8(hit.addr) | ());
+            break;
+        case 2:
+            break;
+        case 4: default:
+            panic("Interrupt clear bit trigger invalid");
     }
-    return (NULL);
-}
-
-static void interrupt_start(void)
-{
-    if (pthread_create(&thread, NULL, interrupt_thread, NULL) != 0)
-        panic("Thread creation failed");
-}
-
-static void interrupt_init(void) {}
-
-static void interrupt_stop(void)
-{
-    kill_thread = true;
-    pthread_join(thread, NULL);
-}
-
-static void interrupt_exit(void)
-{
-    if (module_is_running_runmod("interrupt"))
-        interrupt_stop();
-}
-
-static void interrupt_reset(void)
-{
-    interrupt_stop();
-    interrupt_init();
-    interrupt_start();
 }
 
 static void interrupt_info(void)
@@ -180,6 +161,19 @@ static void interrupt_info(void)
     }
 }
 
+static void interrupt_init(void)
+{
+}
+
+static void interrupt_exit(void)
+{
+}
+
+static void interrupt_reset(void)
+{
+    interrupt_init();
+}
+
 REGISTER_MODULE(
     interrupt,
     "The interrupt controller of the GBA",
@@ -187,7 +181,15 @@ REGISTER_MODULE(
     interrupt_init,
     interrupt_exit,
     interrupt_reset,
-    interrupt_start,
-    interrupt_stop,
+    NULL,
+    NULL,
     interrupt_info
+);
+
+REGISTER_MMU_TRIGGER(
+    &interrupt,
+    0x4000202,
+    0x4000204,
+    NULL,
+    interrupt_thread
 );

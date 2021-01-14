@@ -15,7 +15,6 @@
 extern struct mmu_trigger __start_mmutriggers[];
 extern struct mmu_trigger __stop_mmutriggers[];
 
-static pthread_t thread;
 static bool kill_thread = false;
 
 static uint32_t *trigger_range = NULL;
@@ -33,16 +32,18 @@ static void *mmu_trigger_thread(void *arg)
     struct mmu_trigger *mm = (struct mmu_trigger *)__start_mmutriggers;
     struct mmhit hit = *((struct mmhit *)&arg);
  
-    while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers) {
+    while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers && !kill_thread) {
         if (mm->start <= hit.addr && mm->end >= (hit.addr + (uint32_t)hit.size)) {
             if (mm->exec && mm->module->initialized) {
-                // !pthread_mutex_trylock(mm->mutex);
-                pthread_mutex_lock(&mm->mutex);
-                mm->count++;
-                mm->running = true;
-                mm->exec(hit);
-                mm->running = false;
-                pthread_mutex_unlock(&mm->mutex);
+                if (!mm->check || (mm->check && mm->check(hit))) {
+                    printf("trigger %s\n", mm->module->name);
+                    pthread_mutex_lock(&mm->mutex);
+                    mm->count++;
+                    mm->running = true;
+                    mm->exec(hit);
+                    mm->running = false;
+                    pthread_mutex_unlock(&mm->mutex);
+                }
             }
             break;
         }
@@ -59,8 +60,10 @@ void mmu_trigger_handle_write(uint32_t addr, uint32_t size, uint32_t val)
             .addr = addr & 0xFFFFFFF,
             .size = size
         };
-        if (pthread_create(&thread, NULL, mmu_trigger_thread, (void *)hit.raw) != 0)
+        pthread_t thread;
+        if (pthread_create(&thread, NULL, mmu_trigger_thread, (void *)hit.raw) != 0) {
             panic("Thread creation failed");
+        }
     }
 }
 
@@ -74,8 +77,9 @@ static void mmu_trigger_init(void)
     min = mm->start;
     max = mm->end;
     trigger_range = malloc(2 * 4); // currently hardcoded one range only in the IO reg map
-    if (!trigger_range)
+    if (!trigger_range) {
         panic("Allocation failed");
+    }
     while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers) {
         if (min > mm->start) {
             min = mm->start;
@@ -85,8 +89,9 @@ static void mmu_trigger_init(void)
         }
         mm++;
     }
-    if (min < MMU_TRIGGER_MIN_ADDR || max > MMU_TRIGGER_MAX_ADDR)
+    if (min < MMU_TRIGGER_MIN_ADDR || max > MMU_TRIGGER_MAX_ADDR) {
         panic("MMU trigger invalid range %#x - %#x", min, max);
+    }
     trigger_range[0] = min;
     trigger_range[1] = max;
 }
@@ -110,7 +115,6 @@ static void mmu_trigger_info(void)
 static void mmu_trigger_exit(void)
 {
     kill_thread = true;
-    pthread_join(thread, NULL);
     free(trigger_range);
 }
 

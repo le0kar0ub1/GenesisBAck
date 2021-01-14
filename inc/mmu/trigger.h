@@ -36,6 +36,7 @@ struct mmu_trigger
     const uint32_t start;
     const uint32_t end;
     void (* const exec)(struct mmhit hit);
+    bool (* const check)(struct mmhit hit);
     pthread_mutex_t mutex;
     size_t count;
     bool running;
@@ -46,12 +47,13 @@ struct mmu_trigger
  * If write in this range the given thread (condition) will be triggered
  * The registering MUST be attached to a module
  */
-# define REGISTER_MMU_TRIGGER(xmodule, xstart, xend, xexec)                \
+# define REGISTER_MMU_TRIGGER(xmodule, xstart, xend, xcheck, xexec)        \
     __attribute__((__used__, __aligned__(8), __section__("mmutriggers")))  \
     static const struct mmu_trigger xname = {                              \
         .module       = xmodule,                                           \
         .start        = xstart,                                            \
         .end          = xend,                                              \
+        .check        = xcheck,                                            \
         .exec         = xexec,                                             \
         .mutex        = PTHREAD_MUTEX_DEFAULT,                             \
         .count        = 0x0,                                               \

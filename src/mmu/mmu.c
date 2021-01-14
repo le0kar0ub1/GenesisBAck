@@ -154,6 +154,53 @@ void mmu_write32(uint32_t addr, uint32_t val)
 }
 
 /**
+ * Write 8bits from the given address but never trigger
+ */
+void mmu_raw_write8(uint32_t addr, uint8_t val)
+{
+    if (addr >= MEMORY_SIZE)
+        panic("Segmentation fault: Address %#08x", addr);
+    pthread_mutex_lock(&mutex);
+    mem->raw[addr] = val;
+    pthread_mutex_unlock(&mutex);
+}
+
+/**
+ * Write 16bits from the given address but never trigger
+ */
+void mmu_raw_write16(uint32_t addr, uint16_t val)
+{
+    if (addr >= MEMORY_SIZE - 1)
+        panic("Segmentation fault: Address %#08x", addr);
+    is_aligned(addr, 2);
+    pthread_mutex_lock(&mutex);
+    #ifdef __BIG_ENDIAN__
+        *((uint16_t *)(mem->raw + addr)) = htobe16(val);
+    #else
+        *((uint16_t *)(mem->raw + addr)) = htole16(val);
+    #endif
+    pthread_mutex_unlock(&mutex);
+}
+
+/**
+ * Write 32bits from the given address but never trigger
+ */
+void mmu_raw_write32(uint32_t addr, uint32_t val)
+{
+    if (addr >= MEMORY_SIZE - 3)
+        panic("Segmentation fault: Address %#08x", addr);
+    is_aligned(addr, 4);
+    pthread_mutex_lock(&mutex);
+    #ifdef __BIG_ENDIAN__
+        *((uint32_t *)(mem->raw + addr)) = htobe32(val);
+    #else
+        *((uint32_t *)(mem->raw + addr)) = htole32(val);
+    #endif
+    pthread_mutex_unlock(&mutex);
+}
+
+
+/**
  * destroy the memory module
  */
 static void mmu_exit(void)
