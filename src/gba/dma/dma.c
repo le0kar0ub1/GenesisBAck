@@ -30,44 +30,43 @@ static void dma_exit(void)
     io = NULL;
 }
 
-void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r)
+static bool dma_timing_check(enum DMA_ENGINE eng)
 {
-    uint32_t addr = DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(engine);
+    uint32_t useme;
 
-    r->sad      = mmu_read32(addr + 0x0);
-    r->dad      = mmu_read32(addr + 0x4);
-    r->count    = mmu_read16(addr + 0x8);
-    r->ctrl.raw = mmu_read16(addr + 0xA);
-
-    if (engine == 3) {
-        r->sad   &= ((1 << 28) - 1);
-        r->dad   &= ((1 << 28) - 1);
-        r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
-    } else {
-        r->sad   &= ((1 << 27) - 1);
-        r->dad   &= ((1 << 27) - 1);
-        r->count &= r->count ? ((1 << 14) - 1) : (1 << 14);
+    switch ((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 12) & 0b11)
+    {
+        case 0b00: // immediate
+            return (true);
+        case 0b01: // V-Blank
+            if (mmu_read16(0x4000004) & 0b1)
+                return (true);
+            return (false);
+        case 0b10: // H-Blank
+            if ((mmu_read16(0x4000004) >> 1) & 0b1)
+                return (true);
+            return (false);
+        case 0b11: // Special
+            if (eng == DMA_ENGINE0) { // prohibited
+                panic("DMA 0 hasn't special timing");
+            } else if (eng == DMA_ENGINE1 || eng == DMA_ENGINE2) { // Sound FIFO
+                useme = mmu_read32(DMA_IOMEM_GETADDR(eng, 0x4));
+                if (useme != 0x40000A0 && useme != 0x40000A4) {
+                }
+                panic("DMA %u has dest addr %#x in Sound FIFO", eng, useme);
+            } else { // Video Capture
+                if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 10)) == false) { // repeat bit
+                    panic("DMA 3 Special Video capture must have repeat bit set");
+                }
+                useme = mmu_read16(0x4000006) & 0xFF;
+                if (useme >= 2 && useme < 162) {
+                    return (true);
+                }
+                return (false);
+            }
+            break;
     }
-}
-
-void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r)
-{
-    uint32_t addr = DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(engine);
-
-    r->count = mmu_read16(addr + 0x8);
-
-    if (engine == 3) {
-        r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
-    } else {
-        r->count &= r->count ? ((1 << 14) - 1) : (1 << 14);
-    }
-    if (r->ctrl.dst_ctrl == 0b11) {
-         if (engine == 3) {
-            r->dad = mmu_read32(addr + 0x4) & ((1 << 28) - 1);
-         } else {
-            r->dad = mmu_read32(addr + 0x4) & ((1 << 27) - 1);
-         }
-    }
+    return (false);
 }
 
 static void dma_mmu_trigger_exec(struct mmhit hit __unused)
@@ -78,21 +77,22 @@ static void dma_mmu_trigger_exec(struct mmhit hit __unused)
      * if the repeat bit is enabled then it will be relauched from here
      */
     while (io) {
-        dma_infoo();
         if (mmu_safe_check(io->dma0_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma0_transfer();
-            core_cpu_restart_exec();
+            if (dma_timing_check(0)) {
+                dma0_transfer();
+            }
         } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma1_transfer();
-            core_cpu_restart_exec();
+            if (dma_timing_check(1)) {
+                dma1_transfer();
+            }
         } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
-            core_cpu_stop_exec();
-            dma2_transfer();
-            core_cpu_restart_exec();
+            if (dma_timing_check(2)) {
+                dma2_transfer();
+            }
         } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
-            dma3_transfer();
+            if (dma_timing_check(3)) {
+                dma3_transfer();
+            }
         } else {
             break;
         }
@@ -119,6 +119,7 @@ static bool dma_mmu_trigger_check(struct mmhit hit)
     DMA_TRIGGER_CHECK_LAZY(3);
 
 #undef DMA_TRIGGER_CHECK_LAZY
+
     return (false);
 }
 
@@ -187,11 +188,6 @@ static void dma_info(void)
         dma_info_addrmanip_sad(io->dma3_ctrl.src_ctrl), dma_info_addrmanip_dad(io->dma3_ctrl.dst_ctrl),
         io->dma3_ctrl.repeat, dma_info_timing(io->dma3_ctrl.timing), io->dma3_ctrl.trns_type ? "WORD (4B)" : "HALF-WORD (2B)"
     );
-}
-
-void dma_infoo()
-{
-    dma_info();
 }
 
 REGISTER_MODULE(

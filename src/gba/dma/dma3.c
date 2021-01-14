@@ -12,11 +12,31 @@
 # include <core/core.h>
 
 static struct dmax_iomem internal;
-static size_t reload;
+static bool reload;
+
+static void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r)
+{
+    r->sad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x0));
+    r->dad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4));
+    r->count    = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
+    r->ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(3, 0xA));
+    r->sad   &= ((1 << 28) - 1);
+    r->dad   &= ((1 << 28) - 1);
+    r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
+}
+
+static void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r)
+{
+    r->count = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
+    r->count &= r->count ? ((1 << 16) - 1) : (1 << 16);
+    if (r->ctrl.dst_ctrl == 0b11) {
+        r->dad = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4)) & ((1 << 28) - 1);
+    }
+}
 
 void dma3_transfer(void)
 {
-    if (reload > 0 && mmu_read16(DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(3) + 0xA) & (1 << 10)) {
+    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & (1 << 10)) {
         dma_flush_partial(3, &internal);
     } else {
         dma_flush_internal(3, &internal);
@@ -68,11 +88,11 @@ void dma3_transfer(void)
      */
     if (!(internal.ctrl.repeat)) {
         mmu_raw_write16(
-            DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(3) + 0xA,
-            mmu_read16(DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(3) + 0xA) & ((1 << 15) - 1)
-        );
-        reload = 0;
+            DMA_IOMEM_GETADDR(3, 0xA),
+            mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & ((1 << 15) - 1)
+        ); // clear the enabled bit
+        reload = true;
     } else {
-        reload++;
+        reload = false;
     }
 }

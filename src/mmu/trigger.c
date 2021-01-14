@@ -27,18 +27,31 @@ static uint32_t *trigger_range = NULL;
 # define MMU_TRIGGER_MIN_ADDR 0x4000000
 # define MMU_TRIGGER_MAX_ADDR 0x40003FE
 
+/**
+ * FIFO Trigger bastion by module 
+ */
 static void *mmu_trigger_thread(void *arg)
 {
     struct mmu_trigger *mm = (struct mmu_trigger *)__start_mmutriggers;
     struct mmhit hit = *((struct mmhit *)&arg);
  
     while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers && !kill_thread) {
-        if (mm->start <= hit.addr && mm->end >= (hit.addr + (uint32_t)hit.size)) {
-            if (mm->exec && mm->module->initialized) {
-                if (!mm->check || (mm->check && mm->check(hit))) {
-                    printf("trigger %s\n", mm->module->name);
-                    pthread_mutex_lock(&mm->mutex);
-                    mm->count++;
+        if (mm->start <= hit.addr && mm->end >= (hit.addr + (uint32_t)hit.size)) { // is the hit in the trigger range ?
+            if (mm->exec && mm->module->initialized) { // is the associated module module init and triggerable ?
+                if (!mm->check || (mm->check && mm->check(hit))) { // is there a prerequisite checkup on the hit ?
+                    static size_t queue;
+                    queue = __atomic_fetch_add(
+                        (volatile size_t *)ADD_PTR(mm, offsetof(struct mmu_trigger, wait)),
+                        1,
+                        __ATOMIC_ACQUIRE
+                    );
+                    while (
+                        __atomic_load_n((volatile size_t *)ADD_PTR(mm, offsetof(struct mmu_trigger, work)), __ATOMIC_ACQUIRE)
+                        !=
+                        queue
+                    ); // This is the big wait4
+                    pthread_mutex_lock(&mm->mutex); // Only one thread by module must wait here and take the flow when the previous unlock
+                    mm->work++;
                     mm->running = true;
                     mm->exec(hit);
                     mm->running = false;

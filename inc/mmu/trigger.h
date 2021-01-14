@@ -38,8 +38,9 @@ struct mmu_trigger
     void (* const exec)(struct mmhit hit);
     bool (* const check)(struct mmhit hit);
     pthread_mutex_t mutex;
-    size_t count;
     bool running;
+    volatile size_t wait;
+    volatile size_t work;
 };
 
 /**
@@ -56,7 +57,8 @@ struct mmu_trigger
         .check        = xcheck,                                            \
         .exec         = xexec,                                             \
         .mutex        = PTHREAD_MUTEX_DEFAULT,                             \
-        .count        = 0x0,                                               \
+        .wait         = 0x0,                                               \
+        .work         = 0x0,                                               \
         .running      = false                                              \
     };
 

@@ -73,9 +73,6 @@ struct dma_iomem
     struct dma_ctrl dma3_ctrl;  /* DMA 3 Control */
 };
 
-void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r);
-void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r);
-
 void dma0_transfer(void);
 void dma1_transfer(void);
 void dma2_transfer(void);

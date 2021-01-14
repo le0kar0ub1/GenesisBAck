@@ -9,55 +9,90 @@
 
 # include <mmu/mmu.h>
 # include <gba/dma.h>
+# include <core/core.h>
+
+static struct dmax_iomem internal;
+static bool reload;
+
+static void dma_flush_internal(enum DMA_ENGINE engine, struct dmax_iomem *r)
+{
+    r->sad      = mmu_read32(DMA_IOMEM_GETADDR(2, 0x0));
+    r->dad      = mmu_read32(DMA_IOMEM_GETADDR(2, 0x4));
+    r->count    = mmu_read16(DMA_IOMEM_GETADDR(2, 0x8));
+    r->ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(2, 0xA));
+    r->sad   &= ((1 << 27) - 1);
+    r->dad   &= ((1 << 27) - 1);
+    r->count &= r->count ? ((1 << 14) - 1) : (1 << 14);
+}
+
+static void dma_flush_partial(enum DMA_ENGINE engine, struct dmax_iomem *r)
+{
+    r->count = mmu_read16(DMA_IOMEM_GETADDR(2, 0x8));
+    r->count &= r->count ? ((1 << 14) - 1) : (1 << 14);
+    if (r->ctrl.dst_ctrl == 0b11) {
+        r->dad = mmu_read32(DMA_IOMEM_GETADDR(2, 0x4)) & ((1 << 27) - 1);
+    }
+}
 
 void dma2_transfer(void)
 {
-    struct dmax_iomem *io = (struct dmax_iomem *)mmu_load_addr(DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(2));
-    uint32_t sad  = io->sad   & ((1 << 27) - 1);
-    uint32_t dad  = io->dad   & ((1 << 27) - 1);
-    uint32_t unit = io->count ? io->count & ((1 << 14) - 1) : (1 << 14);
-
-    if (io->ctrl.trns_type) { // word
-        unit *= 2;
+    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(2, 0xA)) & (1 << 10)) {
+        dma_flush_partial(2, &internal);
     } else {
-        // all comes good
+        dma_flush_internal(2, &internal);
     }
-    while (unit > 0)
+
+    core_cpu_stop_exec();
+    while (internal.count > 0)
     {
-        mmu_raw_write16(dad, mmu_read16(sad));
-        switch (io->ctrl.dst_ctrl)
+        if (internal.ctrl.trns_type) {
+            mmu_raw_write32(internal.dad, mmu_read32(internal.sad));
+        } else {
+            mmu_raw_write16(internal.dad, mmu_read16(internal.sad));
+        }
+        switch (internal.ctrl.dst_ctrl)
         {
             case 0b00: //inc
-                dad += 2;
+                internal.dad += internal.ctrl.trns_type ? 4 : 2;
                 break;
             case 0b01: // dec
-                dad -= 2;
+                internal.dad -= internal.ctrl.trns_type ? 4 : 2;
                 break;
-            // case 0b10: // fix
-                // break;
-            case 0b11: // Prohibited
+            case 0b10: break; // fix
+            case 0b11: // inc/reload
+                internal.dad += internal.ctrl.trns_type ? 4 : 2;
+                break;
+            default:
                 panic("Invalid DMA transfer");
                 break;
         }
-        switch (io->ctrl.src_ctrl)
+        switch (internal.ctrl.src_ctrl)
         {
             case 0b00: //inc
-                sad += 2;
+                internal.sad += internal.ctrl.trns_type ? 4 : 2;
                 break;
             case 0b01: // dec
-                sad -= 2;
+                internal.sad -= internal.ctrl.trns_type ? 4 : 2;
                 break;
-            // case 0b10: // fix
-                // break;
-            case 0b11: // Prohibited
+            case 0b10: break; // fix
+             default:
                 panic("Invalid DMA transfer");
                 break;
         }
-        unit--;
+        internal.count--;
     }
+    core_cpu_restart_exec();
+
     /**
      * If the DMA repeat is enabled then don't disable after transfer and loop on
      */
-    if (!(io->ctrl.repeat))
-        io->ctrl.enable = 0;
+    if (!(internal.ctrl.repeat)) {
+        mmu_raw_write16(
+            DMA_IOMEM_GETADDR(2, 0xA),
+            mmu_read16(DMA_IOMEM_GETADDR(2, 0xA)) & ((1 << 15) - 1)
+        ); // clear the enabled bit
+        reload = true;
+    } else {
+        reload = false;
+    }
 }
