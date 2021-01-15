@@ -36,11 +36,14 @@ static void *mmu_trigger_thread(void *arg)
     struct mmhit hit = *((struct mmhit *)&arg);
  
     while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers && !kill_thread) {
-        if (mm->start <= hit.addr && mm->end >= (hit.addr + (uint32_t)hit.size)) { // is the hit in the trigger range ?
+        if (
+            (hit.addr >= mm->start && hit.addr <= (mm->end - 1))
+            ||
+            (hit.addr <= mm->start && (hit.addr + (uint32_t)hit.size) >= mm->start)
+        ) { // is the hit in the trigger range ?
             if (mm->exec && mm->module->initialized) { // is the associated module module init and triggerable ?
                 if (!mm->check || (mm->check && mm->check(hit))) { // is there a prerequisite checkup on the hit ?
-                    static size_t queue;
-                    queue = __atomic_fetch_add(
+                    size_t queue = __atomic_fetch_add(
                         (volatile size_t *)ADD_PTR(mm, offsetof(struct mmu_trigger, wait)),
                         1,
                         __ATOMIC_ACQUIRE
@@ -51,6 +54,7 @@ static void *mmu_trigger_thread(void *arg)
                         queue
                     ); // This is the big wait4
                     pthread_mutex_lock(&mm->mutex); // Only one thread by module must wait here and take the flow when the previous unlock
+                    // __atomic_fetch_add((volatile size_t *)ADD_PTR(mm, offsetof(struct mmu_trigger, work)), 1, __ATOMIC_ACQUIRE);
                     mm->work++;
                     mm->running = true;
                     mm->exec(hit);

@@ -10,6 +10,8 @@
 # include <mmu/mmu.h>
 # include <gba/dma.h>
 # include <core/core.h>
+# include <core/exceptions.h>
+# include <gba/interrupt.h>
 
 static struct dmax_iomem internal;
 static bool reload = true;
@@ -58,7 +60,7 @@ void dma0_transfer(void)
 {
     if (!dma_timing_check())
         return;
-    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & (1 << 10)) {
+    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & (1 << 9)) {
         dma_flush_partial();
     } else {
         dma_flush_internal();
@@ -113,9 +115,12 @@ void dma0_transfer(void)
     if (!(internal.ctrl.repeat)) {
         mmu_raw_write16(
             DMA_IOMEM_GETADDR(0, 0xA),
-            mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & ((1 << 15) - 1)
+            mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & ~(1 << 15)
         ); // clear the enabled bit
         reload = true;
+        if ((bool)(mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & (1 << 14))) { // is IRQ enabled ?
+            interrupt_raise_irq(IRQ_DMA0);
+        }
     } else {
         reload = false;
     }

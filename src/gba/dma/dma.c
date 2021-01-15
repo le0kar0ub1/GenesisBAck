@@ -30,6 +30,21 @@ static void dma_exit(void)
     io = NULL;
 }
 
+# define temporary_disallow_special(eng)                                        \
+    if (((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 12) & 0b11) == 0b11) {     \
+        mmu_raw_write16(                                                        \
+            DMA_IOMEM_GETADDR(eng, 0xA),                                        \
+            mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) & ((1 << 15) - 1)           \
+        );                                                                      \
+    if ((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 9) & 0b1) {                 \
+        mmu_raw_write16(                                                        \
+            DMA_IOMEM_GETADDR(eng, 0xA),                                        \
+            mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) & ~(1 << 9)                 \
+        );                                                                      \
+    }                                                                           \
+        break;                                                                  \
+    }
+
 static void dma_mmu_trigger_exec(struct mmhit hit __unused)
 {
     /**
@@ -41,13 +56,13 @@ static void dma_mmu_trigger_exec(struct mmhit hit __unused)
         if (mmu_safe_check(io->dma0_ctrl.enable)) {
             dma0_transfer();
         } else if (mmu_safe_check(io->dma1_ctrl.enable)) {
-            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 sound drivers 
+            temporary_disallow_special(1); 
             dma1_transfer();
         } else if (mmu_safe_check(io->dma2_ctrl.enable)) {
-            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 sound drivers 
+            temporary_disallow_special(2);
             dma2_transfer();
         } else if (mmu_safe_check(io->dma3_ctrl.enable)) {
-            if (((mmu_read16(DMA_IOMEM_GETADDR(1, 0xA)) >> 12) & 0b11) == 0b11) {break; } // TEMPORARY, wait4 video drivers 
+            temporary_disallow_special(3);
             dma3_transfer();
         } else {
             break;

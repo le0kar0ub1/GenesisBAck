@@ -19,4 +19,7 @@ void debug_cmd_wreg(int ac, char const **av)
 
     if (reg >= 0 && reg <= 15)
         register_write32(reg, val);
+    if (reg == 15) {
+        core_flush_pipeline();
+    }
 }

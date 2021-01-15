@@ -73,9 +73,9 @@ enum {
     INT_MASTER_ENABLE_ADDR = INTERRUPT_IOMEM_BASE + 0x8
 };
 
-# define read_int_master_enable() (mmu_read16(INT_MASTER_ENABLE_ADDR) & 0b1)
-# define read_irq_enable(irq)     (mmu_read16(IRQ_ENABLE_ADDR) & (1 << irq))
-# define read_irq_interface(irq)  (mmu_read16(IRQ_INTERFACE_ADDR) & (1 << irq))
+# define read_int_master_enable() ((bool)(mmu_read16(INT_MASTER_ENABLE_ADDR) & 0b1))
+# define read_irq_enable(irq)     ((bool)(mmu_read16(IRQ_ENABLE_ADDR) & (1 << irq)))
+# define read_irq_interface(irq)  ((bool)(mmu_read16(IRQ_INTERFACE_ADDR) & (1 << irq)))
 
 static bool kill_thread = false;
 
@@ -112,7 +112,7 @@ void interrupt_raise_irq(uint32_t irq)
         if (!read_irq_interface(irq)) { // has been ack at previous trigger ?
             uint16_t val = mmu_read16(IRQ_INTERFACE_ADDR);
             val |= (1 << irq);
-            mmu_write16(IRQ_INTERFACE_ADDR, val);
+            mmu_raw_write16(IRQ_INTERFACE_ADDR, val);
             exception_raise(EXCEPTION_IRQ, irq);
         }
     }
@@ -121,18 +121,21 @@ void interrupt_raise_irq(uint32_t irq)
 static void interrupt_mmu_trigger(struct mmhit hit)
 {
     /**
-     * Clear the irq bits when they are wrotten by program
+     * Clear the irq bits when write 1
      */        
-    printf("addr %#x size %#x val %#x\n", hit.addr, hit.size, hit.val);
     switch (hit.size)
     {
         case 1:
-            // mmu_raw_write(hit.addr, mmu_read8(hit.addr) | ());
+            mmu_raw_write8(hit.addr, mmu_read8(hit.addr) ^ hit.val);
             break;
         case 2:
+            mmu_raw_write16(hit.addr, mmu_read16(hit.addr) ^ hit.val);
             break;
-        case 4: default:
-            panic("Interrupt clear bit trigger invalid");
+        case 4: 
+            mmu_raw_write32(hit.addr, mmu_read32(hit.addr) ^ hit.val);
+            break;
+        default:
+            panic("Interrupt clear bit trigger invalid write size");
     }
 }
 
