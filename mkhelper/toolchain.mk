@@ -10,14 +10,21 @@
 export TOOLCHAIN_PATH	 :=	$(PROJECT_PATH)/mktoolchain/toolchain
 export TOOLCHAIN_GNUBASE := #$(TOOLCHAIN_PATH)/bin/$(ARCH)-elf-
 
+export TOOLCHAIN_INCLUDES = $(TOOLCHAIN_PATH)/sdl2/include
+export STATIC_LIBS 		  = 
+export DYNAMIC_LIBS_AREA  = $(TOOLCHAIN_PATH)/sdl2/build/.libs
+export DYNAMIC_LIBS       = SDL2
+
 ifeq ($(BUILD_MODE),release)
-export TOOLCHAIN_INCLUDES	:=
-export STATIC_LIBS			:=
-export DYNAMIC_LIBS			:=
+    TOOLCHAIN_INCLUDES	+=
+    STATIC_LIBS			+=
+    DYNAMIC_LIBS_AREA   +=
+    DYNAMIC_LIBS		+=
 else
-export TOOLCHAIN_INCLUDES	:=	$(TOOLCHAIN_PATH)/capstone/include # $(TOOLCHAIN_PATH)/readline
-export STATIC_LIBS			:=	$(TOOLCHAIN_PATH)/capstone/libcapstone.a # $(TOOLCHAIN_PATH)/readline/libreadline.a
-export DYNAMIC_LIBS			:=
+    TOOLCHAIN_INCLUDES	+=	$(TOOLCHAIN_PATH)/capstone/include # $(TOOLCHAIN_PATH)/readline
+    STATIC_LIBS			+=	$(TOOLCHAIN_PATH)/capstone/libcapstone.a # $(TOOLCHAIN_PATH)/readline/libreadline.a
+    DYNAMIC_LIBS_AREA   +=
+    DYNAMIC_LIBS		+=
 endif
 
 export CC		:=	$(TOOLCHAIN_GNUBASE)gcc
