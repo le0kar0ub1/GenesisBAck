@@ -69,6 +69,7 @@ export CCFLAGS	=	-isystem $(PROJECT_PATH)/inc						\
 					-fno-tree-slp-vectorize								\
 					-Wno-override-init									\
 					-imacros $(PROJECT_PATH)/inc/cfg.h					\
+					$(TOOLCHAIN_INLINE_MACRO)
 
 # Some macros
 export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
@@ -78,10 +79,13 @@ export CCFLAGS	+=	-D PROJECT=$(PROJECT)							\
 					-D ROUTINE_RELEASE=0							\
 					-D ROUTINE_DEBUG=1								\
 
-export LDFLAGS	:=	$(STATIC_LIBS) 					 	  \
-					$(addprefix -L, $(DYNAMIC_LIBS_AREA)) \
-					$(addprefix -l, $(DYNAMIC_LIBS)) 	  \
-					-l readline							  \
+rpath = -Wl,-rpath=
+export LDFLAGS	:=	$(TOOLCHAIN_STATIC_LIBS) 									\
+					$(TOOLCHAIN_LDFLAGS)										\
+					$(addprefix -L, $(TOOLCHAIN_DYNAMIC_LIBS_AREA)) 			\
+					$(addprefix $(rpath), $(TOOLCHAIN_DYNAMIC_LIBS_AREA))	\
+					$(addprefix -l, $(TOOLCHAIN_DYNAMIC_LIBS)) 	  				\
+					-l readline							  						\
 					-l pthread
 
 # Output color

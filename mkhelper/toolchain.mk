@@ -10,21 +10,30 @@
 export TOOLCHAIN_PATH	 :=	$(PROJECT_PATH)/mktoolchain/toolchain
 export TOOLCHAIN_GNUBASE := #$(TOOLCHAIN_PATH)/bin/$(ARCH)-elf-
 
-export TOOLCHAIN_INCLUDES = $(TOOLCHAIN_PATH)/sdl2/include
-export STATIC_LIBS 		  = 
-export DYNAMIC_LIBS_AREA  = $(TOOLCHAIN_PATH)/sdl2/build/.libs
-export DYNAMIC_LIBS       = SDL2
+export TOOLCHAIN_INCLUDES           =   $(TOOLCHAIN_PATH)/sdl2/include      \
+                                        $(TOOLCHAIN_PATH)/sdl2_ttf          \
+                                        $(TOOLCHAIN_PATH)/sdl2_image
+export TOOLCHAIN_INLINE_MACRO       =   # -D SDL_FONT_PATH="$(TOOLCHAIN_PATH)/sdl2_ttf"
+export TOOLCHAIN_STATIC_LIBS 		= 
+export TOOLCHAIN_DYNAMIC_LIBS_AREA  =   $(TOOLCHAIN_PATH)/sdl2/build/.libs    \
+                                        $(TOOLCHAIN_PATH)/sdl2_ttf/.libs      \
+                                        $(TOOLCHAIN_PATH)/sdl2_image/.libs
+export TOOLCHAIN_DYNAMIC_LIBS       =   SDL2                                   \
+                                        SDL2_ttf                               \
+                                        SDL2_image
 
 ifeq ($(BUILD_MODE),release)
-    TOOLCHAIN_INCLUDES	+=
-    STATIC_LIBS			+=
-    DYNAMIC_LIBS_AREA   +=
-    DYNAMIC_LIBS		+=
+    TOOLCHAIN_INCLUDES	         +=
+    TOOLCHAIN_STATIC_LIBS	     +=
+    TOOLCHAIN_DYNAMIC_LIBS_AREA  +=
+    TOOLCHAIN_DYNAMIC_LIBS		 +=
+    TOOLCHAIN_INLINE_MACRO       +=
 else
-    TOOLCHAIN_INCLUDES	+=	$(TOOLCHAIN_PATH)/capstone/include # $(TOOLCHAIN_PATH)/readline
-    STATIC_LIBS			+=	$(TOOLCHAIN_PATH)/capstone/libcapstone.a # $(TOOLCHAIN_PATH)/readline/libreadline.a
-    DYNAMIC_LIBS_AREA   +=
-    DYNAMIC_LIBS		+=
+    TOOLCHAIN_INCLUDES	        +=	$(TOOLCHAIN_PATH)/capstone/include
+    TOOLCHAIN_STATIC_LIBS		+=
+    TOOLCHAIN_DYNAMIC_LIBS_AREA +=  $(TOOLCHAIN_PATH)/capstone
+    TOOLCHAIN_DYNAMIC_LIBS		+=  capstone
+    TOOLCHAIN_INLINE_MACRO      +=
 endif
 
 export CC		:=	$(TOOLCHAIN_GNUBASE)gcc

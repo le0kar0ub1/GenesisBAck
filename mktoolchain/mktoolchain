@@ -58,5 +58,14 @@ mkdir -p $PREFIX || exit 1
 # source $SOURCE/mktoolchain/gnu.sh
 source $SOURCE/mktoolchain/external.sh
 
+### Build capstone ##################################################################
+install_capstone
+
+### Build SL2      ##################################################################
+install_sdl SDL2-$LIB_SDL_VERSION $LIB_SDL_ENDPOINT
+install_sdl SDL2_ttf-$LIB_SDL_TTF_VERSION $LIB_SDL_TTF_ENDPOINT
+install_sdl SDL2_image-$LIB_SDL_IMAGE_VERSION $LIB_SDL_IMAGE_ENDPOINT
+
+
 ### We're done! #####################################################################
 printf "[\e[34;1mINFO\e[0m] Toolchain built!\n"

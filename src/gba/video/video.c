@@ -13,13 +13,8 @@
 # include <modules/module.h>
 # include <mmu/mmu.h>
 # include <mmu/trigger.h>
-# include <SDL.h>
 
-static void video_init(void)
-{
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Init(SDL_INIT_AUDIO);
-}
+static void video_init(void) {}
 
 static void video_exit(void) {}
 
@@ -29,7 +24,7 @@ static void video_info(void) {}
 
 REGISTER_MODULE(
     video,
-    "LCD emulation",
+    "LCD control but not rendering",
     MODULE_HOOK_GBA,
     video_init,
     video_exit,
