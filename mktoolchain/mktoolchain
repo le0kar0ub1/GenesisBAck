@@ -31,7 +31,6 @@ require tar
 require flex
 require bison
 require readline.so # hope it's a standard
-# require rsync
 
 ### Exit Handler ###############################################################
 cleanup() {
@@ -56,7 +55,7 @@ fi
 
 mkdir -p $PREFIX || exit 1
 
-source $SOURCE/mktoolchain/gnu.sh
+# source $SOURCE/mktoolchain/gnu.sh
 source $SOURCE/mktoolchain/external.sh
 
 ### We're done! #####################################################################

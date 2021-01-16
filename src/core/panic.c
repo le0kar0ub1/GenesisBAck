@@ -8,6 +8,7 @@
 
 # include <genesisback.h>
 # include <debug/debug.h>
+# include <modules/exithooks.h>
 # include <stdio.h>
 # include <stdarg.h>
 # include <stdlib.h>
@@ -30,5 +31,8 @@ void __noreturn _panic(char const *anywhere, char const *fmt, ...)
     #if ROUTINE == ROUTINE_DEBUG
         debug_cmd_regs(1, NULL);
     #endif
+
+    exithooks_run_allhooks();
+
     exit(1);
 }

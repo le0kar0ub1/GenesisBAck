@@ -13,8 +13,13 @@
 # include <modules/module.h>
 # include <mmu/mmu.h>
 # include <mmu/trigger.h>
+# include <SDL.h>
 
-static void video_init(void) {}
+static void video_init(void)
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_AUDIO);
+}
 
 static void video_exit(void) {}
 

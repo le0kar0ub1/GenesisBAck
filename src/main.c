@@ -29,6 +29,8 @@ int main(int argc, char **argv)
 		rom = argv[1];
 	}
 
+	signal_init();
+
 	/**
 	 * Run all the modules init calls by levels from start
 	 */

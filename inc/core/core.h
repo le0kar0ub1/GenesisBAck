@@ -214,4 +214,6 @@ size_t core_get_clock(void);
 void core_scheduler(void);
 bool schedule_opcode_condition(uint32_t cond);
 
+void signal_init(void);
+
 #endif /* _CORE_CORE_H_ */

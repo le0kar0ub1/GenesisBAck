@@ -15,6 +15,7 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						core.o				\
 						arm7tdmi.o			\
 						clock.o				\
+						signals.o			\
 					)
 
 sinclude 	$(local)/cycle/Makefile
