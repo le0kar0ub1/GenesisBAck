@@ -10,7 +10,7 @@
 # include <core/cycle/exec.h>
 # include <mmu/mmu.h>
 
-void core_arm_reg_hwdt(uint32_t op)
+void core_arm_imm_hwdt(uint32_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
     uint32_t rd = (op >> 12) & 0xF;
@@ -37,7 +37,7 @@ void core_arm_reg_hwdt(uint32_t op)
         addr = wbaddr;
     }
 
-    switch ((bitfield_read1(op, 6) << 1) | bitfield_read1(op, 6))
+    switch ((bitfield_read1(op, 6) << 1) | bitfield_read1(op, 5))
     {
        case 0b00: // swap, the load/store bit is probably a non-sense in this context but it's not specified
             panic("swp hf unimplemented");
@@ -70,7 +70,7 @@ void core_arm_reg_hwdt(uint32_t op)
     }
 }
 
-void core_arm_imm_hwdt(uint32_t op)
+void core_arm_reg_hwdt(uint32_t op)
 {
     struct opmode_regs *regs = core_get_context_regs();
     uint32_t rm = bitfield_readx(op, 0, 4);
@@ -98,7 +98,7 @@ void core_arm_imm_hwdt(uint32_t op)
         addr = wbaddr;
     }
 
-    switch ((bitfield_read1(op, 6) << 1) | bitfield_read1(op, 6))
+    switch ((bitfield_read1(op, 6) << 1) | bitfield_read1(op, 5))
     {
        case 0b00: // swap, the load/store bit is probably a non-sense in this context but it's not specified
             panic("swp hf unimplemented");

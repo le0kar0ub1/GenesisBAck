@@ -69,6 +69,6 @@ void core_arm_multiply_long(uint32_t op)
     if (bitfield_read1(op, 20) == 0b1) {
         regs->cpsr->zero = !(*(regs->raw[rdlo])) && !(*(regs->raw[rdhi]));
         regs->cpsr->negative = (*(regs->raw[rdhi])) >> 31;
-        // Carry & overflow flag take a "meaningless value" : lol
+        // Carry & overflow flag take a "meaningless value" LOL
     }
 }

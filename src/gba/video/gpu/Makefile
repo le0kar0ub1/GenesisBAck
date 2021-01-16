@@ -9,12 +9,6 @@
 
 local = $(CALLED_LOCAL_DIRECTORY)
 
-TARGET_OBJECTS	+= $(addprefix $(local),	\
-						panic.o				\
-						exceptions.o		\
-						core.o				\
-						arm7tdmi.o			\
-						clock.o				\
+TARGET_OBJECTS	+= $(addprefix $(local),		\
+						gpu.o					\
 					)
-
-sinclude 	$(local)/cycle/Makefile

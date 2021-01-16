@@ -208,6 +208,9 @@ void core_switch_state(uint32_t state);
 void core_switch_opmode(uint32_t opmode);
 void core_flush_pipeline(void);
 
+void core_inc_clock(size_t inc);
+size_t core_get_clock(void);
+
 void core_scheduler(void);
 bool schedule_opcode_condition(uint32_t cond);
 
