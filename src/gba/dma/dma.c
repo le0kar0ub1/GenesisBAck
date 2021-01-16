@@ -30,19 +30,19 @@ static void dma_exit(void)
     io = NULL;
 }
 
-# define temporary_disallow_special(eng)                                        \
-    if (((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 12) & 0b11) == 0b11) {     \
-        mmu_raw_write16(                                                        \
-            DMA_IOMEM_GETADDR(eng, 0xA),                                        \
-            mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) & ((1 << 15) - 1)           \
-        );                                                                      \
-    if ((mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) >> 9) & 0b1) {                 \
-        mmu_raw_write16(                                                        \
-            DMA_IOMEM_GETADDR(eng, 0xA),                                        \
-            mmu_read16(DMA_IOMEM_GETADDR(eng, 0xA)) & ~(1 << 9)                 \
-        );                                                                      \
-    }                                                                           \
-        break;                                                                  \
+# define temporary_disallow_special(eng)                                                        \
+    if (((mmu_read16(DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT)) >> 12) & 0b11) == 0b11) {     \
+        mmu_raw_write16(                                                                        \
+            DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT),                                        \
+            mmu_read16(DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT)) & ((1 << 15) - 1)           \
+        );                                                                                      \
+    if ((mmu_read16(DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT)) >> 9) & 0b1) {                 \
+        mmu_raw_write16(                                                                        \
+            DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT),                                        \
+            mmu_read16(DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT)) & ~(1 << 9)                 \
+        );                                                                                      \
+    }                                                                                           \
+        break;                                                                                  \
     }
 
 static void dma_mmu_trigger_exec(struct mmhit hit __unused)
@@ -74,14 +74,14 @@ static bool dma_mmu_trigger_check(struct mmhit hit)
 {
     uint32_t range = 1;
 
-# define DMA_TRIGGER_CHECK_LAZY(eng)                        \
-    if (                                                    \
-        hit.addr <= DMA_IOMEM_GETADDR(eng, 0xA) &&          \
-        hit.addr + hit.size >= DMA_IOMEM_GETADDR(eng, 0xA)  \
-    ) {                                                     \
-        range += DMA_IOMEM_GETADDR(eng, 0xA) - hit.addr;    \
-        if ((bool)(hit.val >> ((range * 8) - 1)) == true)   \
-            return (true);                                  \
+# define DMA_TRIGGER_CHECK_LAZY(eng)                                  \
+    if (                                                              \
+        hit.addr <= DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT) &&          \
+        hit.addr + hit.size >= DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT)  \
+    ) {                                                               \
+        range += DMA_IOMEM_GETADDR(eng, DMA_IOMEM_CTL_SHIFT) - hit.addr;    \
+        if ((bool)(hit.val >> ((range * 8) - 1)) == true)             \
+            return (true);                                            \
     }
 
     DMA_TRIGGER_CHECK_LAZY(0);

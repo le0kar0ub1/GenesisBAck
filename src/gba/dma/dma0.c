@@ -18,10 +18,10 @@ static bool reload = true;
 
 static void dma_flush_internal(void)
 {
-    internal.sad      = mmu_read32(DMA_IOMEM_GETADDR(0, 0x0));
-    internal.dad      = mmu_read32(DMA_IOMEM_GETADDR(0, 0x4));
-    internal.count    = mmu_read16(DMA_IOMEM_GETADDR(0, 0x8));
-    internal.ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(0, 0xA));
+    internal.sad      = mmu_read32(DMA_IOMEM_GETADDR(0, DMA_IOMEM_SAD_SHIFT));
+    internal.dad      = mmu_read32(DMA_IOMEM_GETADDR(0, DMA_IOMEM_DAD_SHIFT));
+    internal.count    = mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CNT_SHIFT));
+    internal.ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CTL_SHIFT));
     internal.sad   &= ((1 << 27) - 1);
     internal.dad   &= ((1 << 27) - 1);
     internal.count &= internal.count ? ((1 << 14) - 1) : (1 << 14);
@@ -29,16 +29,16 @@ static void dma_flush_internal(void)
 
 static void dma_flush_partial(void)
 {
-    internal.count = mmu_read16(DMA_IOMEM_GETADDR(0, 0x8));
+    internal.count = mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CNT_SHIFT));
     internal.count &= internal.count ? ((1 << 14) - 1) : (1 << 14);
     if (internal.ctrl.dst_ctrl == 0b11) {
-        internal.dad = mmu_read32(DMA_IOMEM_GETADDR(0, 0x4)) & ((1 << 27) - 1);
+        internal.dad = mmu_read32(DMA_IOMEM_GETADDR(0, DMA_IOMEM_DAD_SHIFT)) & ((1 << 27) - 1);
     }
 }
 
 static bool dma_timing_check(void)
 {
-    switch ((mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) >> 12) & 0b11)
+    switch ((mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CTL_SHIFT)) >> 12) & 0b11)
     {
         case 0b00: // immediate
             return (true);
@@ -60,7 +60,7 @@ void dma0_transfer(void)
 {
     if (!dma_timing_check())
         return;
-    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & (1 << 9)) {
+    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CTL_SHIFT)) & (1 << 9)) {
         dma_flush_partial();
     } else {
         dma_flush_internal();
@@ -115,10 +115,10 @@ void dma0_transfer(void)
     if (!(internal.ctrl.repeat)) {
         mmu_raw_write16(
             DMA_IOMEM_GETADDR(0, 0xA),
-            mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & ~(1 << 15)
+            mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CTL_SHIFT)) & ~(1 << 15)
         ); // clear the enabled bit
         reload = true;
-        if ((bool)(mmu_read16(DMA_IOMEM_GETADDR(0, 0xA)) & (1 << 14))) { // is IRQ enabled ?
+        if ((bool)(mmu_read16(DMA_IOMEM_GETADDR(0, DMA_IOMEM_CTL_SHIFT)) & (1 << 14))) { // is IRQ enabled ?
             interrupt_raise_irq(IRQ_DMA0);
         }
     } else {

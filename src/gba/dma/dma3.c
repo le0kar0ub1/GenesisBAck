@@ -18,10 +18,10 @@ static bool reload = true;
 
 static void dma_flush_internal(void)
 {
-    internal.sad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x0));
-    internal.dad      = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4));
-    internal.count    = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
-    internal.ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(3, 0xA));
+    internal.sad      = mmu_read32(DMA_IOMEM_GETADDR(3, DMA_IOMEM_SAD_SHIFT));
+    internal.dad      = mmu_read32(DMA_IOMEM_GETADDR(3, DMA_IOMEM_DAD_SHIFT));
+    internal.count    = mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CNT_SHIFT));
+    internal.ctrl.raw = mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT));
     internal.sad   &= ((1 << 28) - 1);
     internal.dad   &= ((1 << 28) - 1);
     internal.count &= internal.count ? ((1 << 16) - 1) : (1 << 16);
@@ -29,10 +29,10 @@ static void dma_flush_internal(void)
 
 static void dma_flush_partial(void)
 {
-    internal.count = mmu_read16(DMA_IOMEM_GETADDR(3, 0x8));
+    internal.count = mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CNT_SHIFT));
     internal.count &= internal.count ? ((1 << 16) - 1) : (1 << 16);
     if (internal.ctrl.dst_ctrl == 0b11) {
-        internal.dad = mmu_read32(DMA_IOMEM_GETADDR(3, 0x4)) & ((1 << 28) - 1);
+        internal.dad = mmu_read32(DMA_IOMEM_GETADDR(3, DMA_IOMEM_DAD_SHIFT)) & ((1 << 28) - 1);
     }
 }
 
@@ -40,7 +40,7 @@ static bool dma_timing_check(void)
 {
     uint32_t vcount;
 
-    switch ((mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) >> 12) & 0b11)
+    switch ((mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT)) >> 12) & 0b11)
     {
         case 0b00: // immediate
             return (true);
@@ -54,7 +54,7 @@ static bool dma_timing_check(void)
             return (false);
         case 0b11: // Special : Video Capture
             return (false);
-            if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) >> 10)) == false) { // repeat bit
+            if (((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT)) >> 10)) == false) { // repeat bit
                 panic("DMA 3 Special Video capture must have repeat bit set");
             }
             vcount = mmu_read16(0x4000006) & 0xFF;
@@ -76,7 +76,7 @@ void dma3_transfer(void)
     if (!dma_timing_check())
         return;
 
-    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & (1 << 9)) {
+    if (!reload && mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT)) & (1 << 9)) {
         dma_flush_partial();
     } else {
         dma_flush_internal();
@@ -133,10 +133,10 @@ void dma3_transfer(void)
     if (!(internal.ctrl.repeat)) {
         mmu_raw_write16(
             DMA_IOMEM_GETADDR(3, 0xA),
-            mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & ((1 << 15) - 1)
+            mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT)) & ((1 << 15) - 1)
         ); // clear the enabled bit
         reload = true;
-        if ((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, 0xA)) & (1 << 14))) { // is IRQ enabled ?
+        if ((bool)(mmu_read16(DMA_IOMEM_GETADDR(3, DMA_IOMEM_CTL_SHIFT)) & (1 << 14))) { // is IRQ enabled ?
             interrupt_raise_irq(IRQ_DMA3);
         }
     } else {

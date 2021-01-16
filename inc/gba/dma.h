@@ -19,6 +19,13 @@ enum DMA_ENGINE {
     DMA_ENGINE3 = 3
 };
 
+enum {
+    DMA_IOMEM_SAD_SHIFT = 0x0,
+    DMA_IOMEM_DAD_SHIFT = 0x4,
+    DMA_IOMEM_CNT_SHIFT = 0x8,
+    DMA_IOMEM_CTL_SHIFT = 0xA
+};
+
 # define DMA_IOMEM_BASE               0x40000B0
 # define DMA_IOMEM_ENGINE_SHIFT(x)    (x * 0xC)
 # define DMA_IOMEM_GETADDR(eng, addr) (DMA_IOMEM_BASE + DMA_IOMEM_ENGINE_SHIFT(eng) + addr)

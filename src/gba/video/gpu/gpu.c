@@ -26,12 +26,14 @@ static void gpu_init(void)
     }
 
     window   = SDL_CreateWindow(
-                    NULL, //"GenesisBack",
+                    NULL,
                     SDL_WINDOWPOS_CENTERED,
                     SDL_WINDOWPOS_CENTERED,
                     480,
                     320,
                     SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN
+                    // SDL_WINDOW_BORDERLESS -> no border
+                    // SDL_WINDOW_RESIZABLE  -> as an application
             );
     if (!window) {
         panic("SDL window creation failed");
@@ -40,7 +42,7 @@ static void gpu_init(void)
     renderer = SDL_CreateRenderer(
                 window,
                 -1,
-                0// SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
             );
     if (!renderer) {
         panic("SDL renderer creation failed");
@@ -48,7 +50,7 @@ static void gpu_init(void)
 
     texture  = SDL_CreateTexture(
                     renderer,
-                    SDL_PIXELFORMAT_BGRA8888,
+                    SDL_PIXELFORMAT_BGRA4444,
                     SDL_TEXTUREACCESS_STREAMING,
                     240,
                     160
@@ -56,6 +58,19 @@ static void gpu_init(void)
     if (!texture) {
         panic("SDL texture creation failed");
     }
+    uint16_t *pixels;
+    int pitch;
+    SDL_LockTexture(texture, NULL, (void **)&pixels, &pitch);
+    for(int i = 0; i < 160; i++)
+        for(int j = 0; j < 240; j++)
+            pixels[i * 240 + j] = (i << 4) | 255;//SDL_MapRGBA(format, (Uint8)i, 0, 0, 255);
+    SDL_UnlockTexture(texture);
+    gpu_flush_display();
+}
+
+void gpu_flush_display(void)
+{
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 
