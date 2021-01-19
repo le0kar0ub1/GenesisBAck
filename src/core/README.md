@@ -11,3 +11,5 @@ Cycle  | Job
  Fetch | Using MMU module, read 2 or 4 bytes at the address in the program counter register (used during next cycle)
  Route | Return the function which will execute the instruction (route the prefetch)
  Exec  | Finaly execute the instruction and modify the system (exec the prefetch)
+
+ 

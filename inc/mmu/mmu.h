@@ -101,6 +101,7 @@ void *mmu_load_addr(uint32_t shift);
 void mmu_lock(void);
 void mmu_unlock(void);
 
+bool mmu_load_universum(char const *path);
 bool mmu_load_rom(char const *path);
 
 static inline int __mmu_cond_lock__(void)

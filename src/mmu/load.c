@@ -39,17 +39,6 @@ bool mmu_load_rom(char const *path)
     }
 
     /**
-     * Put the bios in the bios area
-     */
-    uint32_t virt = MMU_AREA_BASE_BIOS_ROM;
-    uint32_t real = 0x0;
-    while (virt < MMU_AREA_END_BIOS_ROM) {
-        mmu_write16(virt, bios[real]);
-        virt += 2;
-        real++;
-    }
-
-    /**
      * Fill in the given ROM in the 3 waitstates
      */ 
     read(fd, (void *)mmu_load_addr(MMU_AREA_BASE_ROM0), MMU_AREA_SIZE_ROM0);
@@ -61,5 +50,28 @@ bool mmu_load_rom(char const *path)
         LOG_ERR("GBA cartridge header check failed");
         return (false);
     }
+    return (true);
+}
+
+bool mmu_load_universum(char const *path)
+{
+    /**
+     * Put the bios in the bios area
+     */
+    uint32_t virt = MMU_AREA_BASE_BIOS_ROM;
+    uint32_t real = 0x0;
+    while (virt < MMU_AREA_END_BIOS_ROM) {
+        mmu_write16(virt, bios[real]);
+        virt += 2;
+        real++;
+    }
+
+    /**
+     * PANIC: TODO: NEEDSOMETHING:
+     * We probably need other stuffs than the bios
+     */
+
+    if (!mmu_load_rom(path))
+        return (false);
     return (true);
 }

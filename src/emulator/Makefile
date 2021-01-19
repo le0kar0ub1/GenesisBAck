@@ -10,10 +10,8 @@
 local = $(CALLED_LOCAL_DIRECTORY)
 
 TARGET_OBJECTS	+= $(addprefix $(local),	\
-						exceptions.o		\
-						core.o				\
-						arm7tdmi.o			\
-						clock.o				\
+						panic.o				\
+						signals.o			\
 					)
 
-sinclude 	$(local)/cycle/Makefile
+sinclude $(local)/gui/Makefile

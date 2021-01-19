@@ -28,6 +28,7 @@ ifeq ($(tgt),all)
 		sinclude $(PROJECT_PATH)/src/core/Makefile
 		sinclude $(PROJECT_PATH)/src/debug/Makefile
 	endif
+	sinclude $(PROJECT_PATH)/src/emulator/Makefile
 	sinclude $(PROJECT_PATH)/src/modules/Makefile
 	sinclude $(PROJECT_PATH)/src/mmu/Makefile
 	sinclude $(PROJECT_PATH)/src/gba/Makefile

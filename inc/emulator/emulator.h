@@ -7,15 +7,14 @@
 **
 \******************************************************************************/
 
-#ifndef _GENESISBACK_H_
-# define _GENESISBACK_H_
+#ifndef _EMULATOR_EMULATOR_H_
+# define _EMULATOR_EMULATOR_H_
 
 # include <def/def.h>
-# include <def/access.h>
-# include <def/status.h>
-# include <def/generator.h>
-# include <def/assert.h>
-# include <emulator/log.h>
-# include <emulator/emulator.h>
 
-#endif /* !_GENESISBACK_H_ */
+void signal_init(void);
+
+void __noreturn _panic(char const *anywhere, char const *fmt, ...);
+# define panic(...) _panic(__func__, __VA_ARGS__)
+
+#endif /* _EMULATOR_EMULATOR_H_ */

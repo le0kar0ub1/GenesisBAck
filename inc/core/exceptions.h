@@ -11,7 +11,7 @@
 # define _CORE_EXCEPTIONS_H_
 
 # include <genesisback.h>
-# include <io/log.h>
+# include <emulator/log.h>
 # include <core/core.h>
 
 # define EXCEPTION_VECTOR_BASE 0x0

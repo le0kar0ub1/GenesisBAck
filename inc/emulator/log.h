@@ -7,8 +7,8 @@
 **
 \******************************************************************************/
 
-#ifndef _IO_LOG_H_
-# define _IO_LOG_H_
+#ifndef _EMULATOR_LOG_H_
+# define _EMULATOR_LOG_H_
 
 # include <def/def.h>
 # include <stdio.h>
@@ -31,4 +31,4 @@
     # define LOG_DEBUG(...)
 #endif
 
-#endif /* _IO_LOG_H_ */
+#endif /* _EMULATOR_LOG_H_ */

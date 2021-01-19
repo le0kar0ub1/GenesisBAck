@@ -18,7 +18,7 @@ extern char const *rom;
 static void inithook_bootstrap(void)
 {
     module_init_runhook(MODULE_HOOK_BOOTSTRAP);
-    if (!mmu_load_rom(rom))
+    if (!mmu_load_universum(rom))
         panic("ROM load failed");
 }
 
