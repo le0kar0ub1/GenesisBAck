@@ -12,8 +12,8 @@
 # include <stdlib.h>
 # include <pthread.h>
 
-extern struct mmu_trigger __start_mmutriggers[];
-extern struct mmu_trigger __stop_mmutriggers[];
+extern struct mmu_trigger __start_genesisback_mmutriggers[];
+extern struct mmu_trigger __stop_genesisback_mmutriggers[];
 
 static bool kill_thread = false;
 
@@ -32,10 +32,10 @@ static uint32_t *trigger_range = NULL;
  */
 static void *mmu_trigger_thread(void *arg)
 {
-    struct mmu_trigger *mm = (struct mmu_trigger *)__start_mmutriggers;
+    struct mmu_trigger *mm = (struct mmu_trigger *)__start_genesisback_mmutriggers;
     struct mmhit hit = *((struct mmhit *)&arg);
  
-    while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers && !kill_thread) {
+    while ((uintptr_t)mm < (uintptr_t)__stop_genesisback_mmutriggers && !kill_thread) {
         if (
             (hit.addr >= mm->start && hit.addr <= (mm->end - 1))
             ||
@@ -90,14 +90,14 @@ static void mmu_trigger_init(void)
     uint32_t min;
     uint32_t max;
 
-    mm = (struct mmu_trigger *)__start_mmutriggers;
+    mm = (struct mmu_trigger *)__start_genesisback_mmutriggers;
     min = mm->start;
     max = mm->end;
     trigger_range = malloc(2 * 4); // currently hardcoded one range only in the IO reg map
     if (!trigger_range) {
         panic("Allocation failed");
     }
-    while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers) {
+    while ((uintptr_t)mm < (uintptr_t)__stop_genesisback_mmutriggers) {
         if (min > mm->start) {
             min = mm->start;
         }
@@ -115,9 +115,9 @@ static void mmu_trigger_init(void)
 
 static void mmu_trigger_info(void)
 {
-    struct mmu_trigger *mm = (struct mmu_trigger *)__start_mmutriggers;
+    struct mmu_trigger *mm = (struct mmu_trigger *)__start_genesisback_mmutriggers;
 
-    while ((uintptr_t)mm < (uintptr_t)__stop_mmutriggers) {
+    while ((uintptr_t)mm < (uintptr_t)__stop_genesisback_mmutriggers) {
         printf(
             "%-16s %s   %#08x - %#08x\n",
             mm->module->name,

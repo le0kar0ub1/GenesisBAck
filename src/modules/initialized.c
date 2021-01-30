@@ -10,8 +10,8 @@
 # include <modules/module.h>
 # include <string.h>
 
-extern struct module __start_genesisbackmodules[];
-extern struct module __stop_genesisbackmodules[];
+extern struct module __start_genesisback_modules[];
+extern struct module __stop_genesisback_modules[];
 
 /**
  * Get the initialization state of the module's name
@@ -20,8 +20,8 @@ bool module_is_initialized_runmod(char const *name)
 {
     struct module *mod;
     
-    mod = (struct module *)__start_genesisbackmodules;
-    while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
+    mod = (struct module *)__start_genesisback_modules;
+    while ((uintptr_t)mod < (uintptr_t)__stop_genesisback_modules) {
         if (!strcmp(mod->name, name)) {
             return (mod->initialized);
             break;

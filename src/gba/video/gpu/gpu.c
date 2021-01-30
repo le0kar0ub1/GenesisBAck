@@ -19,6 +19,28 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Texture *texture;
 
+static void gpu_direct_renderer_test(void)
+{
+    for(int i = 0; i < 160; i++)
+        for(int j = 0; j < 240; j++) {
+            SDL_SetRenderDrawColor(renderer, i, 0, 0, 255);
+            SDL_RenderDrawPoint(renderer, i, j);
+        }
+}
+
+static void gpu_texture_test(void)
+{
+    uint16_t *pixels;
+    int pitch;
+    SDL_LockTexture(texture, NULL, (void **)&pixels, &pitch);
+    for(int i = 0; i < 160; i++)
+        for(int j = 0; j < 240; j++) {
+            pixels[i * 240 + j] = (i << 4) | 255;//SDL_MapRGBA(format, (Uint8)i, 0, 0, 255);
+        }
+    SDL_UnlockTexture(texture);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+}
+
 static void gpu_init(void)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -26,7 +48,7 @@ static void gpu_init(void)
     }
 
     window   = SDL_CreateWindow(
-                    NULL,
+                    "GenesisBAck",
                     SDL_WINDOWPOS_CENTERED,
                     SDL_WINDOWPOS_CENTERED,
                     480,
@@ -58,19 +80,13 @@ static void gpu_init(void)
     if (!texture) {
         panic("SDL texture creation failed");
     }
-    uint16_t *pixels;
-    int pitch;
-    SDL_LockTexture(texture, NULL, (void **)&pixels, &pitch);
-    for(int i = 0; i < 160; i++)
-        for(int j = 0; j < 240; j++)
-            pixels[i * 240 + j] = (i << 4) | 255;//SDL_MapRGBA(format, (Uint8)i, 0, 0, 255);
-    SDL_UnlockTexture(texture);
+
+    gpu_texture_test();
     gpu_flush_display();
 }
 
 void gpu_flush_display(void)
 {
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 

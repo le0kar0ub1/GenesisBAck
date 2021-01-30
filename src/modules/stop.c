@@ -11,8 +11,8 @@
 # include <modules/module.h>
 # include <string.h>
 
-extern struct module __start_genesisbackmodules[];
-extern struct module __stop_genesisbackmodules[];
+extern struct module __start_genesisback_modules[];
+extern struct module __stop_genesisback_modules[];
 
 /**
  * Run the stopcall's of the module's name
@@ -21,8 +21,8 @@ void module_stop_runmod(char const *name)
 {
     struct module *mod;
     
-    mod = (struct module *)__start_genesisbackmodules;
-    while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
+    mod = (struct module *)__start_genesisback_modules;
+    while ((uintptr_t)mod < (uintptr_t)__stop_genesisback_modules) {
         if (!strcmp(mod->name, name) && mod->stop) {
             if (!mod->initialized) {
                 panic("Try to stop [%s] uninitialized module", mod->name);
@@ -42,8 +42,8 @@ void module_stop_runhook(enum MODULE_HOOKS hook)
 {
     struct module *mod;
     
-    mod = (struct module *)__start_genesisbackmodules;
-    while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
+    mod = (struct module *)__start_genesisback_modules;
+    while ((uintptr_t)mod < (uintptr_t)__stop_genesisback_modules) {
         if (mod->hook == hook && mod->stop && mod->running && mod->initialized) {
              if (mod->initialized && !mod->running) {
                 mod->start();

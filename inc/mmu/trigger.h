@@ -49,7 +49,7 @@ struct mmu_trigger
  * The registering MUST be attached to a module
  */
 # define REGISTER_MMU_TRIGGER(xmodule, xstart, xend, xcheck, xexec)        \
-    __attribute__((__used__, __aligned__(8), __section__("mmutriggers")))  \
+    __attribute__((__used__, __aligned__(8), __section__("genesisback_mmutriggers")))  \
     static const struct mmu_trigger xname = {                              \
         .module       = xmodule,                                           \
         .start        = xstart,                                            \

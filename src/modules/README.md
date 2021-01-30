@@ -2,7 +2,7 @@
 
 The module of the modules which handle the modules.
 
-A module is (staticaly) registered in a built-in section "genesisbackmodules" that the others functions will be able to access in runtime.
+A module is (staticaly) registered in a built-in section "genesisback_modules" that the others functions will be able to access in runtime.
 
 ```c
 struct module
@@ -40,7 +40,7 @@ This is how a module is registered, a set of function is provided to search a mo
 
 ```c
 # define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xstart, xstop, xinfo)  \
-    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))           \
+    __attribute__((__used__, __aligned__(8), __section__("genesisback_modules")))           \
     static const struct module xname = {                                                   \
         .name    = #xname,                                                                 \
         .desc    = xdesc,                                                                  \

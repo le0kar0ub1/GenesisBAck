@@ -11,15 +11,15 @@
 # include <modules/module.h>
 # include <string.h>
 
-extern struct module __start_genesisbackmodules[];
-extern struct module __stop_genesisbackmodules[];
+extern struct module __start_genesisback_modules[];
+extern struct module __stop_genesisback_modules[];
 
 static void debug_cmd_module_list(void)
 {
     struct module *mod;
     
-    mod = (struct module *)__start_genesisbackmodules;
-    while ((uintptr_t)mod < (uintptr_t)__stop_genesisbackmodules) {
+    mod = (struct module *)__start_genesisback_modules;
+    while ((uintptr_t)mod < (uintptr_t)__stop_genesisback_modules) {
         printf(
             "[%s] %s hook %u: %s\n",
             mod->name,

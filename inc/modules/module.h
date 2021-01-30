@@ -44,7 +44,7 @@ struct module
  * Assuming that if you register a start & stop function, the module is threaded
  */
 # define REGISTER_MODULE(xname, xdesc, xhook, xinit, xexit, xreset, xstart, xstop, xinfo)  \
-    __attribute__((__used__, __aligned__(8), __section__("genesisbackmodules")))           \
+    __attribute__((__used__, __aligned__(8), __section__("genesisback_modules")))           \
     static const struct module xname = {                                                   \
         .name    = #xname,                                                                 \
         .desc    = xdesc,                                                                  \
