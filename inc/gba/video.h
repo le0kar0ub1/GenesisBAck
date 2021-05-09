@@ -97,6 +97,31 @@ enum {
     VIDEO_IOMEM_BLDY     = 0x4000054     /* Brightness (Fade-In/Out) Coefficient */
 };
 
+struct LCD_CTRL
+{
+    union 
+    {
+        struct
+        {
+            uint16_t bg_mode                : 3; /*(0-5=Video Mode 0-5, 6-7=Prohibited)*/
+            uint16_t cgb_mode               : 1; /*(0=GBA, 1=CGB; can be set only by BIOS opcodes)*/
+            uint16_t display_frame          : 1; /*(0-1=Frame 0-1) (for BG Modes 4,5 only)*/
+            uint16_t hblank_interval_free   : 1; /*(1=Allow access to OAM during H-Blank)*/
+            uint16_t obj_char_vram_mapping  : 1; /*(0=Two dimensional, 1=One dimensional)*/
+            uint16_t forced_blank           : 1; /*(1=Allow FAST access to VRAM,Palette,OAM)*/
+            uint16_t screen_display_bg0     : 1; /*(0=Off, 1=On)*/
+            uint16_t screen_display_bg1     : 1; /*(0=Off, 1=On)*/
+            uint16_t screen_display_bg2     : 1; /*(0=Off, 1=On)*/
+            uint16_t screen_display_bg3     : 1; /*(0=Off, 1=On)*/
+            uint16_t screen_display_obj     : 1; /*(0=Off, 1=On)*/
+            uint16_t win0_display_flag      : 1; /*(0=Off, 1=On)*/
+            uint16_t win1_display_flag      : 1; /*(0=Off, 1=On)*/
+            uint16_t winobj_display_flag    : 1; /*(0=Off, 1=On)*/
+        };
+        uint16_t raw;
+    };
+};
+
 /**
  * Each color occupied two bytes.
  */
@@ -115,20 +140,25 @@ struct color
     };
 };
 
-
+/**
+ * When Rotation/Scaling used (Attribute 0, bit 8 set):
+ *      9     Double-Size Flag     (0=Normal, 1=Double)
+ * When Rotation/Scaling not used (Attribute 0, bit 8 cleared):
+ *      9     OBJ Disable          (0=Normal, 1=Not displayed)
+ */
 struct OBJ_ATTR_0
 {
     union 
     {
         struct
         {
-            uint16_t y              : 8; // Y-Coordinate (0-255)
-            uint16_t rot_scal_flag  : 1; // (0=Off, 1=On)
-            uint16_t obj_disable    : 1; // Meaning depends on above flag.
-            uint16_t obj_mode       : 2; // (0=Normal, 1=Semi-Transparent, 2=OBJ Window, 3=Prohibited)
-            uint16_t obj_mosaic     : 1; // (0=Off, 1=On)
-            uint16_t color_mode     : 1; // (0=16/16, 1=256/1)
-            uint16_t obj_shape      : 2; // (0=Square,1=Horizontal,2=Vertical,3=Prohibited)
+            uint16_t y              : 8; /*(0-7)    Y-Coordinate (0-255) */
+            uint16_t rot_scal_flag  : 1; /*(8)      (0=Off, 1=On) */
+            uint16_t obj_disable    : 1; /*(9)      Desc above */
+            uint16_t obj_mode       : 2; /*(10-11)  (0=Normal, 1=Semi-Transparent, 2=OBJ Window, 3=Prohibited) */
+            uint16_t obj_mosaic     : 1; /*(12)     (0=Off, 1=On) */
+            uint16_t color_mode     : 1; /*(13)     (0=16/16, 1=256/1) */
+            uint16_t obj_shape      : 2; /*(14-15)  (0=Square,1=Horizontal,2=Vertical,3=Prohibited) */
         };
         uint16_t raw;
     };
