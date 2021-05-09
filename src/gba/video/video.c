@@ -14,7 +14,9 @@
 # include <mmu/mmu.h>
 # include <mmu/trigger.h>
 
-static void video_init(void) {}
+static void video_init(void)
+{
+}
 
 static void video_exit(void) {}
 
@@ -23,6 +25,8 @@ static void video_reset(void) {}
 static void video_info(void)
 {
     struct LCD_CTRL lcd_ctrl;
+    struct LCD_STATUS lcd_status;
+
     lcd_ctrl.raw = mmu_read16(VIDEO_IOMEM_DISPCNT);
     printf("/********* LCD CONTROL *********/\n");
     printf("* BG Mode:                    %d *\n", lcd_ctrl.bg_mode);
@@ -40,6 +44,20 @@ static void video_info(void)
     printf("* Window 1 Display Flag:      %d *\n", lcd_ctrl.win1_display_flag);
     printf("* OBJ Window Display Flag:    %d *\n", lcd_ctrl.winobj_display_flag);
     printf("/*******************************/\n");
+
+    lcd_status.raw = mmu_read16(VIDEO_IOMEM_DISPSTAT);
+    printf("/********* LCD STATUS *********/\n");
+    printf("* V-Blank flag:              %d *\n", lcd_status.vblank_flag);
+    printf("* H-Blank flag:              %d *\n", lcd_status.hblank_flag);
+    printf("* V-Counter flag:            %d *\n", lcd_status.vcounter_flag);
+    printf("* V-Blank IRQ Enable:        %d *\n", lcd_status.vblank_irq_enable);
+    printf("* H-Blank IRQ Enable:        %d *\n", lcd_status.hblank_irq_enable);
+    printf("* V-Counter IRQ Enable:      %d *\n", lcd_status.vcounter_irq_enable);
+    printf("* V-Count Setting:           %d *\n", lcd_status.vcount_settings);
+    printf("/*******************************/\n");
+
+    uint8_t vcount = mmu_read8(VIDEO_IOMEM_VCOUNT);
+    printf("V-COUNT = %d", vcount);
 }
 
 REGISTER_MODULE(

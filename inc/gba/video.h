@@ -122,6 +122,26 @@ struct LCD_CTRL
     };
 };
 
+struct LCD_STATUS
+{
+    union 
+    {
+        struct
+        {
+            uint16_t vblank_flag            : 1; /*(Read only)  (1=VBlank) (set in line 160..226; not 227)*/
+            uint16_t hblank_flag            : 1; /*(Read only)  (1=HBlank) (toggled in all lines, 0..227)*/
+            uint16_t vcounter_flag          : 1; /*(Read only)  (1=Match)  (set in selected line)*/
+            uint16_t vblank_irq_enable      : 1; /*(R/W)        (1=Enable)*/
+            uint16_t hblank_irq_enable      : 1; /*(R/W)        (1=Enable)*/
+            uint16_t vcounter_irq_enable    : 1; /*(R/W)        (1=Enable)*/
+            uint16_t unused0                : 1;
+            uint16_t unused1                : 1;
+            uint16_t vcount_settings        : 8; /* (R/W)       (0...227)*/
+        };
+        uint16_t raw;
+    };
+};
+
 /**
  * Each color occupied two bytes.
  */
@@ -148,7 +168,7 @@ struct color
  */
 struct OBJ_ATTR_0
 {
-    union 
+    union
     {
         struct
         {
