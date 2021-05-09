@@ -16,6 +16,18 @@
 
 static void video_init(void)
 {
+    printf("video_init\n");
+    // struct LCD_STATUS lcd_status;
+    // lcd_status.vblank_flag = 0;
+    // lcd_status.hblank_flag = 0;
+    // lcd_status.vcounter_flag = 0;
+    // lcd_status.vblank_irq_enable = 0;
+    // lcd_status.hblank_irq_enable = 0;
+    // lcd_status.vcounter_irq_enable = 0;
+    // lcd_status.vcount_settings = 0;
+
+    // mmu_write16(VIDEO_IOMEM_DISPSTAT, lcd_status.raw);
+    //mmu_write8(VIDEO_IOMEM_VCOUNT, (uint8_t) 0x9f);
 }
 
 static void video_exit(void) {}
@@ -46,7 +58,7 @@ static void video_info(void)
     printf("/*******************************/\n");
 
     lcd_status.raw = mmu_read16(VIDEO_IOMEM_DISPSTAT);
-    printf("/********* LCD STATUS *********/\n");
+    printf("\n/********* LCD STATUS *********/\n");
     printf("* V-Blank flag:              %d *\n", lcd_status.vblank_flag);
     printf("* H-Blank flag:              %d *\n", lcd_status.hblank_flag);
     printf("* V-Counter flag:            %d *\n", lcd_status.vcounter_flag);
@@ -57,7 +69,8 @@ static void video_info(void)
     printf("/*******************************/\n");
 
     uint8_t vcount = mmu_read8(VIDEO_IOMEM_VCOUNT);
-    printf("V-COUNT = %d", vcount);
+    printf("V-COUNT = %d\n", vcount);
+    mmu_write8(VIDEO_IOMEM_VCOUNT, (uint8_t) 0x9f);
 }
 
 REGISTER_MODULE(
@@ -71,3 +84,11 @@ REGISTER_MODULE(
     NULL,
     video_info
 );
+
+static void video_mmu_triger(struct mmhit hit)
+{
+    printf("%dl: %d\n", hit.addr, hit.val);
+    core_cpu_stop_exec();
+}
+
+REGISTER_MMU_TRIGGER(&video, VIDEO_IOMEM_DISPCNT, VIDEO_IOMEM_BLDY, NULL, video_mmu_triger);
