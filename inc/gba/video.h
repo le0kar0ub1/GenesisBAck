@@ -97,6 +97,82 @@ enum {
     VIDEO_IOMEM_BLDY     = 0x4000054     /* Brightness (Fade-In/Out) Coefficient */
 };
 
+/**
+ * Each color occupied two bytes.
+ */
+struct color
+{
+    union
+    {
+        struct
+        {
+            uint16_t red    : 5;
+            uint16_t green  : 5;
+            uint16_t blue   : 5;
+            uint16_t unused : 1;
+        };
+        uint16_t raw;
+    };
+};
+
+
+struct OBJ_ATTR_0
+{
+    union 
+    {
+        struct
+        {
+            uint16_t y              : 8; // Y-Coordinate (0-255)
+            uint16_t rot_scal_flag  : 1; // (0=Off, 1=On)
+            uint16_t obj_disable    : 1; // Meaning depends on above flag.
+            uint16_t obj_mode       : 2; // (0=Normal, 1=Semi-Transparent, 2=OBJ Window, 3=Prohibited)
+            uint16_t obj_mosaic     : 1; // (0=Off, 1=On)
+            uint16_t color_mode     : 1; // (0=16/16, 1=256/1)
+            uint16_t obj_shape      : 2; // (0=Square,1=Horizontal,2=Vertical,3=Prohibited)
+        };
+        uint16_t raw;
+    };
+};
+
+/**
+ * When Rotation/Scaling used (Attribute 0, bit 8 set):
+ *     9-13  Rotation/Scaling Parameter Selection (0-31)
+ *         (Selects one of the 32 Rotation/Scaling Parameters that
+ *         can be defined in OAM, for details read next chapter.)
+ * When Rotation/Scaling not used (Attribute 0, bit 8 cleared):
+ *     9-11  Not used
+ *     12    Horizontal Flip      (0=Normal, 1=Mirrored)
+ *     13    Vertical Flip        (0=Normal, 1=Mirrored)
+ */
+struct OBJ_ATTR_1
+{
+     union
+    {
+        struct
+        {
+            uint16_t x              : 9; /*(0-8) X-Coordinate (0-511) */
+            uint16_t rot_scal_param : 5; /*(9-13) desc above */
+            uint16_t obj_size       : 2; /*(14-15) (0..3, depends on OBJ Shape, see Attr 0) */
+        };
+        uint16_t raw;
+    };
+};
+
+struct OBJ_ATTR_2
+{
+     union
+    {
+        struct
+        {
+            uint16_t char_name      : 10;   /*(0-9)     (0-1023=Tile Number)*/
+            uint16_t priority_on_bg : 2;    /*(10-11)   (0=Highest)*/
+            uint16_t palette_number : 4;    /*(12-15)   (Not used in 256 color/1 palette mode)*/
+        };
+        uint16_t raw;
+    };
+};
+
+
 void gpu_flush_display(void);
 
 #endif /* _GBA_VIDEO_H_ */
