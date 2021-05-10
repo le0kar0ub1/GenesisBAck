@@ -134,8 +134,8 @@ struct LCD_STATUS
             uint16_t vblank_irq_enable      : 1; /*(R/W)        (1=Enable)*/
             uint16_t hblank_irq_enable      : 1; /*(R/W)        (1=Enable)*/
             uint16_t vcounter_irq_enable    : 1; /*(R/W)        (1=Enable)*/
-            uint16_t unused0                : 1;
-            uint16_t unused1                : 1;
+            uint16_t _unused0               : 1;
+            uint16_t _unused1               : 1;
             uint16_t vcount_settings        : 8; /* (R/W)       (0...227)*/
         };
         uint16_t raw;
@@ -154,7 +154,7 @@ struct color
             uint16_t red    : 5;
             uint16_t green  : 5;
             uint16_t blue   : 5;
-            uint16_t unused : 1;
+            uint16_t _unused : 1;
         };
         uint16_t raw;
     };
@@ -222,6 +222,27 @@ struct OBJ_ATTR_2
     };
 };
 
+/**
+ * 13    BG0/BG1: Not used (except in NDS mode: Ext Palette Slot for BG0/BG1)
+ * 13    BG2/BG3: Display Area Overflow (0=Transparent, 1=Wraparound)
+ */
+struct BG_CONTROL
+{
+    union
+    {
+        struct
+        {
+            uint16_t bg_priority            : 2; /*(0-1) ((0-3), 0=Highest)*/
+            uint16_t char_base_block        : 2; /*(2-3) (0-3, in units of 16 KBytes) (=BG Tile Data) */
+            uint16_t _unused                : 2; /*(4-5) (Must be zero)*/
+            uint16_t mosaic                 : 1; /*(6) (0=Disable 1=Enable)*/
+            uint16_t colors_palettes        : 1; /*(7) (0=16/16 1=256/1)*/
+            uint16_t screen_base_block      : 5; /*(8-12) (0-31, in units of 2 KBytes) (=BG Map Data)*/
+            uint16_t display_area_overflow  : 1; /*(13) desc above*/
+        };
+        uint16_t raw;
+    };
+};
 
 void gpu_flush_display(void);
 

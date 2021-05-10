@@ -125,6 +125,15 @@ const struct command commands[] =
         .handler = debug_cmd_module
     },
     {
+        .name = "resume",
+        .minimal = "res",
+        .minargs = 0,
+        .maxargs = 0,
+        .help = "resume",
+        .description = "Restart the cpu after",
+        .handler = debug_cmd_resume
+    },
+    {
         .name = NULL,
         .minimal = NULL,
         .minargs = 0,

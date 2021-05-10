@@ -22,4 +22,5 @@ TARGET_OBJECTS	+= $(addprefix $(local),	\
 						load.o				\
 						store.o				\
 						module.o			\
+						resume.o			\
 					)

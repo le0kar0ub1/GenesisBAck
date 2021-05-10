@@ -41,6 +41,7 @@ void debug_cmd_wreg(int ac, char const **av);
 void debug_cmd_load(int ac, char const **av);
 void debug_cmd_store(int ac, char const **av);
 void debug_cmd_module(int ac, char const **av);
+void debug_cmd_resume(int ac, char const **av);
 
 static inline int get_base(char const *inp)
 {

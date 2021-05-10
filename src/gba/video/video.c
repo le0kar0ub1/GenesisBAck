@@ -70,7 +70,6 @@ static void video_info(void)
 
     uint8_t vcount = mmu_read8(VIDEO_IOMEM_VCOUNT);
     printf("V-COUNT = %d\n", vcount);
-    mmu_write8(VIDEO_IOMEM_VCOUNT, (uint8_t) 0x9f);
 }
 
 REGISTER_MODULE(
@@ -87,7 +86,8 @@ REGISTER_MODULE(
 
 static void video_mmu_triger(struct mmhit hit)
 {
-    printf("%dl: %d\n", hit.addr, hit.val);
+    printf("Video memory area hit: 0x%x: %d\n", hit.addr, hit.val);
+    printf("----CPU STOPED----\n");
     core_cpu_stop_exec();
 }
 
